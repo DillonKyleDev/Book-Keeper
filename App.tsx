@@ -1,11 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { BarcodeScan } from './Components/BarcodeScan';
+import { FetchBookData } from './Components/FetchBookData';
+import { StoreData } from './Components/StoreData';
+import { Calendar } from './Components/Calendar';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <StoreData />
       <StatusBar style="auto" />
+      <Calendar />
+      {/* <FetchBookData /> */}
+      {/* <BarcodeScan /> */}
     </View>
   );
 }
