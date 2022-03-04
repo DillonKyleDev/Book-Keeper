@@ -48,6 +48,7 @@ build/
 local.properties
 *.iml
 *.hprof
+android/app/debug.keystore
 
 # node.js
 #

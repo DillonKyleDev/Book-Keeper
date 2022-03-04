@@ -21,7 +21,8 @@
     "react-native": "0.64.3",
     "react-native-calendars": "^1.1278.0",
     "react-native-web": "0.17.1",
-    "expo-dev-client": "~0.8.4"
+    "expo-dev-client": "~0.8.4",
+    "@react-native-community/datetimepicker": "4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
