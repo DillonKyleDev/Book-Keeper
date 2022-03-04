@@ -48,7 +48,8 @@ build/
 local.properties
 *.iml
 *.hprof
-android/app/debug.keystore
+android/app/
+readingtracker\android\app\debug.keystore
 
 # node.js
 #
