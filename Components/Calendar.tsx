@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 export const Calendar: React.FC = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <NewCalendar
         // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
         minDate={'2012-05-10'}
@@ -58,4 +58,12 @@ export const Calendar: React.FC = () => {
   )
 }
 
-export default Calendar
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+});

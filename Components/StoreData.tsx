@@ -12,10 +12,6 @@ export const StoreData: React.FC = () => {
   const [ data, setData ] = useState<string>('');
   const [ retrievedData, setRetrievedData ] = useState<string>('');
 
-  useEffect(() => {
-    
-  }, [  ]);
-
   const updateData = (e: string) => {
     setData(e);
   }
