@@ -1,19 +1,12 @@
 import React from 'react';
-import { 
-  Text, 
-  View, 
-  StyleSheet, 
-  Button, 
-  TextInput,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { TopBar } from './TopBar';
 
 export const MyKeeper: React.FC = () => {
   return (
-    <View >
+    <View>
       <TopBar tab="My Keeper"/>
-      <Text>My Keeper</Text>
       <Calendar />
     </View>
   )

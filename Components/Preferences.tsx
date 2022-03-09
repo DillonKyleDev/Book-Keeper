@@ -12,7 +12,6 @@ export const Preferences: React.FC = () => {
   return (
     <View>
       <TopBar tab="Preferences"/>
-      <Text>My Preferences</Text>
     </View>
   )
 }
