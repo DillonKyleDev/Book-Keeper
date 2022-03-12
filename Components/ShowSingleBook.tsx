@@ -1,25 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Linking } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Linking, BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 //redux
-import { addBook, removeBook } from '../store/books/bookSlice'
+import { addBook, removeBook } from '../store/books/bookSlice';
+import { resetSelected } from '../store/selectedBook/selectedSlice';
 import { useReduxDispatch, useReduxSelector } from '../store';
-import { Book } from '../store/books/bookSlice';
 
 interface Props {
-  book: Book;
   bookNotFound: boolean;
 }
 
-const ShowSingleBook: React.FC<Props> = ({book, bookNotFound}) => {
+const ShowSingleBook: React.FC<Props> = ({bookNotFound}) => {
   const [ stars, setStars ] = useState<any>([]);
   const [ bookSaved, setBookSaved ] = useState(false);
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
+  const book = useReduxSelector(state => state.selected);
+  
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        dispatch(resetSelected());
+        return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
   
   //Check if book is already in My Books section
   useEffect(() => {
@@ -83,17 +95,15 @@ const ShowSingleBook: React.FC<Props> = ({book, bookNotFound}) => {
             {!bookSaved ?
               <Button 
                 buttonStyle={styles.addBookButton} 
+                titleStyle={{fontFamily: 'serif'}}
                 onPress={addBookToBooks} 
-                title="Add Book"
-                iconRight={true}
-                icon={<MaterialIcons name="bookmark-border" size={26} color="white" />} />
+                title="Add To Library"/>
             :
               <Button 
                 buttonStyle={styles.addBookButton} 
+                titleStyle={{fontFamily: 'serif'}}
                 onPress={removeBookFromBooks} 
-                title="Remove Book"
-                iconRight={true}
-                icon={<MaterialIcons name="bookmark" size={26} color="white" />} />
+                title="Set Goal"/>
             }
           </View>
             
@@ -104,13 +114,13 @@ const ShowSingleBook: React.FC<Props> = ({book, bookNotFound}) => {
           </View>
 
           <View style={styles.bookInfo}>
-            <Text><Text style={styles.sectionText}>Rating:</Text>  {stars}</Text>
-            <Text><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
-            <Text><Text style={styles.sectionText}>Authors:</Text>  {
+            <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Rating:</Text>  {stars}</Text>
+            <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
+            <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Authors:</Text>  {
               book.authors && book.authors.length > 0 &&
               book.authors
               }</Text> 
-            <Text><Text style={styles.sectionText}>Genre:</Text>  {
+            <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Genre:</Text>  {
               book.genres && book.genres.length > 0 &&
               book.genres.map((category, index) => (
               <Text key={`${index} ${category}`} style={styles.genreItem}>
@@ -118,9 +128,9 @@ const ShowSingleBook: React.FC<Props> = ({book, bookNotFound}) => {
               </Text>
               ))
             }</Text>
-            <Text><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
+            <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
             <View style={styles.description}>
-              <Text><Text style={styles.sectionText}>Description:</Text>  {book.description}</Text>
+              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Description:</Text>  {book.description}</Text>
             </View>
           
           </View>
@@ -154,7 +164,6 @@ export default ShowSingleBook
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginTop: '1%',
     position: 'relative',
     marginBottom: 190,
   },
@@ -203,6 +212,7 @@ const styles = StyleSheet.create({
   sectionText: {
     textDecorationLine: 'underline',
     color: '#636363',
+    fontFamily: 'serif',
   },
   linkContainer: {
     marginLeft: 'auto',
@@ -214,10 +224,9 @@ const styles = StyleSheet.create({
   },
   description: {
     display: 'flex',
-    marginTop: 10
+    marginTop: 10,
   },
   genreItem: {
-    backgroundColor: '#fff59e',
     padding: 1,
   },
   buttonContainer: {
@@ -230,6 +239,7 @@ const styles = StyleSheet.create({
   },
   addBookButton: {
     width: 'auto',
+    backgroundColor: '#4b59f5'
   },
   bookmark: {
     width: "auto",
@@ -244,12 +254,15 @@ const styles = StyleSheet.create({
   },
   font20: {
     fontSize: 20,
+    fontFamily: 'serif',
   },
   font16: {
     fontSize: 16,
+    fontFamily: 'serif',
   },
   underLine: {
     textDecorationLine: 'underline',
+    fontFamily: 'serif',
   },
   centerText: {
     textAlign: 'center',

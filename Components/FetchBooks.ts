@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Book } from '../store/books/bookSlice';
 
 export type ISBN = {
   path: string;
@@ -22,24 +23,32 @@ export type TitleAuthor = {
 }
 
 const mapData = (data: []) => {
-  return data.map((book: any) => {
-    const tempAuthors: [] = book.volumeInfo.authors.map((author: string) => {
-      return author;
-    });
-    const tempGenres: [] = book.volumeInfo.categories.map((category: string) => {
-      return category;
-    }) 
-    return({
-      title: book.volumeInfo.title,
+  const bookData: Book[] = data.map((book: any) => {
+    let tempAuthors: [] = [];
+    if(book.volumeInfo.authors) {
+      tempAuthors = book.volumeInfo.authors.map((author: string) => {
+        return author;
+      });
+    }
+    let tempGenres: [] = [];
+    if(book.volumeInfo.categories) {
+       tempGenres = book.volumeInfo.categories.map((category: string) => {
+        return category;
+      }) 
+    }
+    const singleBook: Book = {
+      title: book.volumeInfo.title ? book.volumeInfo.title : '',
       authors: tempAuthors,
       genres: tempGenres,
-      description: book.volumeInfo.description,
-      imageUrl: book.volumeInfo.imageLinks.thumbnail,
-      pages: book.volumeInfo.pageCount,
-      link: book.volumeInfo.previewLink,
-      rating: book.volumeInfo.averageRating,
-    })
+      description: book.volumeInfo.description ? book.volumeInfo.description : '',
+      imageUrl: book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail ? book.volumeInfo.imageLinks.thumbnail : '',
+      pages: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
+      link: book.volumeInfo.previewLink ? book.volumeInfo.previewLink : '',
+      rating: book.volumeInfo.averageRating ? book.volumeInfo.averageRating : 0,
+    }
+    return(singleBook)
   })
+  return(bookData);
 }
 
 export const FetchIsbn = async ({isbnData}: {isbnData: ISBN}) => {
@@ -53,7 +62,6 @@ export const FetchIsbn = async ({isbnData}: {isbnData: ISBN}) => {
         return response.data.Response;
       }
       if(response.data && response.data.length > 0) {
-        console.log(response.data)
         return mapData(response.data);
       }
     })
@@ -62,8 +70,8 @@ export const FetchIsbn = async ({isbnData}: {isbnData: ISBN}) => {
 }
 
 export const FetchAuthor = async ({authorData}: {authorData: Author}) => {
-  if(authorData) {
-    axios.post(`https://book-keeper-server.herokuapp.com/${authorData.path}`, {
+  if(authorData !== undefined) {
+    return await axios.post(`https://book-keeper-server.herokuapp.com/${authorData.path}`, {
       "author": `${authorData.author}`
     })
     .then(response => {
@@ -80,8 +88,8 @@ export const FetchAuthor = async ({authorData}: {authorData: Author}) => {
 }
 
 export const FetchTitle = async ({titleData}: {titleData: Title}) => {
-  if(titleData) {
-    axios.post(`https://book-keeper-server.herokuapp.com/${titleData.path}`, {
+  if(titleData !== undefined) {
+    return await axios.post(`https://book-keeper-server.herokuapp.com/${titleData.path}`, {
       "title": `${titleData.title}`
     })
     .then(response => {
@@ -98,8 +106,8 @@ export const FetchTitle = async ({titleData}: {titleData: Title}) => {
 }
 
 export const FetchTitleAuthor = async ({titleAuthorData}: {titleAuthorData: TitleAuthor}) => {
-  if(titleAuthorData) {
-    axios.post(`https://book-keeper-server.herokuapp.com/${titleAuthorData.path}`, {
+  if(titleAuthorData !== undefined) {
+    return await axios.post(`https://book-keeper-server.herokuapp.com/${titleAuthorData.path}`, {
       "title": `${titleAuthorData.title}`,
       "author": `${titleAuthorData.author}`
     })
@@ -112,6 +120,6 @@ export const FetchTitleAuthor = async ({titleAuthorData}: {titleAuthorData: Titl
         return mapData(response.data);
       }
     })
-    .catch(err => {console.log(err)})
+    .catch(err => console.log(err))
   }
 }

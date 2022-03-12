@@ -1,53 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import MyText from './MyText';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+//redux imports
+import { useReduxSelector } from '../store';
 
 interface Props {
-  tab: string;
-  firstButtonText?: string;
-  firstButton?: React.ReactFragment;
-  secondButtonText?: string;
-  secondButton?: React.ReactFragment;
+  buttonText?: string;
+  button?: React.ReactFragment;
 };
 
-export const TopBar: React.FC<Props> = ({
-  tab,
-  firstButtonText,
-  firstButton,
-  secondButtonText,
-  secondButton,
-}) => {
+export const TopBar: React.FC<Props> = ({button, buttonText}) => {
+  const selected = useReduxSelector(state => state.selected);
 
   return (
     <View style={styles.navBar}>
-      <Text style={styles.NavTitle}>
-        {tab}
-      </Text>
+      <View style={styles.titleContainer}>
+        <View style={styles.icon}>
+          <MaterialCommunityIcons name="book-open-page-variant" size={32} color="white" />
+        </View>
+        <MyText text="      Book" size={24} style={styles.NavTitle} />
+        <MyText text="Keeper" size={24} style={[styles.NavTitle, styles.italics]} />
+      </View>
+
+      {buttonText && 
+        <>
+        
+        </>
+      }
       <View style={styles.buttonContainer}>
-        {firstButtonText &&
-        <View style={styles.buttonTextContainer}>
-          { firstButtonText && 
-          <Text style={styles.buttonText}>
-            {firstButtonText}
-          </Text> }
-        </View>
-        }
-        {firstButton &&
-        <View style={styles.firstButton}>
-          { firstButton && firstButton}   
-        </View>
-        }
-        {secondButtonText &&
-        <View style={styles.buttonTextContainer}>
-          { secondButtonText && 
-          <Text style={styles.buttonText}>
-            {secondButtonText}
-          </Text> }
-        </View>
-        }
-        {secondButton &&
-        <View style={styles.secondButton}>
-          { secondButton && secondButton}   
-        </View>
+        {button &&
+          <View style={styles.button}>
+            {button}   
+          </View>
         }
       </View>
     </View>
@@ -61,7 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-    backgroundColor: '#149dff',
+    backgroundColor: '#4b59f5',
     paddingTop: 50,
     paddingBottom: 10,
     width: '100%',
@@ -70,11 +55,24 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
   },
+  icon: {
+    marginLeft: -15,
+    position: 'relative',
+    bottom: 4,
+    left: 32,
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+  },
   NavTitle: {
     color: 'white',
-    fontSize: 24,
-    width: '50%',
-    paddingLeft: 16,
+    textDecorationLine: 'underline',
+  },
+  italics: {
+    fontStyle: 'italic',
   },
   buttonContainer: {
     position: 'absolute',
@@ -92,11 +90,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
   },
-  firstButton: {
-    marginLeft: 10,
-  },
-  secondButton: {
-    marginLeft: 10,
-    marginRight: 16,
+  button: {
+    position: 'relative',
+    top: 12,
+    right: 10,
   },
 });

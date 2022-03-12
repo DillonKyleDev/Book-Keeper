@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, StyleSheet, BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { BookList } from './BookList';
-import { FetchIsbn } from './FetchBooks';
-import { ISBN } from './FetchBooks';
+import { ISBN, FetchIsbn } from './FetchBooks';
+import MyText from './MyText';
 //redux
+import { useReduxDispatch } from '../store';
+import { setSelected } from '../store/selectedBook/selectedSlice';
 import { Book } from '../store/books/bookSlice';
-import ShowSingleBook from './ShowSingleBook';
 
+interface Props {
+  closeScanner: () => void;
+}
 
-const BarcodeScan: React.FC = () => {
+const BarcodeScan: React.FC<Props> = ({closeScanner}) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
-  const [scanResults, setScanResults] = useState<Book[]>([]);
-  const [ bookNotFound, setBookNotFound ] = useState(false);
+  const dispatch = useReduxDispatch();
+  const bookNotFound: Book = {
+    title: "Book Not Found",
+    authors: [''],
+    genres: [''],
+    description: '',
+    rating: 0,
+    pages: 0,
+    imageUrl: '',
+    link: '',
+  }
 
   useEffect(() => {
     (async () => {
@@ -22,52 +35,60 @@ const BarcodeScan: React.FC = () => {
     })();
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        closeScanner();
+        return true;
+      }
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+
   const handleBarCodeScanned = async ({ type, data } : { type:string, data:string}) => {
     setScanned(true);
     const isbnData:ISBN = {path: "ISBN", isbn: data};
     const response = await FetchIsbn({isbnData: isbnData});
     if(response[0].title) {
-      setScanResults(response);
+      dispatch(setSelected(response[0]))
+      closeScanner();
     } else {
-      setBookNotFound(true);
+      dispatch(setSelected(bookNotFound));
+      closeScanner();
     }
-    
   };
 
   if (hasPermission === null) {
-    return <Text style={[styles.centerText, styles.font16, styles.paddingTop16]}>...Requesting camera permission...</Text>;
+    return <MyText size={16} text="...Requesting camera permission..." style={[styles.centerText, styles.font16, styles.paddingTop16]} />;
   }
   if (hasPermission === false) {
-    return <Text style={[styles.centerText, styles.font16, styles.paddingTop16, styles.underLine]}>Can't scan... No access to camera</Text>;
+    return <MyText size={16} text="Can't scan... No access to camera" style={[styles.centerText, styles.font16, styles.paddingTop16, styles.underLine]} />;
   }
 
   return (
     <View style={{width: '100%', height: '100%'}}>
-      {scanned ? <ShowSingleBook book={scanResults[0]} bookNotFound={bookNotFound}/> :
-        <>
-          <View style={styles.warningContainer}>
-            <Text style={[styles.centerText, styles.font20]}>
-              Please make sure you are in a well-lit area.
-            </Text>
-            <Text style={styles.font16}>
-              Tips:
-            </Text>
-            <Text style={styles.font12}>
-              If it does not scan, stop scanning and start scanning again.
-            </Text>
-            <Text style={styles.font16}>Please Note:</Text>
-            <Text style={styles.font12}>
-              Not all book barcodes may work with this scanner. If you are having trouble, try searching by author name and/or title.
-            </Text> 
-          </View>
-          <View style={{width: '100%', height: '100%'}}>
-            <BarCodeScanner
-              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-              style={styles.scannerStyle}
-            />
-          </View>
-        </>
-      }
+      {/* <View style={styles.warningContainer}>
+        <MyText size={20} text="Please make sure you are in a well-lit area." style={[styles.centerText, styles.font20, styles.highlight]} />
+          
+        <View style={styles.maxContent}>
+          <MyText text="Tips:" size={16} style={[styles.font16, styles.highlight]} />
+           
+        </View>
+        <MyText text="If it does not scan, stop scanning and start scanning again." size={12} style={styles.font12} />
+          
+        <View style={styles.maxContent}>
+          <MyText text="Please Note:" size={16} style={[styles.font16, styles.highlight]} />
+        </View>
+        <MyText text="Not all book barcodes may work with this scanner. If you are having trouble, try searching by author name and/or title." size={12} style={styles.font12} />
+          
+      </View> */}
+      {/* <View style={{width: '100%', height: '100%'}}> */}
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={styles.scannerStyle}
+        />
+      {/* </View> */}
     </View>
   );
 }
@@ -89,6 +110,9 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     marginBottom: '2%',
     backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: 'black',
+    shadowOffset: {width: 6, height: 10},
   },
   underLine: {
     textDecorationColor: 'black',
@@ -103,6 +127,16 @@ const styles = StyleSheet.create({
   },
   font20: {
     fontSize: 20,
+  },
+  highlight: {
+    // backgroundColor: '#fff678',
+    // borderRadius: 10,
+    // padding: 5,
+    // marginBottom: 5,
+  },
+  maxContent: {
+    display: 'flex',
+    alignSelf: 'flex-start',
   },
   paddingTop16: {
     paddingTop: 16

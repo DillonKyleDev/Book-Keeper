@@ -10,7 +10,7 @@ export interface Book {
   imageUrl: string;
   pages: number;
   link: string;
-  rating: number,
+  rating: number;
 }
 
 const bookSlice = createSlice({

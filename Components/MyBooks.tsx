@@ -1,50 +1,57 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { View, StyleSheet, TextInput } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { TopBar } from './TopBar';
 import { Button } from 'react-native-elements';
-import BarcodeScan from './BarcodeScan';
-import { BookList } from './BookList';
+import BookList from './BookList';
+import ShowSingleBook from './ShowSingleBook';
+import SearchInputs from './SearchInputs';
+import SectionHeader from './SectionHeader';
+import AddBookScreen from './AddBookScreen';
 //redux imports
-import { useReduxDispatch, useReduxSelector } from '../store';
-import { setBooks, addBook, removeBook, resetBooks } from '../store/books/bookSlice'
+import { useReduxSelector, useReduxDispatch } from '../store';
+import { resetSelected } from '../store/selectedBook/selectedSlice';
+import MyText from './MyText';
+
 
 export const MyBooks: React.FC = () => {
-  const [ borderColor, setBorderColor ] = useState('#f3f3f3');
-  const [ showScanner, setShowScanner ] = useState(false);
+
+  const [ showAddMenu, setShowAddMenu ] = useState(false);
   //store
   const books = useReduxSelector(state => state.books);
+  const selected = useReduxSelector(state => state.selected);
+  const dispatch = useReduxDispatch();
 
-  const openScannerButton =
+  const searchBar = 
   <>
-    <Button 
-      buttonStyle={{
-        backgroundColor: '#f3f3f3',
-        borderColor: borderColor,
-        borderWidth: 2,
-      }}
-      onPress={() => openScanner()}
-      icon={<MaterialCommunityIcons name="barcode-scan" size={24} color="black" />}
-    />
-  </>
-  const closeScannerButton =
-  <>
-    <Button 
-      buttonStyle={{
-        backgroundColor: '#f3f3f3',
-        borderColor: "#ff5757",
-        padding: 10,
-        borderRadius: 40,
-      }}
-      onPress={() => closeScanner()}
-      icon={<Entypo name="controller-stop" size={24} color="red" />}
-    />
+    <View style={{display: 'flex', flexDirection: 'row', height: 50, flexWrap: 'nowrap', width: 200, position: 'relative', top: 10, right: 100}}>
+      <View style={{
+        position: 'relative',
+        zIndex: 5,
+        left: 110,
+        top: 5,
+        height: 40
+      }}>
+        <AntDesign name="search1" size={24} color="black" />
+      </View>
+      <TextInput style={{
+        backgroundColor: 'white', 
+        height: 35,
+        width: 120, 
+        borderRadius: 50,
+        paddingLeft: 12,
+        paddingRight: 35,
+        zIndex: 4,
+        position: 'relative'
+        }}
+      onFocus={() => {}}/>
+    </View>
   </>
 
-  const searchButton = 
+  const goBackButton = 
   <>
+    
     <Button 
       buttonStyle={{
         backgroundColor: 'none',
@@ -52,29 +59,56 @@ export const MyBooks: React.FC = () => {
         borderWidth: 2,
         paddingBottom: 6,
       }}
-      onPress={() => closeScanner()}
-      icon={<AntDesign name="search1" size={24} color="black" />}
+      titleStyle={{
+        fontFamily: 'serif'
+      }}
+      title=" Go Back"
+      onPress={() => {
+        dispatch(resetSelected())
+      }}
+      icon={<Ionicons name="arrow-back" size={24} color="white" />}
     />
   </>
-  
-  const openScanner = () => {
-    setShowScanner(true);
-  };
 
-  const closeScanner = () => {
-    setShowScanner(false);
-  };
+  const plusButton = 
+  <>
+    <Button
+      onPress={() => setShowAddMenu(previous => !previous)}
+      buttonStyle={{backgroundColor: 'transparent', padding: 0, marginRight: 20}}
+      icon={<AntDesign name="pluscircle" size={35} color="#4b59f5" />} 
+    />
+  </>
 
   return (
     <View>
-      <TopBar 
-      tab="My Books" 
-      firstButtonText={showScanner ? "Stop Scanning" : "Scan Books"} 
-      firstButton={showScanner ? closeScannerButton : openScannerButton}
-      secondButton={searchButton} />
-      <View>
-        {showScanner ? <BarcodeScan /> : <BookList books={books}/> }
-      </View>
+      {selected.title !== '' || showAddMenu ? 
+        <TopBar button={goBackButton} />
+      :
+        <TopBar button={searchBar} />
+      }
+      
+      { showAddMenu ? <AddBookScreen />
+      :
+        <View>
+          {selected.title !== '' ?
+          <>
+            <ShowSingleBook bookNotFound={selected.title === 'Book Not Found'}/>
+          </>
+          :
+          <>
+            <View style={styles.sectionHeader}>
+              <SectionHeader title="My Library" button={plusButton} />
+            </View>
+            <BookList books={books}/>
+          </>}
+        </View>
+      } 
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  sectionHeader: {
+
+  },
+})
