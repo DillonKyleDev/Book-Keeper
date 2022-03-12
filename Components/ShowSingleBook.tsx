@@ -165,7 +165,7 @@ export default ShowSingleBook
 const styles = StyleSheet.create({
   scrollContainer: {
     position: 'relative',
-    marginBottom: 190,
+    marginBottom: 170,
   },
   bookCard: {
     backgroundColor: 'white',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     overflow: 'hidden',
-    paddingBottom: 20,
+    paddingBottom: 60,
   },
   bookImage: {
     width: "75%",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Pressable, Linking } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import { Book } from '../store/books/bookSlice';
 import MyText from './MyText';
@@ -19,7 +19,7 @@ const BookList: React.FC<Props> = ({books}) => {
       {books.length > 0 && books.map((book, index) => {
         if(book) {
         return (
-        <Pressable onPress={() => dispatch(setSelected(book))} key={`${index} ${book.title}`} style={styles.bookCard}>
+        <Pressable  onPress={() => dispatch(setSelected(book))} key={`${index} ${book.title}`} style={styles.bookCard}>
           {book.imageUrl !== '' ? 
           <View style={[styles.flexCenter, styles.margin]}>
             <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>
@@ -46,12 +46,11 @@ const BookList: React.FC<Props> = ({books}) => {
                 <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={12} />
               ))}
             </View>
-     
+    
             <View style={{display: 'flex', flexDirection: 'row'}}>
               <MyText text="Pages:" size={12} style={styles.sectionText} /><MyText text={`  ${book.pages}`} size={12} />
             </View>
           </View>
-
         </Pressable>
       )}})}
     </ScrollView>
@@ -66,9 +65,6 @@ const styles = StyleSheet.create({
     marginBottom: 190,
     zIndex: 1,
   },
-  singleContainer: {
-    marginBottom: -190,
-  },
   bookCard: {
     backgroundColor: 'white',
     borderRadius: 10,
@@ -78,6 +74,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: 'row',
     overflow: 'hidden',
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 40,
+    shadowOpacity: 0.8,
+    elevation: 3,
   },
   bookImage: {
     width: 50,

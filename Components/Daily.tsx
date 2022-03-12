@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import SectionHeader from './SectionHeader';
-import { TopBar } from './TopBar';
+import TopBar from './TopBar';
 
 const Daily: React.FC = () => {
 

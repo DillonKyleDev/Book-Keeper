@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
   title: string;
-  button: React.ReactFragment;
+  button?: React.ReactFragment;
 }
 
 const SectionHeader: React.FC<Props> = ({title, button}) => {

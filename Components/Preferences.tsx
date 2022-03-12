@@ -1,17 +1,15 @@
 import React from 'react';
-import { 
-  Text, 
-  View, 
-  StyleSheet, 
-  Button, 
-  TextInput,
-} from 'react-native';
-import { TopBar } from './TopBar';
+import { View } from 'react-native';
+import SectionHeader from './SectionHeader';
+import TopBar from './TopBar';
 
-export const Preferences: React.FC = () => {
+const Preferences: React.FC = () => {
   return (
     <View>
-      <TopBar tab="Preferences"/>
+      <TopBar />
+      <SectionHeader title="Preferences" />
     </View>
   )
 }
+
+export default Preferences

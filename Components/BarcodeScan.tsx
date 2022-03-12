@@ -60,35 +60,18 @@ const BarcodeScan: React.FC<Props> = ({closeScanner}) => {
   };
 
   if (hasPermission === null) {
-    return <MyText size={16} text="...Requesting camera permission..." style={[styles.centerText, styles.font16, styles.paddingTop16]} />;
+    return <MyText size={16} text="...Requesting camera permission..." style={[styles.centerText, styles.font16, styles.paddingTop16, styles.marginTop]} />;
   }
   if (hasPermission === false) {
-    return <MyText size={16} text="Can't scan... No access to camera" style={[styles.centerText, styles.font16, styles.paddingTop16, styles.underLine]} />;
+    return <MyText size={16} text="Can't scan... No access to camera" style={[styles.centerText, styles.font16, styles.paddingTop16, styles.underLine, styles.marginTop]} />;
   }
 
   return (
     <View style={{width: '100%', height: '100%'}}>
-      {/* <View style={styles.warningContainer}>
-        <MyText size={20} text="Please make sure you are in a well-lit area." style={[styles.centerText, styles.font20, styles.highlight]} />
-          
-        <View style={styles.maxContent}>
-          <MyText text="Tips:" size={16} style={[styles.font16, styles.highlight]} />
-           
-        </View>
-        <MyText text="If it does not scan, stop scanning and start scanning again." size={12} style={styles.font12} />
-          
-        <View style={styles.maxContent}>
-          <MyText text="Please Note:" size={16} style={[styles.font16, styles.highlight]} />
-        </View>
-        <MyText text="Not all book barcodes may work with this scanner. If you are having trouble, try searching by author name and/or title." size={12} style={styles.font12} />
-          
-      </View> */}
-      {/* <View style={{width: '100%', height: '100%'}}> */}
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={styles.scannerStyle}
-        />
-      {/* </View> */}
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={styles.scannerStyle}
+      />
     </View>
   );
 }
@@ -98,7 +81,7 @@ export default BarcodeScan;
 const styles = StyleSheet.create({
   scannerStyle: {
     position: 'absolute',
-    top: -360,
+    top: -50,
     left: '3%',
     bottom: 0,
     right: '3%',
@@ -128,11 +111,8 @@ const styles = StyleSheet.create({
   font20: {
     fontSize: 20,
   },
-  highlight: {
-    // backgroundColor: '#fff678',
-    // borderRadius: 10,
-    // padding: 5,
-    // marginBottom: 5,
+  marginTop: {
+    marginTop: 70,
   },
   maxContent: {
     display: 'flex',
