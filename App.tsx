@@ -3,16 +3,24 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 //Redux
 import { useReduxSelector } from './store';
-//Components
+//Library tab imports
 import Library from './Components/Library';
-import Daily from './Components/Daily';
-import Preferences from './Components/Preferences';
 import AddBook from './Components/AddBook';
+import BarcodeScan from './Components/BarcodeScan';
+import FindBook from './Components/FindBook';
+import ShowSingleBook from './Components/ShowSingleBook';
+//Daily tab imports
+import Daily from './Components/Daily';
+//Preferences tab imports
+import Preferences from './Components/Preferences';
+
 //Navigator
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import BookList from './Components/BookList';
+
+
 const LibraryStack = createNativeStackNavigator();
 const DailyStack = createNativeStackNavigator();
 const PreferencesStack = createNativeStackNavigator();
@@ -23,6 +31,11 @@ const LibraryStackScreen = () => {
     <LibraryStack.Navigator screenOptions={{headerShown: false}}>
       <LibraryStack.Screen name="LibraryTab" component={Library} />
       <LibraryStack.Screen name="AddBookTab" component={AddBook} />
+      <LibraryStack.Screen name="ScanBookTab" component={BarcodeScan} />
+      <LibraryStack.Screen name="FindTitleTab" component={FindBook} />
+      <LibraryStack.Screen name="FindAuthorTab" component={FindBook} />
+      <LibraryStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
+      <LibraryStack.Screen name="BookListTab" component={BookList} />
     </LibraryStack.Navigator>
   )
 }
@@ -78,13 +91,6 @@ export default function App() {
           component={PreferencesStackScreen} 
         />
       </Tab.Navigator>
-
-      {/* <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
-        <Stack.Screen name='Home'>
-          {(props) => <Tabs {...props}/>}
-        </Stack.Screen>
-        <Stack.Screen name='SplashScreen' component={SplashScreen} />
-      </Stack.Navigator> */}
     </NavigationContainer>
   );
 }

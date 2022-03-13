@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import TopBar from './TopBar';
 import { Button } from 'react-native-elements';
 import BookList from './BookList';
-import ShowSingleBook from './ShowSingleBook';
 import SectionHeader from './SectionHeader';
-import AddBookScreen from './AddBook';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { NavigatorScreenParams } from '@react-navigation/native';
+//Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-//redux imports
+//Redux
 import { useReduxSelector, useReduxDispatch } from '../store';
 
 interface Props {
@@ -65,7 +61,7 @@ const Library: React.FC<Props> = ({navigation}) => {
           <View>
             <SectionHeader title="My Library" button={plusButton} />
           </View>
-          <BookList books={books}/>
+          <BookList books={books} navigation={navigation}/>
         </View>
     </View>
   )

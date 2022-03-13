@@ -5,12 +5,15 @@ import { Book } from '../store/books/bookSlice';
 import MyText from './MyText';
 import { useReduxDispatch } from '../store';
 import { setSelected } from '../store/selectedBook/selectedSlice';
+//Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Props {
-  books: Book[],
+  books: Book[];
+  navigation: NativeStackNavigationProp<any>;
 }
 
-const BookList: React.FC<Props> = ({books}) => {
+const BookList: React.FC<Props> = ({books, navigation}) => {
   //redux selected
   const dispatch = useReduxDispatch();
 
@@ -19,7 +22,10 @@ const BookList: React.FC<Props> = ({books}) => {
       {books.length > 0 && books.map((book, index) => {
         if(book) {
         return (
-        <Pressable  onPress={() => dispatch(setSelected(book))} key={`${index} ${book.title}`} style={styles.bookCard}>
+        <Pressable  onPress={() => {
+            dispatch(setSelected(book));
+            navigation.navigate('ShowSingleBookTab')
+          }} key={`${index} ${book.title}`} style={styles.bookCard}>
           {book.imageUrl !== '' ? 
           <View style={[styles.flexCenter, styles.margin]}>
             <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>

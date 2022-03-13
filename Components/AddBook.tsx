@@ -1,26 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import BarcodeScan from './BarcodeScan';
-import TopBar from './TopBar';
 import { Ionicons } from '@expo/vector-icons';
-//Redux
-import { useReduxSelector } from '../store';
-import ShowSingleBook from './ShowSingleBook';
+import TopBar from './TopBar';
+//Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const AddBook: React.FC = () => {
-  const [ showScanner, setShowScanner ] = useState(false);
-  const [ openSearchBar, setOpenSearchBar ] = useState(false);
-  //Redux
-  const selected = useReduxSelector(state => state.selected);
+interface Props {
+  navigation: NativeStackNavigationProp<any>;
+}
 
-  const openScanner = () => {
-    setShowScanner(true);
-  };
-
-  const closeScanner = () => {
-    setShowScanner(false);
-  };
+const AddBook: React.FC<Props> = ({navigation}) => {
 
   const goBackButton = 
   <>
@@ -44,34 +34,20 @@ const AddBook: React.FC = () => {
     <View>
       <TopBar />
       <View style={styles.addBookContainer}>
-     
-            {/* <View style={styles.scannerContainer}>
-              <View style={styles.buttonStyles}>
-                <Button 
-                  title="Enter new book manually"
-                  titleStyle={{fontFamily: 'serif'}}
-                  buttonStyle={{backgroundColor: '#4b59f5', width: 275, marginLeft: 'auto', marginRight: 'auto', height: 60, paddingLeft: 20, paddingRight: 20}}
-                  onPress={() => {}}/>
-              </View>
-              <View style={styles.scanner}>
-                {selected.title === '' && showScanner && <BarcodeScan closeScanner={() => closeScanner()}/> }
-              </View>
-            </View> */}
-  
         <View style={styles.buttonContainer}>
           <View style={styles.buttonStyles}>
             <Button 
               title="Scan new book"
               titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={{backgroundColor: '#4b59f5', width: 275, marginLeft: 'auto', marginRight: 'auto', height: 60, paddingLeft: 20, paddingRight: 20}}
-              onPress={() => openScanner()}/>
+              buttonStyle={styles.button}
+              onPress={() => navigation.navigate("ScanBookTab")}/>
           </View>
           <View style={styles.buttonStyles}>
             <Button 
               title="Enter new book manually"
               titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={{backgroundColor: '#4b59f5', width: 275, marginLeft: 'auto', marginRight: 'auto', height: 60, paddingLeft: 20, paddingRight: 20}}
-              onPress={() => setOpenSearchBar(true)}/>
+              buttonStyle={styles.button}
+              onPress={() => navigation.navigate("FindTitleTab")}/>
           </View>
         </View>
       </View>
@@ -106,6 +82,15 @@ const styles = StyleSheet.create({
     top: -90,
   },
   buttonStyles: {
-    margin: 15
+    margin: 15,
+  },
+  button: {
+    backgroundColor: '#4b59f5',
+    width: 275, 
+    marginLeft: 'auto', 
+    marginRight: 'auto', 
+    height: 60, 
+    paddingLeft: 20, 
+    paddingRight: 20
   },
 })

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, BackHandler } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { ISBN, FetchIsbn } from './FetchBooks';
 import MyText from './MyText';
@@ -8,12 +8,15 @@ import MyText from './MyText';
 import { useReduxDispatch } from '../store';
 import { setSelected } from '../store/selectedBook/selectedSlice';
 import { Book } from '../store/books/bookSlice';
+import TopBar from './TopBar';
+//Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Props {
-  closeScanner: () => void;
+  navigation: NativeStackNavigationProp<any>;
 }
 
-const BarcodeScan: React.FC<Props> = ({closeScanner}) => {
+const BarcodeScan: React.FC<Props> = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const dispatch = useReduxDispatch();
@@ -35,43 +38,44 @@ const BarcodeScan: React.FC<Props> = ({closeScanner}) => {
     })();
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      const onBackPress = () => {
-        closeScanner();
-        return true;
-      }
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [])
-  );
-
   const handleBarCodeScanned = async ({ type, data } : { type:string, data:string}) => {
     setScanned(true);
     const isbnData:ISBN = {path: "ISBN", isbn: data};
     const response = await FetchIsbn({isbnData: isbnData});
     if(response[0].title) {
-      dispatch(setSelected(response[0]))
-      closeScanner();
+      dispatch(setSelected(response[0]));
+      navigation.navigate("ShowSingleBookTab");
     } else {
       dispatch(setSelected(bookNotFound));
-      closeScanner();
+      navigation.navigate("ShowSingleBookTab");
     }
   };
 
   if (hasPermission === null) {
-    return <MyText size={16} text="...Requesting camera permission..." style={[styles.centerText, styles.font16, styles.paddingTop16, styles.marginTop]} />;
+    return <MyText size={16} text="...Requesting camera permission..." style={styles.text} />;
   }
   if (hasPermission === false) {
-    return <MyText size={16} text="Can't scan... No access to camera" style={[styles.centerText, styles.font16, styles.paddingTop16, styles.underLine, styles.marginTop]} />;
+    return <MyText size={16} text="Can't scan... No access to camera" style={styles.text} />;
   }
 
   return (
     <View style={{width: '100%', height: '100%'}}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={styles.scannerStyle}
-      />
+      <TopBar />
+        <View style={{margin: 15, marginBottom: -90}}>
+          <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
+          <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
+          <Button 
+            title="Enter new book manually"
+            titleStyle={{fontFamily: 'serif'}}
+            buttonStyle={{backgroundColor: '#4b59f5', width: 275, marginLeft: 'auto', marginRight: 'auto', height: 60, paddingLeft: 20, paddingRight: 20}}
+            onPress={() => navigation.navigate("FindTitleTab")}/>
+        </View>
+      <View style={{width: '100%', height: '100%'}}>
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={styles.scannerStyle}
+        />
+      </View>
     </View>
   );
 }
@@ -81,51 +85,17 @@ export default BarcodeScan;
 const styles = StyleSheet.create({
   scannerStyle: {
     position: 'absolute',
-    top: -50,
-    left: '3%',
+    width: 450,
+    top: 50,
     bottom: 0,
-    right: '3%',
-  },
-  warningContainer: {
-    padding: '3%',
-    marginLeft: '3%',
-    marginRight: '3%',
-    marginTop: '2%',
-    marginBottom: '2%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    shadowOffset: {width: 6, height: 10},
-  },
-  underLine: {
-    textDecorationColor: 'black',
-    textDecorationStyle: 'solid',
-    textDecorationLine: 'underline',
-  },
-  font12: {
-    fontSize: 12,
-  },
-  font16: {
-    fontSize: 16,
-  },
-  font20: {
-    fontSize: 20,
   },
   marginTop: {
     marginTop: 70,
   },
-  maxContent: {
-    display: 'flex',
-    alignSelf: 'flex-start',
-  },
-  paddingTop16: {
-    paddingTop: 16
-  },
   centerText: {
     textAlign: 'center',
   },
-  scannerContainer: {
-    marginLeft: '2%',
-    marginRight: '2%',
+  text: {
+
   },
 });
