@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Linking } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { View, Text, StyleSheet, Image, ScrollView, Linking, BackHandler } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,12 +9,16 @@ import { addBook, removeBook } from '../store/books/bookSlice';
 import { resetSelected } from '../store/selectedBook/selectedSlice';
 import { useReduxDispatch, useReduxSelector } from '../store';
 import TopBar from './TopBar';
+//Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Props {
   bookNotFound: boolean;
+  navigation: NativeStackNavigationProp<any, any>;
+  backTo: string;
 }
 
-const ShowSingleBook: React.FC<Props> = ({bookNotFound}) => {
+const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation, backTo}) => {
   const [ stars, setStars ] = useState<any>([]);
   const [ bookSaved, setBookSaved ] = useState(false);
   //redux persist
@@ -21,6 +26,17 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound}) => {
   const books = useReduxSelector(state => state.books);
   const book = useReduxSelector(state => state.selected);
   
+  useEffect(() => {
+    const onBackPress = () => {
+      console.log("Hello")
+      navigation.navigate('FindTitleTab');
+      return true;
+    }
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return(BackHandler.removeEventListener('hardwareBackPress', onBackPress))
+  }, []);
+
   //Check if book is already in My Books section
   useEffect(() => {
     if(books && book && book.title) {
