@@ -4,18 +4,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
 import { TitleAuthor, Title, Author, FetchAuthor, FetchTitle, FetchTitleAuthor } from './FetchBooks';
 import { Book } from '../store/books/bookSlice';
-import BookList from './BookList';
 import TopBar from './TopBar';
 import MyText from './MyText';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Props {
-  closeSearchbar: () => void;
+  navigation: NativeStackNavigationProp<any, any>;
 }
 
-const FindBook: React.FC<Props> = ({closeSearchbar}) => {
+const FindBook: React.FC<Props> = ({navigation}) => {
   const [ author, setAuthor ] = useState('');
   const [ title, setTitle ] = useState('');
-  const [ searchResults, setSearchResults ] = useState<Book[] | void>([]);
+  const [ showAuthor, setShowAuthor ] = useState(false);
+  const [ searchResults, setSearchResults ] = useState<Book[]>([]);
 
   const handleSubmit = async () => {
     if(author !== '' && title !== '') {
@@ -27,6 +28,7 @@ const FindBook: React.FC<Props> = ({closeSearchbar}) => {
       const bookArray = await FetchTitleAuthor({titleAuthorData: titleAuthorData});
       console.log(bookArray);
       setSearchResults(bookArray);
+      navigation.navigate('BookListTab', {searchResults});
     }
   };
 
@@ -35,28 +37,43 @@ const FindBook: React.FC<Props> = ({closeSearchbar}) => {
       <TopBar />
         <SafeAreaView style={styles.flex}>
           <View style={styles.container}>
-            <MyText text='Enter book title' size={22} style={styles.searchText}/>
-            <TextInput
-              style={styles.inputs}
-              onChangeText={e => setTitle(e)}
-              value={title}
-              placeholder="title"
-            />
-            {/* <TextInput
-              style={styles.inputs}
-              onChangeText={e => setAuthor(e)}
-              value={author}
-              placeholder="by author"
-              
-            /> */}
-            <View style={styles.buttonContainer}>
-              <Button 
-                buttonStyle={styles.button}
-                title="Next"
-                titleStyle={{fontFamily: 'serif'}}
-                onPress={handleSubmit}
+            { !showAuthor ? 
+            <>
+              <MyText text='Enter book title' size={22} style={styles.searchText}/>
+              <TextInput
+                style={styles.inputs}
+                onChangeText={e => setTitle(e)}
+                value={title}
+                placeholder="title"
               />
-            </View>
+              <View style={styles.buttonContainer}>
+                <Button 
+                  buttonStyle={styles.button}
+                  title="Enter Author"
+                  titleStyle={{fontFamily: 'serif'}}
+                  onPress={() => setShowAuthor(true)}
+                />
+              </View>
+            </>
+            :
+            <>
+              <MyText text='Enter author name' size={22} style={styles.searchText}/>
+              <TextInput
+                style={styles.inputs}
+                onChangeText={e => setAuthor(e)}
+                value={author}
+                placeholder="author (optional)"
+              />
+              <View style={styles.buttonContainer}>
+                <Button 
+                  buttonStyle={styles.button}
+                  title="Find Book"
+                  titleStyle={{fontFamily: 'serif'}}
+                  onPress={handleSubmit}
+                />
+              </View>
+            </>
+            }
           </View>
         </SafeAreaView>
     </View>

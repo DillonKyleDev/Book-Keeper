@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Linking, BackHandler } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
@@ -15,27 +14,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 interface Props {
   bookNotFound: boolean;
   navigation: NativeStackNavigationProp<any, any>;
-  backTo: string;
 }
 
-const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation, backTo}) => {
+const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
   const [ stars, setStars ] = useState<any>([]);
   const [ bookSaved, setBookSaved ] = useState(false);
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
   const book = useReduxSelector(state => state.selected);
-  
-  useEffect(() => {
-    const onBackPress = () => {
-      console.log("Hello")
-      navigation.navigate('FindTitleTab');
-      return true;
-    }
-
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    return(BackHandler.removeEventListener('hardwareBackPress', onBackPress))
-  }, []);
 
   //Check if book is already in My Books section
   useEffect(() => {
@@ -172,7 +159,7 @@ export default ShowSingleBook
 const styles = StyleSheet.create({
   scrollContainer: {
     position: 'relative',
-    marginBottom: 170,
+    marginBottom: 90,
   },
   bookCard: {
     backgroundColor: 'white',

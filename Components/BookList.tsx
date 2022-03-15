@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import { Book } from '../store/books/bookSlice';
@@ -16,6 +16,10 @@ interface Props {
 const BookList: React.FC<Props> = ({books, navigation}) => {
   //redux selected
   const dispatch = useReduxDispatch();
+  //const [ bookList, setBookList ] = useState(route)
+  useEffect(() => {
+    
+  })  
 
   return (
     <ScrollView style={styles.scrollContainer}>

@@ -1,34 +1,20 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
 import TopBar from './TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+//Redux
+import { useReduxSelector, useReduxDispatch } from '../store';
+import { resetSelected } from '../store/selectedBook/selectedSlice';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
 }
 
 const AddBook: React.FC<Props> = ({navigation}) => {
-
-  const goBackButton = 
-  <>
-    <Button 
-      buttonStyle={{
-        backgroundColor: 'none',
-        borderColor: 'transparent',
-        borderWidth: 2,
-        paddingBottom: 6,
-      }}
-      titleStyle={{fontFamily: 'serif'}}
-      title=" Go Back"
-      onPress={() => {
-
-      }}
-      icon={<Ionicons name="arrow-back" size={24} color="white" />}
-    />
-  </>
+  const selected = useReduxSelector(state => state.selected);
+  const dispatch = useReduxDispatch();
 
   return (
     <View>
@@ -40,14 +26,20 @@ const AddBook: React.FC<Props> = ({navigation}) => {
               title="Scan new book"
               titleStyle={{fontFamily: 'serif'}}
               buttonStyle={styles.button}
-              onPress={() => navigation.navigate("ScanBookTab")}/>
+              onPress={() => {
+                dispatch(resetSelected());
+                navigation.navigate("ScanBookTab");
+              }}/>
           </View>
           <View style={styles.buttonStyles}>
             <Button 
               title="Enter new book manually"
               titleStyle={{fontFamily: 'serif'}}
               buttonStyle={styles.button}
-              onPress={() => navigation.navigate("FindTitleTab")}/>
+              onPress={() => {
+                dispatch(resetSelected());
+                navigation.navigate("FindTitleTab")
+              }}/>
           </View>
         </View>
       </View>

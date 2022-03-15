@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, TextInput } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import TopBar from './TopBar';
 import { Button } from 'react-native-elements';
@@ -9,6 +9,7 @@ import SectionHeader from './SectionHeader';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../store';
+import { resetSelected } from '../store/selectedBook/selectedSlice';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -48,7 +49,10 @@ const Library: React.FC<Props> = ({navigation}) => {
   const plusButton = 
   <>
     <Button
-      onPress={() => {navigation.navigate("AddBookTab")}}
+      onPress={() => {
+        dispatch(resetSelected());
+        navigation.navigate("AddBookTab")
+      }}
       buttonStyle={{backgroundColor: 'transparent', padding: 0, marginRight: 20}}
       icon={<AntDesign name="pluscircle" size={35} color="#4b59f5" />} 
     />
