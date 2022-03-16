@@ -4,21 +4,24 @@ import { Ionicons } from '@expo/vector-icons';
 //Redux
 import { useReduxSelector } from './store';
 //Library tab imports
-import Library from './Components/Library';
-import AddBook from './Components/AddBook';
+import Library from './Components/LibraryStack/Library';
+import AddBook from './Components/LibraryStack/AddBook';
 import BarcodeScan from './Components/BarcodeScan';
-import FindBook from './Components/FindBook';
+import FindBook from './Components/Helper/FindBook';
 import ShowSingleBook from './Components/ShowSingleBook';
+import BookList from './Components/BookList';
 //Daily tab imports
-import Daily from './Components/Daily';
+import Daily from './Components/DailyStack/Daily';
+import AddGoalBook from './Components/DailyStack/AddGoalBook';
+import LibraryList from './Components/DailyStack/LibraryList';
+import FinishBy from './Components/DailyStack/FinishBy';
 //Preferences tab imports
-import Preferences from './Components/Preferences';
+import Preferences from './Components/PreferencesStack/Preferences';
 
 //Navigator
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import BookList from './Components/BookList';
 
 
 const LibraryStack = createNativeStackNavigator();
@@ -32,8 +35,7 @@ const LibraryStackScreen = () => {
       <LibraryStack.Screen name="LibraryTab" component={Library} />
       <LibraryStack.Screen name="AddBookTab" component={AddBook} />
       <LibraryStack.Screen name="ScanBookTab" component={BarcodeScan} />
-      <LibraryStack.Screen name="FindTitleTab" component={FindBook} />
-      <LibraryStack.Screen name="FindAuthorTab" component={FindBook} />
+      <LibraryStack.Screen name="FindBookTab" component={FindBook} />
       <LibraryStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
       <LibraryStack.Screen name="BookListTab" component={BookList} />
     </LibraryStack.Navigator>
@@ -43,6 +45,13 @@ const DailyStackScreen = () => {
   return(
     <DailyStack.Navigator screenOptions={{headerShown: false}}>
       <DailyStack.Screen name="DailyTab" component={Daily} />
+      <DailyStack.Screen name="AddGoalBookTab" component={AddGoalBook} />
+      <DailyStack.Screen name="SetGoalTab" component={FinishBy} />
+      <DailyStack.Screen name="AddFromLibraryTab" component={LibraryList} />
+      <DailyStack.Screen name="ScanBookTab" component={BarcodeScan} />
+      <DailyStack.Screen name="FindBookTab" component={FindBook} />
+      <DailyStack.Screen name="FinishByTab" component={FinishBy} />
+      <DailyStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
     </DailyStack.Navigator>
   )
 }

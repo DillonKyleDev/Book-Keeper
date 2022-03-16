@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import SectionHeader from './SectionHeader';
-import TopBar from './TopBar';
+import SectionHeader from '../Helper/SectionHeader';
+import TopBar from '../Helper/TopBar';
 
 const Preferences: React.FC = () => {
   return (

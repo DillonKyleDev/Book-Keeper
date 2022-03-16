@@ -2,16 +2,24 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
-import SectionHeader from './SectionHeader';
-import TopBar from './TopBar';
+import SectionHeader from '../Helper/SectionHeader';
+import TopBar from '../Helper/TopBar';
+//Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const Daily: React.FC = () => {
+interface Props {
+  navigation: NativeStackNavigationProp<any, any>;
+};
+
+const Daily: React.FC<Props> = ({navigation}) => {
 
   const plusButton = 
     <>
       <Button
         buttonStyle={{backgroundColor: 'transparent', padding: 0, marginRight: 20}}
-        icon={<AntDesign name="pluscircle" size={35} color="#4b59f5" />} 
+        icon={<AntDesign name="pluscircle" size={35} 
+        color="#4b59f5"
+        onPress={() => navigation.push("AddGoalBookTab")} />} 
       />
     </>
 

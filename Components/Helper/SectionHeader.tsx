@@ -22,6 +22,7 @@ export default SectionHeader
 
 const styles = StyleSheet.create({
   headerContainer: {
+    minHeight: 56,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

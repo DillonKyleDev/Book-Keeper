@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import TopBar from './TopBar';
+import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
-import { useReduxSelector, useReduxDispatch } from '../store';
-import { resetSelected } from '../store/selectedBook/selectedSlice';
+import { useReduxSelector, useReduxDispatch } from '../../store';
+import { resetSelected } from '../../store/selectedBook/selectedSlice';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -28,7 +28,7 @@ const AddBook: React.FC<Props> = ({navigation}) => {
               buttonStyle={styles.button}
               onPress={() => {
                 dispatch(resetSelected());
-                navigation.navigate("ScanBookTab");
+                navigation.push("ScanBookTab");
               }}/>
           </View>
           <View style={styles.buttonStyles}>
@@ -38,7 +38,7 @@ const AddBook: React.FC<Props> = ({navigation}) => {
               buttonStyle={styles.button}
               onPress={() => {
                 dispatch(resetSelected());
-                navigation.navigate("FindTitleTab")
+                navigation.push("FindBookTab")
               }}/>
           </View>
         </View>

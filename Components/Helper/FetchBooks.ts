@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Book } from '../store/books/bookSlice';
+import { Book } from '../../store/books/bookSlice';
 
 export type ISBN = {
   path: string;

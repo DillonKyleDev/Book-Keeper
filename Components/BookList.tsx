@@ -1,64 +1,70 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
-import { Book } from '../store/books/bookSlice';
-import MyText from './MyText';
+import MyText from './Helper/MyText';
+//Redux
 import { useReduxDispatch } from '../store';
 import { setSelected } from '../store/selectedBook/selectedSlice';
+import { Book } from '../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Props {
   books: Book[];
   navigation: NativeStackNavigationProp<any>;
+  goTo: string;
+  containerStyle?: {} | {}[];
+  thumbnailStyle?: {} | {}[];
+  textStyle?: {} | {}[];
+  textSize?: number;
+  maxCharacters?: number
 }
 
-const BookList: React.FC<Props> = ({books, navigation}) => {
+const BookList: React.FC<Props> = ({books, navigation, goTo, containerStyle, thumbnailStyle, textStyle, textSize, maxCharacters}) => {
   //redux selected
   const dispatch = useReduxDispatch();
-  //const [ bookList, setBookList ] = useState(route)
-  useEffect(() => {
-    
-  })  
 
   return (
     <ScrollView style={styles.scrollContainer}>
-      {books.length > 0 && books.map((book, index) => {
+      {books && books.length > 0 && books.map((book, index) => {
         if(book) {
         return (
-        <Pressable  onPress={() => {
+        <Pressable
+          onPress={() => {
             dispatch(setSelected(book));
-            navigation.navigate('ShowSingleBookTab')
-          }} key={`${index} ${book.title}`} style={styles.bookCard}>
+            if(goTo !== "") {
+              navigation.push(goTo)
+            }
+          }} key={`${index} ${book.title}`} style={[styles.bookCard, containerStyle]}>
           {book.imageUrl !== '' ? 
           <View style={[styles.flexCenter, styles.margin]}>
-            <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>
+            <Image style={[styles.bookImage, thumbnailStyle]} source={{uri: book.imageUrl}}/>
           </View>
           :
-          <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
+          <View style={[styles.bookImage, styles.flexCenter, styles.margin, thumbnailStyle]}>
             <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
           </View>
           }
-          <View style={styles.bookInfo}>
+          <View style={[styles.bookInfo, textStyle]}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Title:" size={12} style={styles.sectionText} /><MyText text={`  ${book.title}`} size={12} />
+              <MyText text="Title:" size={textSize || 12} style={styles.sectionText} /><MyText text={`  "${book.title.slice(0, maxCharacters || 28)}${book.title.length > 27 && '...'}"`} size={textSize || 12} />
             </View>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Authors:" size={12} style={styles.sectionText} />
+              <MyText text="Authors:" size={textSize || 12} style={styles.sectionText} />
               {book.authors && book.authors.length > 0 && book.authors.map((author, index) => (
-                <MyText key={`${index} ${author}`} text={`  ${author}`} size={12} />
+                <MyText key={`${index} ${author}`} text={`  ${author}`} size={textSize || 12} />
               ))}
             </View>
 
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Genres:" size={12} style={styles.sectionText} />
+              <MyText text="Genres:" size={textSize || 12} style={styles.sectionText} />
               {book.genres && book.genres.length > 0 && book.genres.map((genre, index) => (
-                <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={12} />
+                <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={textSize || 12} />
               ))}
             </View>
     
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Pages:" size={12} style={styles.sectionText} /><MyText text={`  ${book.pages}`} size={12} />
+              <MyText text="Pages:" size={textSize || 12} style={styles.sectionText} /><MyText text={`  ${book.pages}`} size={textSize || 12} />
             </View>
           </View>
         </Pressable>
@@ -72,7 +78,7 @@ export default BookList
 const styles = StyleSheet.create({
   scrollContainer: {
     position: 'relative',
-    marginBottom: 190,
+    marginBottom: 290,
     zIndex: 1,
   },
   bookCard: {

@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, TextInput } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import TopBar from './TopBar';
+import TopBar from '../Helper/TopBar';
 import { Button } from 'react-native-elements';
-import BookList from './BookList';
-import SectionHeader from './SectionHeader';
+import BookList from '../BookList';
+import SectionHeader from '../Helper/SectionHeader';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
-import { useReduxSelector, useReduxDispatch } from '../store';
-import { resetSelected } from '../store/selectedBook/selectedSlice';
+import { useReduxSelector, useReduxDispatch } from '../../store';
+import { resetSelected } from '../../store/selectedBook/selectedSlice';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -51,7 +51,7 @@ const Library: React.FC<Props> = ({navigation}) => {
     <Button
       onPress={() => {
         dispatch(resetSelected());
-        navigation.navigate("AddBookTab")
+        navigation.push("AddBookTab")
       }}
       buttonStyle={{backgroundColor: 'transparent', padding: 0, marginRight: 20}}
       icon={<AntDesign name="pluscircle" size={35} color="#4b59f5" />} 
@@ -65,7 +65,7 @@ const Library: React.FC<Props> = ({navigation}) => {
           <View>
             <SectionHeader title="My Library" button={plusButton} />
           </View>
-          <BookList books={books} navigation={navigation}/>
+          <BookList books={books} navigation={navigation} goTo="ShowSingleBookTab"/>
         </View>
     </View>
   )

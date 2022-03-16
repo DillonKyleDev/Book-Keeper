@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Linking, BackHandler } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Linking, Animated, Easing } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 //redux
 import { addBook, removeBook } from '../store/books/bookSlice';
-import { resetSelected } from '../store/selectedBook/selectedSlice';
 import { useReduxDispatch, useReduxSelector } from '../store';
-import TopBar from './TopBar';
+import TopBar from './Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import MyText from './Helper/MyText';
 
 interface Props {
   bookNotFound: boolean;
@@ -70,9 +71,11 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
     <View>
       <TopBar />
       <ScrollView style={styles.scrollContainer}>
-        {book && book.title && !bookNotFound ? 
+        {book && book.title && !bookNotFound && book.title !== "Book Not Found"? 
         <>
           <View style={styles.bookCard}>
+
+            {bookSaved && <Entypo  style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />}
 
             {book.imageUrl !== '' ? 
             <View style={[styles.flexCenter, styles.margin]}>
@@ -85,18 +88,18 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
             }
 
             <View style={styles.buttonContainer}>
-              {!bookSaved ?
+              {bookSaved ?
+                <Button 
+                  buttonStyle={styles.addBookButton} 
+                  titleStyle={{fontFamily: 'serif'}}
+                  onPress={() => navigation.navigate("SetGoalTab")} 
+                  title="Set Reading Goal"/>
+              :
                 <Button 
                   buttonStyle={styles.addBookButton} 
                   titleStyle={{fontFamily: 'serif'}}
                   onPress={addBookToBooks} 
                   title="Add To Library"/>
-              :
-                <Button 
-                  buttonStyle={styles.addBookButton} 
-                  titleStyle={{fontFamily: 'serif'}}
-                  onPress={removeBookFromBooks} 
-                  title="Set Goal"/>
               }
             </View>
               
@@ -107,7 +110,7 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
             </View>
 
             <View style={styles.bookInfo}>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Rating:</Text>  {stars}</Text>
+              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Rating (Approx):</Text>  {stars}</Text>
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Authors:</Text>  {
                 book.authors && book.authors.length > 0 &&
@@ -131,7 +134,7 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
         </>
         :
         <>
-        { bookNotFound ?
+        { bookNotFound || book.title === "Book Not Found" ?
           <View style={styles.warningContainer}>
               <Text style={[styles.font20, styles.underLine, styles.centerText]}>Whoops!</Text>
               <View>
@@ -148,6 +151,20 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
           </>
         }
         </>
+        }
+        {bookSaved && 
+        <View style={styles.removeContainer}>
+          <View style={styles.buttonContainer}>
+            <Button 
+              buttonStyle={styles.addBookButton} 
+              titleStyle={{fontFamily: 'serif'}}
+              title="Remove from library" 
+              onPress={() => removeBookFromBooks()}/>
+          </View>
+          <MyText style={{textAlign: 'center'}} text="*WARNING*" size={10} />
+          <MyText style={{textAlign: 'center', textDecorationLine: 'underline'}} text="Removing from library will also remove any goals associated with this book." size={10} />
+          <MyText style={{textAlign: 'center'}} text="But you can always add them back." size={10} />
+        </View>
         }
       </ScrollView>
     </View>
@@ -175,9 +192,9 @@ const styles = StyleSheet.create({
   },
   bookImage: {
     width: "75%",
-    height: 300,
+    height: 200,
     resizeMode: 'contain',
-    backgroundColor: 'rgb(242,242,242)',
+
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 10,
@@ -225,7 +242,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginLeft: 'auto',
     marginRight: 'auto',
     paddingTop: 10,
@@ -260,5 +277,14 @@ const styles = StyleSheet.create({
   },
   centerText: {
     textAlign: 'center',
+  },
+  bookmarkIcon: {
+    position: 'absolute',
+    right: 10,
+    top: -10,
+  },
+  removeContainer: {
+    padding: 10,
+    backgroundColor: '#cacded',
   },
 })
