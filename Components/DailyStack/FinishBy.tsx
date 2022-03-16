@@ -16,7 +16,14 @@ interface Props {
 
 const FinishBy: React.FC<Props> = ({navigation}) => {
   const selected = useReduxSelector(state => state.selected);
-  
+  const cardStyle: {} = {
+    container: [{borderRadius: 0}, {padding: 5}, {width: "95%"}, {justifyContent: 'center'}, {marginLeft: 'auto'}, {marginRight: 'auto'}, {alignItems: 'center'}, {flexDirection: 'row'}],
+    thumbnail: [{height: 120}, {width: 80}],
+    text: [{height: 90}, {width: '65%'}, {margin: 0}, {padding: 0}, {display: 'flex'}, {justifyContent: 'space-between'}],
+    textSize: 14,
+    maxCharacters: 20,
+  }
+
   return (
     <View>
       <TopBar />
@@ -24,12 +31,8 @@ const FinishBy: React.FC<Props> = ({navigation}) => {
         <View style={{marginBottom: -290, paddingTop: 10}}>
           <BookList books={[selected]} 
           navigation={navigation} 
-          goTo="" 
-          containerStyle={[{borderRadius: 0}, {padding: 5}, {width: "95%"}, {justifyContent: 'center'}, {marginLeft: 'auto'}, {marginRight: 'auto'}, {alignItems: 'center'}, {flexDirection: 'row'}]}
-          thumbnailStyle={[{height: 120}, {width: 80}]}
-          textStyle={[{height: 90}, {width: '65%'}, {margin: 0}, {padding: 0}, {display: 'flex'}, {justifyContent: 'space-between'}]}
-          textSize={14}
-          maxCharacters={20}
+          goTo=""
+          cardStyle={cardStyle} 
           />
         </View>
         <View>

@@ -8,19 +8,26 @@ import { setSelected } from '../store/selectedBook/selectedSlice';
 import { Book } from '../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { fonts } from 'react-native-elements/dist/config';
 
 interface Props {
   books: Book[];
   navigation: NativeStackNavigationProp<any>;
   goTo: string;
-  containerStyle?: {} | {}[];
-  thumbnailStyle?: {} | {}[];
-  textStyle?: {} | {}[];
-  textSize?: number;
-  maxCharacters?: number
+  cardStyle?: {
+    card?: {} | {}[];
+    thumbnail?: {} | {}[];
+    text?: {} | {}[];
+    textSize?: number;
+    maxCharacters?: number;
+  }
 }
 
-const BookList: React.FC<Props> = ({books, navigation, goTo, containerStyle, thumbnailStyle, textStyle, textSize, maxCharacters}) => {
+const BookList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
+  let fontSize: number = 12;
+  if(cardStyle?.textSize) {
+    fontSize = cardStyle?.textSize;
+  }
   //redux selected
   const dispatch = useReduxDispatch();
 
@@ -35,36 +42,37 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, containerStyle, thu
             if(goTo !== "") {
               navigation.push(goTo)
             }
-          }} key={`${index} ${book.title}`} style={[styles.bookCard, containerStyle]}>
+          }} key={`${index} ${book.title}`} style={[styles.bookCard, cardStyle?.card]}>
           {book.imageUrl !== '' ? 
           <View style={[styles.flexCenter, styles.margin]}>
-            <Image style={[styles.bookImage, thumbnailStyle]} source={{uri: book.imageUrl}}/>
+            <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
           </View>
           :
-          <View style={[styles.bookImage, styles.flexCenter, styles.margin, thumbnailStyle]}>
+          <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
             <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
           </View>
           }
-          <View style={[styles.bookInfo, textStyle]}>
+          <View style={[styles.bookInfo, cardStyle?.text]}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Title:" size={textSize || 12} style={styles.sectionText} /><MyText text={`  "${book.title.slice(0, maxCharacters || 28)}${book.title.length > 27 && '...'}"`} size={textSize || 12} />
+              <MyText text="Title:" size={fontSize} style={styles.sectionText} />
+              <MyText text={`  "${book.title.slice(0, cardStyle?.maxCharacters || 28)}${book.title.length > 27 ? '...' : ''}"`} size={fontSize} />
             </View>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Authors:" size={textSize || 12} style={styles.sectionText} />
+              <MyText text="Authors:" size={fontSize} style={styles.sectionText} />
               {book.authors && book.authors.length > 0 && book.authors.map((author, index) => (
-                <MyText key={`${index} ${author}`} text={`  ${author}`} size={textSize || 12} />
+                <MyText key={`${index} ${author}`} text={`  ${author}`} size={fontSize} />
               ))}
             </View>
 
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Genres:" size={textSize || 12} style={styles.sectionText} />
+              <MyText text="Genres:" size={fontSize} style={styles.sectionText} />
               {book.genres && book.genres.length > 0 && book.genres.map((genre, index) => (
-                <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={textSize || 12} />
+                <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={fontSize} />
               ))}
             </View>
     
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Pages:" size={textSize || 12} style={styles.sectionText} /><MyText text={`  ${book.pages}`} size={textSize || 12} />
+              <MyText text="Pages:" size={fontSize} style={styles.sectionText} /><MyText text={`  ${book.pages}`} size={fontSize} />
             </View>
           </View>
         </Pressable>
