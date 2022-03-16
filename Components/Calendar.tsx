@@ -1,58 +1,54 @@
-import React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import {Calendar as NewCalendar, CalendarList, Agenda} from 'react-native-calendars';
 import { AntDesign } from '@expo/vector-icons'; 
 
-export const Calendar: React.FC = () => {
+interface Props {
+  setFinishBy: (finishedBy:Date | undefined) => void;
+}
+
+export const Calendar: React.FC<Props> = ({setFinishBy}) => {
+  const [ selectedDate, setSelectedDate ] = useState('');
+  const todaysDate:Date = new Date();
+  const dd:string = `${(todaysDate.getDate()).toString().padStart(2, '0')}`;
+  const mm:string = `${(todaysDate.getMonth() + 1).toString().padStart(2, '0')}`; //January is 0!
+  const yyyy:string = `${todaysDate.getFullYear()}`;
+  const today:string = yyyy + '-' + mm + '-' + dd;
+  
+
+  useEffect(() => {
+    if(selectedDate !== '') {
+      setFinishBy(new Date(selectedDate));
+    }
+  }, [ selectedDate, setSelectedDate ]);
+
   return (
     <View style={styles.container}>
       <NewCalendar
-        // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-        minDate={'2012-05-10'}
-        // Handler which gets executed on day press. Default = undefined
-        onDayPress={day => {
-          console.log('selected day', day);
+        style={{
+          height: 280,
+          margin: 0,
+          width: 320,
         }}
-        // Handler which gets executed on day long press. Default = undefined
-        onDayLongPress={day => {
-          console.log('selected day', day);
+        theme={calendarTheme}
+        markedDates={{
+          [selectedDate] : {selected: true, marked: true, selectedColor: '#4b59f5', textColor: 'white', color: 'white', dotColor: 'transparent', selectedTextColor: 'white'},
         }}
-        // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-        monthFormat={'MM - yyyy'}
-        // Handler which gets executed when visible month changes in calendar. Default = undefined
-        onMonthChange={month => {
-          console.log('month changed', month);
-        }}
-        // Hide month navigation arrows. Default = false
-        hideArrows={false}
-        // Do not show days of other months in month page. Default = false
-        hideExtraDays={false}
-        // If hideArrows = false and hideExtraDays = false do not switch month when tapping on greyed out
-        // day from another month that is visible in calendar page. Default = false
-        disableMonthChange={false}
-        // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday
+        minDate={today}
+        onDayPress={day => {setSelectedDate(day.dateString)}}
+        monthFormat={'MMMM - yyyy'}
+        onMonthChange={month => {}}
         firstDay={0}
-        // Hide day names. Default = false
-        hideDayNames={false}
-        // Handler which gets executed when press arrow icon left. It receive a callback can go back month
         onPressArrowLeft={subtractMonth => subtractMonth()}
-        // Handler which gets executed when press arrow icon right. It receive a callback can go next month
         onPressArrowRight={addMonth => addMonth()}
-        // Disable left arrow. Default = false
-        disableArrowLeft={false}
-        // Disable right arrow. Default = false
-        disableArrowRight={false}
         renderArrow={direction => {
           if(direction === 'left') {
-            return (<AntDesign name="caretleft" size={15} color="black" />)
+            return (<AntDesign name="caretleft" size={15} color="#4b59f5" />)
           } else {
-            return (<AntDesign name="caretright" size={15} color="black" />)
+            return (<AntDesign name="caretright" size={15} color="#4b59f5" />)
           }
         }}
-        // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
         disableAllTouchEventsForDisabledDays={false}
-        // Enable the option to swipe between months. Default = false
-        enableSwipeMonths={true}
       />
     </View>
   )
@@ -61,9 +57,39 @@ export const Calendar: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: 0,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    position: 'relative',
+    zIndex: 10,
   },
 });
+
+const calendarTheme:any = {
+  backgroundColor: '#ffffff',
+  calendarBackground: '#ffffff',
+  textSectionTitleColor: '#b6c1cd',
+  textSectionTitleDisabledColor: '#d9e1e8',
+  selectedDayBackgroundColor: 'black',
+  selectedDayTextColor: '#4b59f5',
+  todayTextColor: '#4b59f5',
+  dayTextColor: '#2d4150',
+  textDisabledColor: '#d9e1e8',
+  dotColor: '#00adf5',
+  selectedDotColor: 'black',
+  arrowColor: '#4b59f5',
+  disabledArrowColor: '#d9e1e8',
+  monthTextColor: '#4b59f5',
+  indicatorColor: '#4b59f5',
+  textDayFontFamily: 'serif',
+  textMonthFontFamily: 'serif',
+  textDayHeaderFontFamily: 'serif',
+  textDayFontWeight: '300',
+  textMonthFontWeight: 'bold',
+  textDayHeaderFontWeight: '300',
+  textDayFontSize: 14,
+  textMonthFontSize: 14,
+  textDayHeaderFontSize: 12,
+}

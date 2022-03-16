@@ -8,9 +8,12 @@ export interface Book {
   genres: string[];
   description: string;
   imageUrl: string;
-  pages: number;
   link: string;
   rating: number;
+  pagesRead: number;
+  pages: number;
+  finishOn: string;
+  readingDays: string[];
 }
 
 const bookSlice = createSlice({

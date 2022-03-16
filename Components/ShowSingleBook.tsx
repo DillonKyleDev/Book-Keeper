@@ -20,6 +20,7 @@ interface Props {
 const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
   const [ stars, setStars ] = useState<any>([]);
   const [ bookSaved, setBookSaved ] = useState(false);
+  const [ ratingUnavailable, setRatingUnavailable ] = useState(false);
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
@@ -38,14 +39,18 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
 
   useEffect(() => {
     let tempStars = [];
-    for(let i = 1; i < 6; i++) {
-      if(book && book.rating && book.rating >= i) {
-        tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="gold" />)
-      } else {
-        tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="grey" />)
+    if(book.rating) {
+      for(let i = 1; i < 6; i++) {
+        if(book && book.rating && book.rating >= i) {
+          tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="gold" />)
+        } else {
+          tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="grey" />)
+        }
       }
+      setStars(tempStars);
+    } else {
+      setRatingUnavailable(true);
     }
-    setStars(tempStars);
   }, [ book ]);
 
   const addBookToBooks = () => {
@@ -55,6 +60,7 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
       genres: book.genres,
       description: book.description,
       imageUrl: book.imageUrl,
+      pagesRead: 0,
       pages: book.pages,
       link: book.link,
       rating: book.rating,
@@ -103,14 +109,10 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
               }
             </View>
               
-            <View style={styles.linkContainer}>
-              <Text onPress={() =>
-                Linking.openURL(`${book.link}`)} style={styles.linkText}>See on Google Books
-              </Text>
-            </View>
-
             <View style={styles.bookInfo}>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Rating (Approx):</Text>  {stars}</Text>
+              <View style={{marginBottom: 15}}>
+                <Text style={{fontFamily: 'serif', textAlign: 'center',}}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : "No rating."}</Text>
+              </View>
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Authors:</Text>  {
                 book.authors && book.authors.length > 0 &&
@@ -129,6 +131,12 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
                 <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Description:</Text>  {book.description}</Text>
               </View>
             
+            </View>
+                        
+            <View style={styles.linkContainer}>
+              <Text onPress={() =>
+                Linking.openURL(`${book.link}`)} style={styles.linkText}>See on Google Books
+              </Text>
             </View>
           </View>
         </>
@@ -194,7 +202,6 @@ const styles = StyleSheet.create({
     width: "75%",
     height: 200,
     resizeMode: 'contain',
-
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 10,
@@ -218,14 +225,15 @@ const styles = StyleSheet.create({
     width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 10,
+    marginTop: 20,
   },
   sectionText: {
-    textDecorationLine: 'underline',
     color: '#636363',
     fontFamily: 'serif',
+    fontSize: 14,
   },
   linkContainer: {
+    marginTop: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
@@ -245,8 +253,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 'auto',
     marginRight: 'auto',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 20,
   },
   addBookButton: {
     width: 'auto',

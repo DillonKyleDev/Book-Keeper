@@ -8,7 +8,6 @@ import { setSelected } from '../store/selectedBook/selectedSlice';
 import { Book } from '../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { fonts } from 'react-native-elements/dist/config';
 
 interface Props {
   books: Book[];
@@ -27,6 +26,10 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
   let fontSize: number = 12;
   if(cardStyle?.textSize) {
     fontSize = cardStyle?.textSize;
+  }
+  let maxLetters: number = 28;
+  if(cardStyle?.maxCharacters) {
+    maxLetters = cardStyle?.maxCharacters;
   }
   //redux selected
   const dispatch = useReduxDispatch();
@@ -55,13 +58,15 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
           <View style={[styles.bookInfo, cardStyle?.text]}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
               <MyText text="Title:" size={fontSize} style={styles.sectionText} />
-              <MyText text={`  "${book.title.slice(0, cardStyle?.maxCharacters || 28)}${book.title.length > 27 ? '...' : ''}"`} size={fontSize} />
+              <MyText 
+                text={`  "${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}"`} 
+                size={fontSize} />
             </View>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Authors:" size={fontSize} style={styles.sectionText} />
-              {book.authors && book.authors.length > 0 && book.authors.map((author, index) => (
-                <MyText key={`${index} ${author}`} text={`  ${author}`} size={fontSize} />
-              ))}
+              <MyText text="Author:" size={fontSize} style={styles.sectionText} />
+                <MyText 
+                  text={`  ${book.authors[0].slice(0, maxLetters - 3)}${book.authors[0].length > maxLetters - 3 ? '...' : ''}`} 
+                  size={fontSize} />
             </View>
 
             <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -129,7 +134,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sectionText: {
-    textDecorationLine: 'underline',
     color: '#636363',
   },
 })

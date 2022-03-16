@@ -29,9 +29,12 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
     genres: [''],
     description: '',
     rating: 0,
-    pages: 0,
     imageUrl: '',
     link: '',
+    pagesRead: 0,
+    pages: 0,
+    finishOn: '',
+    readingDays: [],
   }
   
   useFocusEffect(() => {
