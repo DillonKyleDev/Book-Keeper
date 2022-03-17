@@ -3,15 +3,15 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { ISBN, FetchIsbn } from './Helper/FetchBooks';
-import MyText from './Helper/MyText';
+import { ISBN, FetchIsbn } from './FetchBooks';
+import MyText from './MyText';
 //redux
-import { useReduxDispatch, useReduxSelector } from '../store';
-import { setSelected } from '../store/selectedBook/selectedSlice';
-import { Book } from '../store/books/bookSlice';
+import { useReduxDispatch, useReduxSelector } from '../../store';
+import { setSelected } from '../../store/selectedBook/selectedSlice';
+import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import TopBar from './Helper/TopBar';
+import TopBar from './TopBar';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -33,8 +33,9 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
     link: '',
     pagesRead: 0,
     pages: 0,
-    finishOn: '',
+    finishOn: null,
     readingDays: [],
+    goalFinalized: false,
   }
   
   useFocusEffect(() => {

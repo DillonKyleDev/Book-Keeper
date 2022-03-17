@@ -12,8 +12,9 @@ export interface Book {
   rating: number;
   pagesRead: number;
   pages: number;
-  finishOn: Date;
-  readingDays: string[];
+  finishOn: Date | null;
+  readingDays: boolean[];
+  goalFinalized: boolean;
 }
 
 const bookSlice = createSlice({
@@ -27,8 +28,16 @@ const bookSlice = createSlice({
       const newState = state.filter((book: Book) => book.title !== action.payload.title)
       return(newState);
     },
+    editBook: (state, action: PayloadAction<Book>) => {
+      let tempState = state.map(book => {
+        if(book.title === action.payload.title) {
+          return action.payload
+        } else return book
+      })
+      return(tempState)
+    },
   },
 })
 
-export const { setBooks, resetBooks, addBook, removeBook } = bookSlice.actions
+export const { setBooks, resetBooks, addBook, removeBook, editBook } = bookSlice.actions
 export default bookSlice.reducer

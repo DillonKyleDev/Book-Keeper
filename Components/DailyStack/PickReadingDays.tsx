@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper/MyText';
-import BookList from '../BookList';
+import BookList from '../Helper/BookList';
+import ReturnDateString from './ReturnDateString';
+import ReadingDayButton from './ReadingDayButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { resetSelected } from '../../store/selectedBook/selectedSlice';
+import { editBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import MyButton from '../Helper/MyButton';
+
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -22,92 +26,34 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
   const [ thursday, setThursday ] = useState(false);
   const [ friday, setFriday ] = useState(false);
   const [ saturday, setSaturday ] = useState(false);
-  const [ daysSelected, setDaysSelected ] = useState<boolean[]>([]);
+  const [ minDaysSelected, setMinDaysSelected ] = useState(false);
   //redux
   const selected = useReduxSelector(state => state.selected);
+  const dispatch = useReduxDispatch();
 
-  const cardStyle: {} = {
-    card: [{borderRadius: 0}, {borderBottomWidth: 1}, {borderBottomColor: 'grey'}, {padding: 0}, {width: "90%"}, {overflow: 'hidden'}, {justifyContent: 'center'}, {marginLeft: 'auto'}, {marginRight: 'auto'}, {alignItems: 'center'}, {flexDirection: 'row'}, {shadowColor: 'white'}],
+  const cardStyle = {
+    card: [{borderRadius: 0}, {borderBottomWidth: 1}, {borderBottomColor: '#f2f2f2'}, {padding: 0}, {width: "90%"}, {overflow: 'hidden'}, {justifyContent: 'center'}, {marginLeft: 'auto'}, {marginRight: 'auto'}, {alignItems: 'center'}, {flexDirection: 'row'}, {shadowColor: 'white'}],
     thumbnail: [{height: 80}, {width: 50}, {margin: 0}],
     text: [{height: 75}, {maxWidth: '80%'}, {margin: 0}, {padding: 0}, {marginLeft: 10}, {marginRight: 0}, {display: 'flex'}, {justifyContent: 'space-between'}],
+    font: {color: '#878787'},
     textSize: 12,
     maxCharacters: 25,
   }
 
-  const returnDateString = (date: Date) => {
-    const monthNumber = date.getMonth();
-    const weekdayNumber = date.getDay();
-    let month:string = '';
-    let weekday:string = '';
-
-    switch (monthNumber) {
-      case 0:
-        month = 'January';
-        break;
-      case 1:
-        month = 'February';
-        break;
-      case 2:
-        month = 'March';
-        break;
-      case 3:
-        month = 'April';
-        break;
-      case 4:
-        month = 'May';
-        break;
-      case 5:
-        month = 'June';
-        break;
-      case 6:
-        month = 'July';
-        break;
-      case 7:
-        month = 'August';
-        break;
-      case 8:
-        month = 'September';
-        break;
-      case 9:
-        month = 'October';
-        break;
-      case 10:
-        month = 'November';
-        break;
-      case 11:
-        month = 'December';
-        break;
-      default:
-        break;
-    }
-       switch (weekdayNumber) {
-      case 0:
-        weekday = 'Sunday';
-        break;
-      case 1:
-        weekday = 'Monday';
-        break;
-      case 2:
-        weekday = 'Tuesday';
-        break;
-      case 3:
-        weekday = 'Wednesday';
-        break;
-      case 4:
-        weekday = 'Thursday';
-        break;
-      case 5:
-        weekday = 'Friday';
-        break;
-      case 6:
-        weekday = 'Saturday';
-        break;
-      default:
-        break;
-    }
-
-    console.log(`${}, ${month} ${date.getDate()}, ${date.getFullYear()}`)
-    return(`${month} ${date.getDay()}, ${date.getFullYear()}`);
+  useEffect(() => {
+    if(sunday || monday || tuesday || wednesday || thursday || friday || saturday) {
+      setMinDaysSelected(true);
+    } else setMinDaysSelected(false);
+  }, [ sunday, monday, tuesday, thursday, friday, saturday ]);
+  
+  const createGoal = () => {
+    return (
+      {
+        ...selected,
+        readingDays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
+        goalFinalized: true,
+      }
+    )
   }
 
   return (
@@ -122,58 +68,39 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
           />
         </View>
 
-        <View style={{borderBottomColor: 'grey', borderBottomWidth: 1}}>
-          <MyText style={{textAlign: 'center'}} text={`Date selected: `} size={16} />
-          <Button onPress={() => returnDateString(selected.finishOn)} />
+        <View style={{borderBottomColor: '#f2f2f2', borderBottomWidth: 1, width: "90%", marginLeft: 'auto', marginRight: 'auto'}}>
+          <MyText style={[{textAlign: 'center'}, cardStyle.font]} text={`Finish date selected: `} size={12} />
+          {selected.finishOn !== null && 
+          <MyText style={[{textAlign: 'center', paddingBottom: 10}, cardStyle.font]} text={`${ReturnDateString(selected.finishOn)}`} size={16} />}
         </View>
 
         <View style={{paddingTop: 10}}>
           <MyText style={{textAlign: 'center'}} text="Pick reading days:" size={16} />
           <View style={styles.weekdayContainer}>
             <View style={styles.weekdayByTwo}>
-              <Button 
-                title="Sunday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${sunday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setSunday(previous => !previous)}/>
-              <Button 
-                title="Monday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${monday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setMonday(previous => !previous)}/>
+              <ReadingDayButton weekday='Sunday' dateIsActive={sunday} setFunction={setSunday} />
+              <ReadingDayButton weekday='Monday' dateIsActive={monday} setFunction={setMonday} />
             </View>
             <View style={styles.weekdayByTwo}>
-              <Button 
-                title="Tuesday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${tuesday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setTuesday(previous => !previous)}/>
-              <Button 
-                title="Wednesday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${wednesday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setWednesday(previous => !previous)}/>
-              <Button 
-                title="Thursday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${thursday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setThursday(previous => !previous)}/>
+              <ReadingDayButton weekday='Tuesday' dateIsActive={tuesday} setFunction={setTuesday} />
+              <ReadingDayButton weekday='Wednesday' dateIsActive={wednesday} setFunction={setWednesday} />
+              <ReadingDayButton weekday='Thursday' dateIsActive={thursday} setFunction={setThursday} />
             </View>
             <View style={styles.weekdayByTwo}>
-              <Button 
-                title="Friday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${friday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setFriday(previous => !previous)}/>
-              <Button 
-                title="Saturday"
-                titleStyle={{fontFamily: 'serif'}}
-                buttonStyle={[styles.weekdayButton, {backgroundColor: `${saturday ? '#4b59f5' : '#bec3fa'}`}]}
-                onPress={() => setSaturday(previous => !previous)}/>
+              <ReadingDayButton weekday='Friday' dateIsActive={friday} setFunction={setFriday} />
+              <ReadingDayButton weekday='Saturday' dateIsActive={saturday} setFunction={setSaturday} />
             </View>
-            <View style={styles.weekdayByTwo}>
 
-            </View>
+            <MyButton 
+              title="Create Goal" 
+              onPress={() =>{
+                if(minDaysSelected) {
+                  dispatch(editBook(createGoal()))
+                  navigation.push("DailyTab");
+                }}} 
+              isActive={minDaysSelected}
+            />
+
           </View>
         </View>
       </View>
@@ -198,6 +125,8 @@ const styles = StyleSheet.create({
   },
   weekdayContainer: {
     marginTop: 10,
+    marginBottom: 0,
+    paddingBottom: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -213,5 +142,11 @@ const styles = StyleSheet.create({
     margin: 3,
     width: 110,
     height: 80,
+    borderColor: '#5e5e5e',
+    borderWidth: 1,
+  },
+  titleStyles: {
+    color: '#5e5e5e',
+    fontFamily: 'serif'
   },
 });

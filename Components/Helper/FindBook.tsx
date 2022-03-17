@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, SafeAreaView, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TitleAuthor, FetchTitleAuthor, FetchTitle, Title, FetchAuthor, Author } from './FetchBooks';
-import BookList from '../BookList';
+import BookList from './BookList';
 import SectionHeader from './SectionHeader';
 import TopBar from './TopBar';
 import MyText from './MyText';
@@ -28,9 +28,13 @@ const FindBook: React.FC<Props> = ({navigation}) => {
     genres: [''],
     description: '',
     imageUrl: '',
+    pagesRead: 0,
     pages: 0,
+    finishOn: null,
+    readingDays: [],
     link: '',
     rating: 0,
+    goalFinalized: false,
   }]);
 
   const handleSubmit = async () => {

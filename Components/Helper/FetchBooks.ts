@@ -42,9 +42,13 @@ const mapData = (data: []) => {
       genres: tempGenres,
       description: book.volumeInfo.description ? book.volumeInfo.description : '',
       imageUrl: book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail ? book.volumeInfo.imageLinks.thumbnail : '',
+      pagesRead: 0,
       pages: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
       link: book.volumeInfo.previewLink ? book.volumeInfo.previewLink : '',
       rating: book.volumeInfo.averageRating ? book.volumeInfo.averageRating : 0,
+      finishOn: null,
+      readingDays: [],
+      goalFinalized: false,
     }
     return(singleBook)
   })
@@ -58,7 +62,6 @@ export const FetchIsbn = async ({isbnData}: {isbnData: ISBN}) => {
     })
     .then(response => {
       if(response.data.Response) {
-        console.log(response.data.Response);
         return response.data.Response;
       }
       if(response.data && response.data.length > 0) {
@@ -76,7 +79,6 @@ export const FetchAuthor = async ({authorData}: {authorData: Author}) => {
     })
     .then(response => {
       if(response.data.Response) {
-        console.log(response.data.Response);
         return(response.data.Response);
       }
       if(response.data && response.data.length > 0) {
@@ -94,7 +96,6 @@ export const FetchTitle = async ({titleData}: {titleData: Title}) => {
     })
     .then(response => {
       if(response.data.Response) {
-        console.log(response.data.Response);
         return(response.data.Response);
       }
       if(response.data && response.data.length > 0) {
@@ -113,7 +114,6 @@ export const FetchTitleAuthor = async ({titleAuthorData}: {titleAuthorData: Titl
     })
     .then(response => {
       if(response.data.Response) {
-        console.log(response.data.Response);
         return(response.data.Response);
       }
       if(response.data && response.data.length > 0) {

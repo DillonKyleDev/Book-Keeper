@@ -1,47 +1,47 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Linking, Animated, Easing } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Linking } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 //redux
-import { addBook, removeBook } from '../store/books/bookSlice';
-import { useReduxDispatch, useReduxSelector } from '../store';
-import TopBar from './Helper/TopBar';
+import { addBook, removeBook } from '../../store/books/bookSlice';
+import { useReduxDispatch, useReduxSelector } from '../../store';
+import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import MyText from './Helper/MyText';
+import MyText from '../Helper//MyText';
 
 interface Props {
   bookNotFound: boolean;
   navigation: NativeStackNavigationProp<any, any>;
 }
 
-const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
+const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
   const [ stars, setStars ] = useState<any>([]);
   const [ bookSaved, setBookSaved ] = useState(false);
   const [ ratingUnavailable, setRatingUnavailable ] = useState(false);
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
-  const book = useReduxSelector(state => state.selected);
+  const selected = useReduxSelector(state => state.selected);
 
   //Check if book is already in My Books section
   useEffect(() => {
-    if(books && book && book.title) {
+    if(books && selected && selected.title) {
       books.forEach(myBook => {
-        if(myBook.title === book.title) {
+        if(myBook.title === selected.title) {
           setBookSaved(true);
         }
       })
     }
-  }, [ books, book ]);
+  }, [ books, selected ]);
 
   useEffect(() => {
     let tempStars = [];
-    if(book.rating) {
+    if(selected.rating) {
       for(let i = 1; i < 6; i++) {
-        if(book && book.rating && book.rating >= i) {
+        if(selected && selected.rating && selected.rating >= i) {
           tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="gold" />)
         } else {
           tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="grey" />)
@@ -51,25 +51,28 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
     } else {
       setRatingUnavailable(true);
     }
-  }, [ book ]);
+  }, [ selected ]);
 
   const addBookToBooks = () => {
     dispatch(addBook({
-      title: book.title,
-      authors: book.authors,
-      genres: book.genres,
-      description: book.description,
-      imageUrl: book.imageUrl,
+      title: selected.title,
+      authors: selected.authors,
+      genres: selected.genres,
+      description: selected.description,
+      imageUrl: selected.imageUrl,
       pagesRead: 0,
-      pages: book.pages,
-      link: book.link,
-      rating: book.rating,
+      pages: selected.pages,
+      finishOn: null,
+      readingDays: [],
+      link: selected.link,
+      rating: selected.rating,
+      goalFinalized: false,
     }))
     setBookSaved(true);
   };
 
   const removeBookFromBooks = () => {
-    dispatch(removeBook(book))
+    dispatch(removeBook(selected))
     setBookSaved(false);
   };
 
@@ -77,15 +80,15 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
     <View>
       <TopBar />
       <ScrollView style={styles.scrollContainer}>
-        {book && book.title && !bookNotFound && book.title !== "Book Not Found"? 
+        {selected && selected.title && !bookNotFound && selected.title !== "Book Not Found"? 
         <>
           <View style={styles.bookCard}>
 
             {bookSaved && <Entypo  style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />}
 
-            {book.imageUrl !== '' ? 
+            {selected.imageUrl !== '' ? 
             <View style={[styles.flexCenter, styles.margin]}>
-              <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>
+              <Image style={styles.bookImage} source={{uri: selected.imageUrl}}/>
             </View>
             :
             <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
@@ -113,36 +116,36 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
               <View style={{marginBottom: 15}}>
                 <Text style={{fontFamily: 'serif', textAlign: 'center',}}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : "No rating."}</Text>
               </View>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
+              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{selected.title}"</Text>
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Authors:</Text>  {
-                book.authors && book.authors.length > 0 &&
-                book.authors
+                selected.authors && selected.authors.length > 0 &&
+                selected.authors
                 }</Text> 
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Genre:</Text>  {
-                book.genres && book.genres.length > 0 &&
-                book.genres.map((category, index) => (
+                selected.genres && selected.genres.length > 0 &&
+                selected.genres.map((category, index) => (
                 <Text key={`${index} ${category}`} style={styles.genreItem}>
                   {` ${category} `}
                 </Text>
                 ))
               }</Text>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
+              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Pages:</Text>  {selected.pages}</Text>
               <View style={styles.description}>
-                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Description:</Text>  {book.description}</Text>
+                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Description:</Text>  {selected.description}</Text>
               </View>
             
             </View>
                         
             <View style={styles.linkContainer}>
               <Text onPress={() =>
-                Linking.openURL(`${book.link}`)} style={styles.linkText}>See on Google Books
+                Linking.openURL(`${selected.link}`)} style={styles.linkText}>See on Google Books
               </Text>
             </View>
           </View>
         </>
         :
         <>
-        { bookNotFound || book.title === "Book Not Found" ?
+        { bookNotFound || selected.title === "Book Not Found" ?
           <View style={styles.warningContainer}>
               <Text style={[styles.font20, styles.underLine, styles.centerText]}>Whoops!</Text>
               <View>
@@ -179,7 +182,7 @@ const ShowSingleBook: React.FC<Props> = ({bookNotFound, navigation}) => {
   )
 }
 
-export default ShowSingleBook
+export default ShowSingleGoal
 
 const styles = StyleSheet.create({
   scrollContainer: {

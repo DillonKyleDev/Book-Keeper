@@ -13,6 +13,7 @@ const initialState: Book = {
   rating: 0,
   readingDays: [],
   finishOn: new Date(),
+  goalFinalized: false,
 };
 
 const selectedSlice = createSlice({

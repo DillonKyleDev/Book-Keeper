@@ -6,10 +6,10 @@ import { useReduxSelector } from './store';
 //Library tab imports
 import Library from './Components/LibraryStack/Library';
 import AddBook from './Components/LibraryStack/AddBook';
-import BarcodeScan from './Components/BarcodeScan';
+import BarcodeScan from './Components/Helper/BarcodeScan';
 import FindBook from './Components/Helper/FindBook';
-import ShowSingleBook from './Components/ShowSingleBook';
-import BookList from './Components/BookList';
+import ShowSingleBook from './Components/Helper/ShowSingleBook';
+import BookList from './Components/Helper/BookList';
 //Daily tab imports
 import Daily from './Components/DailyStack/Daily';
 import AddGoalBook from './Components/DailyStack/AddGoalBook';
@@ -55,6 +55,7 @@ const DailyStackScreen = () => {
       <DailyStack.Screen name="FinishByTab" component={FinishBy} />
       <DailyStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
       <DailyStack.Screen name="PickReadingDaysTab" component={PickReadingDays} />
+      <DailyStack.Screen name="ShowSingleGoalTab" component={PickReadingDays} />
     </DailyStack.Navigator>
   )
 }

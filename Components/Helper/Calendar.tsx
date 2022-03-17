@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import {Calendar as NewCalendar, CalendarList, Agenda} from 'react-native-calendars';
+import {Calendar as NewCalendar} from 'react-native-calendars';
 import { AntDesign } from '@expo/vector-icons'; 
 
 interface Props {
@@ -17,17 +17,17 @@ export const Calendar: React.FC<Props> = ({setFinishBy}) => {
   
 
   useEffect(() => {
-    if(selectedDate !== '') {
-      setFinishBy(selectedDate);
-    }
-  }, [ selectedDate, setSelectedDate ]);
+    setSelectedDate('');
+  }, []);
 
   return (
     <View style={styles.container}>
       <NewCalendar
         style={{
-          height: 280,
+          height: 400,
           margin: 0,
+          marginBottom: 'auto',
+          marginTop: 20,
           width: 320,
         }}
         theme={calendarTheme}
@@ -35,9 +35,11 @@ export const Calendar: React.FC<Props> = ({setFinishBy}) => {
           [selectedDate] : {selected: true, marked: true, selectedColor: '#4b59f5', textColor: 'white', color: 'white', dotColor: 'transparent', selectedTextColor: 'white'},
         }}
         minDate={today}
-        onDayPress={day => {setSelectedDate(day.dateString)}}
+        onDayPress={day => {
+          setSelectedDate(day.dateString);
+          setFinishBy(day.dateString);
+        }}
         monthFormat={'MMMM - yyyy'}
-        onMonthChange={month => {}}
         firstDay={0}
         onPressArrowLeft={subtractMonth => subtractMonth()}
         onPressArrowRight={addMonth => addMonth()}
