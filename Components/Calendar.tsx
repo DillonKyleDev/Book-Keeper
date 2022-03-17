@@ -4,7 +4,7 @@ import {Calendar as NewCalendar, CalendarList, Agenda} from 'react-native-calend
 import { AntDesign } from '@expo/vector-icons'; 
 
 interface Props {
-  setFinishBy: (finishedBy:Date | undefined) => void;
+  setFinishBy: (finishedBy:string) => void;
 }
 
 export const Calendar: React.FC<Props> = ({setFinishBy}) => {
@@ -18,7 +18,7 @@ export const Calendar: React.FC<Props> = ({setFinishBy}) => {
 
   useEffect(() => {
     if(selectedDate !== '') {
-      setFinishBy(new Date(selectedDate));
+      setFinishBy(selectedDate);
     }
   }, [ selectedDate, setSelectedDate ]);
 

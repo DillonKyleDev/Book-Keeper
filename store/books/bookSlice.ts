@@ -12,7 +12,7 @@ export interface Book {
   rating: number;
   pagesRead: number;
   pages: number;
-  finishOn: string;
+  finishOn: Date;
   readingDays: string[];
 }
 

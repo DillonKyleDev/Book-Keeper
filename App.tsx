@@ -15,6 +15,7 @@ import Daily from './Components/DailyStack/Daily';
 import AddGoalBook from './Components/DailyStack/AddGoalBook';
 import LibraryList from './Components/DailyStack/LibraryList';
 import FinishBy from './Components/DailyStack/FinishBy';
+
 //Preferences tab imports
 import Preferences from './Components/PreferencesStack/Preferences';
 
@@ -22,6 +23,7 @@ import Preferences from './Components/PreferencesStack/Preferences';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import PickReadingDays from './Components/DailyStack/PickReadingDays';
 
 
 const LibraryStack = createNativeStackNavigator();
@@ -52,6 +54,7 @@ const DailyStackScreen = () => {
       <DailyStack.Screen name="FindBookTab" component={FindBook} />
       <DailyStack.Screen name="FinishByTab" component={FinishBy} />
       <DailyStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
+      <DailyStack.Screen name="PickReadingDaysTab" component={PickReadingDays} />
     </DailyStack.Navigator>
   )
 }
