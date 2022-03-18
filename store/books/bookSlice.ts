@@ -17,6 +17,36 @@ export interface Book {
   goalFinalized: boolean;
 }
 
+export const emptyBook:Book = {
+  title: '',
+  authors: [''],
+  genres: [''],
+  description: '',
+  imageUrl: '',
+  pagesRead: 0,
+  pages: 0,
+  finishOn: null,
+  readingDays: [],
+  link: '',
+  rating: 0,
+  goalFinalized: false,
+}
+
+export const bookNotFoundBook:Book = {
+  title: "Book Not Found",
+  authors: [''],
+  genres: [''],
+  description: '',
+  rating: 0,
+  imageUrl: '',
+  link: '',
+  pagesRead: 0,
+  pages: 0,
+  finishOn: null,
+  readingDays: [],
+  goalFinalized: false,
+}
+
 const bookSlice = createSlice({
   name: 'books',
   initialState: initialState,

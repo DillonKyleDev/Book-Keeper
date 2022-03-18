@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { screenHeight } from '../../App';
+import MyButton from '../Helper/MyButton';
 import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
-import { useReduxSelector, useReduxDispatch } from '../../store';
+import { useReduxDispatch } from '../../store';
 import { resetSelected } from '../../store/selectedBook/selectedSlice';
 
 interface Props {
@@ -13,35 +14,26 @@ interface Props {
 }
 
 const AddBook: React.FC<Props> = ({navigation}) => {
-  const selected = useReduxSelector(state => state.selected);
   const dispatch = useReduxDispatch();
 
   return (
     <View>
       <TopBar />
-      <View style={styles.addBookContainer}>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonStyles}>
-            <Button 
-              title="Scan new book"
-              titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={styles.button}
-              onPress={() => {
-                dispatch(resetSelected());
-                navigation.push("ScanBookTab");
-              }}/>
-          </View>
-          <View style={styles.buttonStyles}>
-            <Button 
-              title="Enter new book manually"
-              titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={styles.button}
-              onPress={() => {
-                dispatch(resetSelected());
-                navigation.push("FindBookTab")
-              }}/>
-          </View>
-        </View>
+      <View style={[{height: screenHeight - 130}, styles.addBookContainer]}>
+          <MyButton 
+            customStyle={{marginBottom: 20, width: 'auto'}}
+            title="Scan new book"
+            onPress={() => {
+              dispatch(resetSelected());
+              navigation.push("ScanBookTab")
+            }}/>
+          <MyButton 
+            customStyle={{marginBottom: 20, width: 'auto'}}
+            title="Enter new book manually"
+            onPress={() => {
+              dispatch(resetSelected());
+              navigation.push("FindBookTab");
+            }}/>
       </View>
     </View>
   )
@@ -51,38 +43,8 @@ export default AddBook
 
 const styles = StyleSheet.create({
   addBookContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
     flexDirection: 'column',
-  },
-  scannerContainer: {
-    position: 'relative',
-    top: 10,
-    height: '100%',
-  },
-  scanner: {
-    width: 500,
-    position: 'relative',
-    top: -90
-  },
-  buttonContainer: {
-    position: 'relative',
-    top: -90,
-  },
-  buttonStyles: {
-    margin: 15,
-  },
-  button: {
-    backgroundColor: '#4b59f5',
-    width: 275, 
-    marginLeft: 'auto', 
-    marginRight: 'auto', 
-    height: 60, 
-    paddingLeft: 20, 
-    paddingRight: 20
   },
 })

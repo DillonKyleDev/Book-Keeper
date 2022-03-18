@@ -10,9 +10,10 @@ interface Props {
   activeTextColor?: string;
   inactiveTextColor?: string;
   isActive?: boolean;
+  customStyle?: {};
 }
 
-const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, activeTextColor, inactiveTextColor, isActive}) => {
+const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, activeTextColor, inactiveTextColor, isActive, customStyle}) => {
   return (
     <>
     { isActive !== undefined ?
@@ -24,7 +25,8 @@ const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, 
       }}
       buttonStyle={[
         styles.constantButton, 
-        {backgroundColor: `${isActive ? '#4b59f5' : '#bec3fa'}`}
+        {backgroundColor: `${isActive ? '#4b59f5' : '#bec3fa'}`},
+        customStyle
       ]}
       onPress={onPress}
       />
@@ -37,7 +39,8 @@ const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, 
       }}
       buttonStyle={[
         styles.constantButton, 
-        {backgroundColor: '#4b59f5'}
+        {backgroundColor: '#4b59f5'},
+        customStyle
       ]}
       onPress={onPress}
       />

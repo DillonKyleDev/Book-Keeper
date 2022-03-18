@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { screenHeight } from '../../App';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { ISBN, FetchIsbn } from './FetchBooks';
+import { ISBN, FetchIsbn } from './Functions/FetchBooks';
 import MyText from './MyText';
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
 import { setSelected } from '../../store/selectedBook/selectedSlice';
-import { Book } from '../../store/books/bookSlice';
+import { Book, bookNotFoundBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import TopBar from './TopBar';
+import MyButton from './MyButton';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -23,20 +25,7 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   const [openScanner, setOpenScanner] = useState(true);
   const dispatch = useReduxDispatch();
   const selected = useReduxSelector(state => state.selected);
-  const bookNotFound: Book = {
-    title: "Book Not Found",
-    authors: [''],
-    genres: [''],
-    description: '',
-    rating: 0,
-    imageUrl: '',
-    link: '',
-    pagesRead: 0,
-    pages: 0,
-    finishOn: null,
-    readingDays: [],
-    goalFinalized: false,
-  }
+  const bookNotFound: Book = bookNotFoundBook;
   
   useFocusEffect(() => {
     if(selected.title !== '') {
@@ -67,35 +56,29 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   };
 
   if (hasPermission === null) {
-    return <MyText size={16} text="...Requesting camera permission..." style={styles.text} />;
+    return <MyText size={16} text="...Requesting camera permission..." style={{marginTop: 200}} />;
   }
   if (hasPermission === false) {
-    return <MyText size={16} text="Can't scan... No access to camera" style={styles.text} />;
+    return <MyText size={16} text="Can't scan... No access to camera" style={{marginTop: 200}} />;
   }
 
   return (
-    <View style={{width: '100%', height: '100%'}}>
+    <View>
       <TopBar />
-      <View style={{marginTop: 15, marginBottom: -50, position: 'relative', zIndex: 5}}>
+      <View style={[{height: screenHeight - 130, paddingTop: 40}]}>
         <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
-        <Button 
-          title="Enter new book manually"
-          titleStyle={{fontFamily: 'serif'}}
-          buttonStyle={{backgroundColor: '#4b59f5', width: 275, marginLeft: 'auto', marginRight: 'auto', height: 60, paddingLeft: 20, paddingRight: 20}}
-          onPress={() => navigation.push("FindBookTab")}/>
-      </View>
-      <View style={styles.loadingIcon}>
-        <ActivityIndicator animating={!openScanner} size="large" color="#4b59f5" />
-      </View>
-      {openScanner && 
-        <View style={{width: '100%', height: '100%', marginTop: -70}}>
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-
-            style={styles.scannerStyle}
-          />
+        <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
+        <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
+          <ActivityIndicator animating={!openScanner} size="large" color="#4b59f5" style={{position: 'absolute', top: 50}} />
         </View>
+      </View>
+
+      {openScanner && 
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={styles.scannerStyle}
+        />
       }
     </View>
   );
@@ -106,24 +89,9 @@ export default BarcodeScan;
 const styles = StyleSheet.create({
   scannerStyle: {
     position: 'absolute',
-    width: 450,
-    top: 50,
+    width: '100%',
+    top: 280,
     bottom: 0,
     zIndex: 0
-  },
-  marginTop: {
-    marginTop: 70,
-  },
-  centerText: {
-    textAlign: 'center',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 16,
-    marginTop: 200,
-  },
-  loadingIcon: {
-    position: 'relative',
-    top: 200,
   },
 });

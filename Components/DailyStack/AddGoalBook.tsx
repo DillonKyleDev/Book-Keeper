@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { screenHeight } from '../../App';
 import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { resetSelected } from '../../store/selectedBook/selectedSlice';
+import MyButton from '../Helper/MyButton';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -19,39 +20,28 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
   return (
     <View>
       <TopBar />
-      <View style={styles.addBookContainer}>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonStyles}>
-            <Button 
-              title="Use book from library"
-              titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={styles.button}
-              onPress={() => {
-                dispatch(resetSelected());
-                navigation.push("AddFromLibraryTab");
-              }}/>
-          </View>
-          <View style={styles.buttonStyles}>
-            <Button 
-              title="Scan new book"
-              titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={styles.button}
-              onPress={() => {
-                dispatch(resetSelected());
-                navigation.push("ScanBookTab");
-              }}/>
-          </View>
-          <View style={styles.buttonStyles}>
-            <Button 
-              title="Enter new book manually"
-              titleStyle={{fontFamily: 'serif'}}
-              buttonStyle={styles.button}
-              onPress={() => {
-                dispatch(resetSelected());
-                navigation.push("FindBookTab");
-              }}/>
-          </View>
-        </View>
+      <View style={[{height: screenHeight - 130}, styles.flexContainer]}>
+          <MyButton 
+            customStyle={{marginBottom: 20, width: 'auto'}}
+            title="Use book from library"
+            onPress={() => {
+              dispatch(resetSelected());
+              navigation.push("AddFromLibraryTab");
+            }}/>
+          <MyButton 
+            customStyle={{marginBottom: 20, width: 'auto'}}
+            title="Scan new book"
+            onPress={() => {
+              dispatch(resetSelected());
+              navigation.push("AddFromLibraryTab");
+            }}/>
+          <MyButton 
+            customStyle={{marginBottom: 20, width: 'auto'}}
+            title="Enter book manually"
+            onPress={() => {
+              dispatch(resetSelected());
+              navigation.push("AddFromLibraryTab");
+            }}/>
       </View>
     </View>
   )
@@ -60,39 +50,9 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
 export default AddGoalBook
 
 const styles = StyleSheet.create({
-  addBookContainer: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
+  flexContainer: {
+    display: 'flex',
     flexDirection: 'column',
-  },
-  scannerContainer: {
-    position: 'relative',
-    top: 10,
-    height: '100%',
-  },
-  scanner: {
-    width: 500,
-    position: 'relative',
-    top: -90
-  },
-  buttonContainer: {
-    position: 'relative',
-    top: -90,
-  },
-  buttonStyles: {
-    margin: 15,
-  },
-  button: {
-    backgroundColor: '#4b59f5',
-    width: 275, 
-    marginLeft: 'auto', 
-    marginRight: 'auto', 
-    height: 60, 
-    paddingLeft: 20, 
-    paddingRight: 20
+    justifyContent: 'center',
   },
 })
