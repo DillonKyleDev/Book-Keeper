@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Linking } from 'react-native';
+import { screenHeight } from '../../App';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -79,105 +80,107 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
   return (
     <View>
       <TopBar />
-      <ScrollView style={styles.scrollContainer}>
-        {selected && selected.title && !bookNotFound && selected.title !== "Book Not Found"? 
-        <>
-          <View style={styles.bookCard}>
+      <View style={{height: screenHeight - 100, backgroundColor: 'white'}}>
+        <ScrollView>
+          {selected && selected.title && !bookNotFound && selected.title !== "Book Not Found"? 
+          <>
+            <View style={styles.bookCard}>
 
-            {bookSaved && <Entypo  style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />}
+              {bookSaved && <Entypo  style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />}
 
-            {selected.imageUrl !== '' ? 
-            <View style={[styles.flexCenter, styles.margin]}>
-              <Image style={styles.bookImage} source={{uri: selected.imageUrl}}/>
-            </View>
-            :
-            <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
-              <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
-            </View>
-            }
-
-            <View style={styles.buttonContainer}>
-              {bookSaved ?
-                <Button 
-                  buttonStyle={styles.addBookButton} 
-                  titleStyle={{fontFamily: 'serif'}}
-                  onPress={() => navigation.navigate("SetGoalTab")} 
-                  title="Set Reading Goal"/>
+              {selected.imageUrl !== '' ? 
+              <View style={[styles.flexCenter, styles.margin]}>
+                <Image style={styles.bookImage} source={{uri: selected.imageUrl}}/>
+              </View>
               :
-                <Button 
-                  buttonStyle={styles.addBookButton} 
-                  titleStyle={{fontFamily: 'serif'}}
-                  onPress={addBookToBooks} 
-                  title="Add To Library"/>
+              <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
+                <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+              </View>
               }
-            </View>
+
+              <View style={styles.buttonContainer}>
+                {bookSaved ?
+                  <Button 
+                    buttonStyle={styles.addBookButton} 
+                    titleStyle={{fontFamily: 'serif'}}
+                    onPress={() => navigation.navigate("SetGoalTab")} 
+                    title="Set Reading Goal"/>
+                :
+                  <Button 
+                    buttonStyle={styles.addBookButton} 
+                    titleStyle={{fontFamily: 'serif'}}
+                    onPress={addBookToBooks} 
+                    title="Add To Library"/>
+                }
+              </View>
+                
+              <View style={styles.bookInfo}>
+                <View style={{marginBottom: 15}}>
+                  <Text style={{fontFamily: 'serif', textAlign: 'center',}}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : "No rating."}</Text>
+                </View>
+                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{selected.title}"</Text>
+                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Authors:</Text>  {
+                  selected.authors && selected.authors.length > 0 &&
+                  selected.authors
+                  }</Text> 
+                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Genre:</Text>  {
+                  selected.genres && selected.genres.length > 0 &&
+                  selected.genres.map((category, index) => (
+                  <Text key={`${index} ${category}`} style={styles.genreItem}>
+                    {` ${category} `}
+                  </Text>
+                  ))
+                }</Text>
+                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Pages:</Text>  {selected.pages}</Text>
+                <View style={styles.description}>
+                  <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Description:</Text>  {selected.description}</Text>
+                </View>
               
-            <View style={styles.bookInfo}>
-              <View style={{marginBottom: 15}}>
-                <Text style={{fontFamily: 'serif', textAlign: 'center',}}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : "No rating."}</Text>
               </View>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{selected.title}"</Text>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Authors:</Text>  {
-                selected.authors && selected.authors.length > 0 &&
-                selected.authors
-                }</Text> 
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Genre:</Text>  {
-                selected.genres && selected.genres.length > 0 &&
-                selected.genres.map((category, index) => (
-                <Text key={`${index} ${category}`} style={styles.genreItem}>
-                  {` ${category} `}
+                          
+              <View style={styles.linkContainer}>
+                <Text onPress={() =>
+                  Linking.openURL(`${selected.link}`)} style={styles.linkText}>See on Google Books
                 </Text>
-                ))
-              }</Text>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Pages:</Text>  {selected.pages}</Text>
-              <View style={styles.description}>
-                <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Description:</Text>  {selected.description}</Text>
               </View>
-            
             </View>
-                        
-            <View style={styles.linkContainer}>
-              <Text onPress={() =>
-                Linking.openURL(`${selected.link}`)} style={styles.linkText}>See on Google Books
-              </Text>
-            </View>
-          </View>
-        </>
-        :
-        <>
-        { bookNotFound || selected.title === "Book Not Found" ?
-          <View style={styles.warningContainer}>
-              <Text style={[styles.font20, styles.underLine, styles.centerText]}>Whoops!</Text>
-              <View>
-                <Text style={styles.centerText}>
-                  Looks like we couldn't find that book. If scanning doesn't work try doing a manual search or create a custom book offline...
-                </Text>
-            </View>
-          </View>
+          </>
           :
           <>
-          <View style={styles.warningContainer}>
-              <Text style={[styles.font20, styles.centerText]}>Loading...</Text>
-          </View>
+          { bookNotFound || selected.title === "Book Not Found" ?
+            <View style={styles.warningContainer}>
+                <Text style={[styles.font20, styles.underLine, styles.centerText]}>Whoops!</Text>
+                <View>
+                  <Text style={styles.centerText}>
+                    Looks like we couldn't find that book. If scanning doesn't work try doing a manual search or create a custom book offline...
+                  </Text>
+              </View>
+            </View>
+            :
+            <>
+            <View style={styles.warningContainer}>
+                <Text style={[styles.font20, styles.centerText]}>Loading...</Text>
+            </View>
+            </>
+          }
           </>
-        }
-        </>
-        }
-        {bookSaved && 
-        <View style={styles.removeContainer}>
-          <View style={styles.buttonContainer}>
-            <Button 
-              buttonStyle={styles.addBookButton} 
-              titleStyle={{fontFamily: 'serif'}}
-              title="Remove from library" 
-              onPress={() => removeBookFromBooks()}/>
+          }
+          {bookSaved && 
+          <View style={styles.removeContainer}>
+            <View style={styles.buttonContainer}>
+              <Button 
+                buttonStyle={styles.addBookButton} 
+                titleStyle={{fontFamily: 'serif'}}
+                title="Remove from library" 
+                onPress={() => removeBookFromBooks()}/>
+            </View>
+            <MyText style={{textAlign: 'center'}} text="*WARNING*" size={10} />
+            <MyText style={{textAlign: 'center', textDecorationLine: 'underline'}} text="Removing from library will also remove any goals associated with this book." size={10} />
+            <MyText style={{textAlign: 'center'}} text="But you can always add them back." size={10} />
           </View>
-          <MyText style={{textAlign: 'center'}} text="*WARNING*" size={10} />
-          <MyText style={{textAlign: 'center', textDecorationLine: 'underline'}} text="Removing from library will also remove any goals associated with this book." size={10} />
-          <MyText style={{textAlign: 'center'}} text="But you can always add them back." size={10} />
-        </View>
-        }
-      </ScrollView>
+          }
+        </ScrollView>
+      </View>
     </View>
   )
 }
@@ -185,15 +188,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
 export default ShowSingleGoal
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    position: 'relative',
-    marginBottom: 90,
-  },
   bookCard: {
-    backgroundColor: 'white',
-    margin: '2%',
-    marginBottom: '1%',
-    marginTop: '1%',
     display: "flex",
     flexDirection: 'column',
     justifyContent: 'center',
@@ -225,7 +220,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     paddingRight: 5,
-    width: '90%',
+    width: '85%',
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: 20,
@@ -262,10 +257,6 @@ const styles = StyleSheet.create({
     width: 'auto',
     backgroundColor: '#4b59f5'
   },
-  bookmark: {
-    width: "auto",
-    backgroundColor: 'transparent'
-  },
   warningContainer: {
     padding: '3%',
     marginLeft: '3%',
@@ -275,10 +266,6 @@ const styles = StyleSheet.create({
   },
   font20: {
     fontSize: 20,
-    fontFamily: 'serif',
-  },
-  font16: {
-    fontSize: 16,
     fontFamily: 'serif',
   },
   underLine: {

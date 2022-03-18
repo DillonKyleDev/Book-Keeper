@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
+import { screenHeight } from '../../App';
 import { Foundation } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
 //Redux
@@ -45,66 +46,54 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
   }
 
   return (
-    <ScrollView style={styles.scrollContainer}>
-      {books && books.length > 0 && books.map((book, index) => {
-        if(book) {
-        return (
-        <Pressable
-          onPress={() => {
-            dispatch(setSelected(book));
-            if(goTo !== "") {
-              navigation.push(goTo)
+    <View style={{height: screenHeight - 156}}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {books && books.length > 0 && books.map((book, index) => {
+          if(book) {
+          return (
+          <Pressable
+            onPress={() => {
+              dispatch(setSelected(book));
+              if(goTo !== "") {navigation.push(goTo)}
+            }} 
+            key={`${index} ${book.title}`} 
+            style={[styles.bookCard, cardStyle?.card]}>
+
+            {book.imageUrl !== '' ? 
+            <View style={[styles.flexCenter, styles.margin]}>
+              <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
+            </View>
+            :
+            <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
+              <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+            </View>
             }
-          }} 
-          key={`${index} ${book.title}`} 
-          style={[styles.bookCard, cardStyle?.card]}>
 
-          {book.imageUrl !== '' ? 
-          <View style={[styles.flexCenter, styles.margin]}>
-            <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
-          </View>
-          :
-          <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
-            <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
-          </View>
-          }
-          <View style={[styles.bookInfo, cardStyle?.text]}>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Title:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
-              <MyText 
-                text={`  "${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}"`} 
-                size={fontSize} style={cardStyle?.font} />
-            </View>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Author:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
+            <View style={[styles.bookInfo, cardStyle?.text]}>
+              <View style={{display: 'flex', flexDirection: 'row'}}>
+                <MyText text="To read:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
                 <MyText 
-                  text={`  ${book.authors[0].slice(0, maxLetters - 3)}${book.authors[0].length > maxLetters - 3 ? '...' : ''}`} 
+                  text={`  ${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}`} 
                   size={fontSize} style={cardStyle?.font} />
+              </View>
+
+              <View style={{display: 'flex', flexDirection: 'row'}}>
+                <MyText text="Pages Read:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.pagesRead} / ${book.pages}`} size={fontSize} style={cardStyle?.font} />
+              </View>
+
+              <View style={{display: 'flex', flexDirection: 'row'}}>
+                <MyText text="Finish By:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.finishOn}`} size={fontSize} style={cardStyle?.font} />
+              </View>
+
+              <View style={{display: 'flex', flexDirection: 'row'}}>
+                <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={``} size={fontSize} style={cardStyle?.font} />
+              </View>
             </View>
 
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Genres:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
-              {book.genres && book.genres.length > 0 && book.genres.map((genre, index) => (
-                <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={fontSize} style={cardStyle?.font} />
-              ))}
-            </View>
-    
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Pages Read:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.pagesRead} / ${book.pages}`} size={fontSize} style={cardStyle?.font} />
-            </View>
-
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Finish By:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.finishOn}`} size={fontSize} style={cardStyle?.font} />
-            </View>
-
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={``} size={fontSize} style={cardStyle?.font} />
-            </View>
-          </View>
-
-        </Pressable>
-      )}})}
-    </ScrollView>
+          </Pressable>
+        )}})}
+      </ScrollView>
+    </View>
   )
 }
 
@@ -112,16 +101,15 @@ export default GoalList
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    position: 'relative',
-    marginBottom: 145,
-    zIndex: 1,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   bookCard: {
     backgroundColor: 'white',
     height: 200,
-    borderRadius: 10,
+    borderRadius: 4,
     margin: '4%',
-    marginBottom: '2%',
+    marginBottom: '1%',
     marginTop: '1%',
     display: "flex",
     flexDirection: 'row',
@@ -159,6 +147,5 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     color: '#636363',
-
   },
 })

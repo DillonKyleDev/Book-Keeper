@@ -9,6 +9,7 @@ import ReadingDayButton from './ReadingDayButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { editBook } from '../../store/books/bookSlice';
+import { resetSelected } from '../../store/selectedBook/selectedSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MyButton from '../Helper/MyButton';
@@ -47,9 +48,11 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
   }, [ sunday, monday, tuesday, thursday, friday, saturday ]);
   
   const createGoal = () => {
+    const tempSelected = selected;
+    dispatch(resetSelected());
     return (
       {
-        ...selected,
+        ...tempSelected,
         readingDays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
         goalFinalized: true,
       }

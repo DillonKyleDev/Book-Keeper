@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
 import MyText from './MyText';
-import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
   title: string;
@@ -12,7 +10,7 @@ interface Props {
 const SectionHeader: React.FC<Props> = ({title, button}) => {
   return (
     <View style={styles.headerContainer}>
-      <MyText text={title} size={22} style={{marginLeft: 20}}/>
+      <MyText text={title} size={20} style={{marginLeft: 20}}/>
       {button && button}
     </View>
   )
@@ -22,11 +20,17 @@ export default SectionHeader
 
 const styles = StyleSheet.create({
   headerContainer: {
-    minHeight: 56,
+    backgroundColor: 'white',
+    height: 56,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 40,
+    shadowOpacity: 0.8,
+    elevation: 3,
   }
 })

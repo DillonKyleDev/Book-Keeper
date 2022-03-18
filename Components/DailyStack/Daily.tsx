@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import SectionHeader from '../Helper/SectionHeader';
 import TopBar from '../Helper/TopBar';
-import BookList from '../Helper/BookList';
 //Redux
 import { useReduxSelector } from '../../store';
 import { Book } from '../../store/books/bookSlice';
@@ -50,13 +49,3 @@ const Daily: React.FC<Props> = ({navigation}) => {
 }
 
 export default Daily
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-});
