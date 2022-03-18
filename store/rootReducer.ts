@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
 import bookReducer from './books/bookSlice';
-import selectedReducer from './selectedBook/selectedSlice';
+import librarySelectedReducer from './librarySelectedBook/selectedSlice';
+import dailySelectedReducer from './dailySelectedBook/selectedSlice';
 
 const rootReducer = combineReducers({
   books: bookReducer,
-  selected: selectedReducer,
+  librarySelected: librarySelectedReducer,
+  dailySelected: dailySelectedReducer,
 })
 
 export default rootReducer

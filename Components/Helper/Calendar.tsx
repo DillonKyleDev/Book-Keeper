@@ -7,65 +7,55 @@ interface Props {
   setFinishBy: (finishedBy:string) => void;
 }
 
-export const Calendar: React.FC<Props> = ({setFinishBy}) => {
+const Calendar: React.FC<Props> = ({setFinishBy}) => {
   const [ selectedDate, setSelectedDate ] = useState('');
   const todaysDate:Date = new Date();
   const dd:string = `${(todaysDate.getDate()).toString().padStart(2, '0')}`;
   const mm:string = `${(todaysDate.getMonth() + 1).toString().padStart(2, '0')}`; //January is 0!
   const yyyy:string = `${todaysDate.getFullYear()}`;
   const today:string = yyyy + '-' + mm + '-' + dd;
-  
 
   useEffect(() => {
     setSelectedDate('');
   }, []);
 
   return (
-    <View style={styles.container}>
-      <NewCalendar
-        style={{
-          height: 400,
-          margin: 0,
-          marginBottom: 'auto',
-          marginTop: 20,
-          width: 320,
-        }}
-        theme={calendarTheme}
-        markedDates={{
-          [selectedDate] : {selected: true, marked: true, selectedColor: '#4b59f5', textColor: 'white', color: 'white', dotColor: 'transparent', selectedTextColor: 'white'},
-        }}
-        minDate={today}
-        onDayPress={day => {
-          setSelectedDate(day.dateString);
-          setFinishBy(day.dateString);
-        }}
-        monthFormat={'MMMM - yyyy'}
-        firstDay={0}
-        onPressArrowLeft={subtractMonth => subtractMonth()}
-        onPressArrowRight={addMonth => addMonth()}
-        renderArrow={direction => {
-          if(direction === 'left') {
-            return (<AntDesign name="caretleft" size={15} color="#4b59f5" />)
-          } else {
-            return (<AntDesign name="caretright" size={15} color="#4b59f5" />)
-          }
-        }}
-        disableAllTouchEventsForDisabledDays={false}
-      />
-    </View>
+    <NewCalendar
+      style={{
+        width: 320,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}
+      theme={calendarTheme}
+      markedDates={{[selectedDate] : {selected: true, marked: true, selectedColor: '#4b59f5', textColor: 'white', color: 'white', dotColor: 'transparent', selectedTextColor: 'white'}}}
+      minDate={today}
+      onDayPress={day => {
+        setSelectedDate(day.dateString);
+        setFinishBy(day.dateString);
+      }}
+      monthFormat={'MMMM - yyyy'}
+      firstDay={0}
+      onPressArrowLeft={subtractMonth => subtractMonth()}
+      onPressArrowRight={addMonth => addMonth()}
+      renderArrow={direction => {
+        if(direction === 'left') {
+          return (<AntDesign name="caretleft" size={15} color="#4b59f5" />)
+        } else {
+          return (<AntDesign name="caretright" size={15} color="#4b59f5" />)
+        }
+      }}
+      disableAllTouchEventsForDisabledDays={false}
+    />
   )
 }
+
+export default Calendar
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 0,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    position: 'relative',
-    zIndex: 10,
   },
 });
 

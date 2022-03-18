@@ -28,7 +28,7 @@ const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, 
         {backgroundColor: `${isActive ? '#4b59f5' : '#bec3fa'}`},
         customStyle
       ]}
-      onPress={onPress}
+      onPress={isActive ? onPress : () => {}}
       />
     :
     <Button 

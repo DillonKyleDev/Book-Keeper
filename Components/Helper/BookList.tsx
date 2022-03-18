@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
-import { screenHeight } from '../../App';
+import { View, Text, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
+import { screenHeight } from './Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
-import MyText from './MyText';
+import { MaterialIcons } from '@expo/vector-icons';
 //Redux
 import { useReduxDispatch } from '../../store';
-import { setSelected } from '../../store/selectedBook/selectedSlice';
+import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -14,27 +14,18 @@ interface Props {
   books: Book[] | [];
   navigation: NativeStackNavigationProp<any>;
   goTo: string;
-  cardStyle?: {
-    card?: {} | {}[];
-    thumbnail?: {} | {}[];
-    text?: {} | {}[];
-    font?: {} | {}[];
-    textSize?: number;
-    maxCharacters?: number;
-  }
 }
 
-const BookList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
-  let fontSize: number = 12;
-  if(cardStyle?.textSize) {
-    fontSize = cardStyle?.textSize;
-  }
-  let maxLetters: number = 28;
-  if(cardStyle?.maxCharacters) {
-    maxLetters = cardStyle?.maxCharacters;
-  }
+const BookList: React.FC<Props> = ({books, navigation, goTo}) => {
   //redux selected
   const dispatch = useReduxDispatch();
+
+  const handleBookPress = (book:Book) => {
+    dispatch(setLibrarySelected(book));
+    if(goTo !== "") {
+      navigation.push(goTo)
+    }
+  }
 
   return (
     <View style={{height: screenHeight - 156}}>
@@ -42,46 +33,32 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
         {books && books.length > 0 && books.map((book, index) => {
           if(book) {
           return (
-          <Pressable
-            onPress={() => {
-              dispatch(setSelected(book));
-              if(goTo !== "") {
-                navigation.push(goTo)
-              }
-            }} key={`${index} ${book.title}`} style={[styles.bookCard, cardStyle?.card]}>
+          <Pressable onPress={() => handleBookPress(book)} key={`${index} ${book.title}`} style={styles.bookCard}>
             {book.imageUrl !== '' ? 
-            <View style={[styles.flexCenter, styles.margin]}>
-              <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
-            </View>
-            :
-            <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
-              <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
-            </View>
+              <View style={[styles.flexCenter, styles.margin]}>
+                <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>
+              </View>
+              :
+              <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
+                <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+              </View>
             }
-            <View style={[styles.bookInfo, cardStyle?.text]}>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Title:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
-                <MyText 
-                  text={`  "${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}"`} 
-                  size={fontSize} style={cardStyle?.font} />
+            <View style={styles.bookInfo}>
+              <View style={styles.bookInfo}>
+                <Text style={[styles.contentText, styles.title]}><Text style={styles.sectionText}>Title:</Text>  {book.title.slice(0, 30)}{book.title.length >= 30 ? "..." : ""}</Text>
+                <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {book.authors && book.authors}</Text> 
+                <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {book.genres}</Text>
+                <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
               </View>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Author:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
-                  <MyText 
-                    text={`  ${book.authors[0] ? book.authors[0].slice(0, maxLetters - 3) : ''}${book.authors[0] && book.authors[0].length > maxLetters - 3 ? '...' : ''}`} 
-                    size={fontSize} style={cardStyle?.font} />
-              </View>
-
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Genres:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
-                {book.genres && book.genres.length > 0 && book.genres.map((genre, index) => (
-                  <MyText key={`${index} ${genre}`} text={`  ${genre}`} size={fontSize} style={cardStyle?.font} />
-                ))}
-              </View>
-      
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Pages:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.pages}`} size={fontSize} style={cardStyle?.font} />
-              </View>
+            </View>
+            <View>
+              {book.goalFinalized ? 
+                <MaterialIcons style={{position: 'relative', right: 100}} name="menu-book" size={24} color="#2bba00" />
+              :
+                <View style={{width: 24}}>
+                
+                </View>
+              }
             </View>
           </Pressable>
         )}})}
@@ -105,6 +82,7 @@ const styles = StyleSheet.create({
     marginTop: '1%',
     display: "flex",
     flexDirection: 'row',
+    justifyContent: 'space-between',
     overflow: 'hidden',
     shadowColor: 'black',
     shadowOffset: { width: 2, height: 2 },
@@ -117,7 +95,6 @@ const styles = StyleSheet.create({
     height: 75,
     resizeMode: 'cover',
     marginLeft: 10,
-    marginRight: 7,
   },
   flexCenter: {
     display: 'flex',
@@ -130,6 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bookInfo: {
+    width: '100%',
     marginLeft: 10,
     display: 'flex',
     flexDirection: 'column',
@@ -138,5 +116,16 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     color: '#636363',
+    fontFamily: 'serif', 
+    fontSize: 12,
+    fontStyle: 'normal',
+  },
+  title: {
+    fontStyle: 'italic',
+  },
+  contentText: {
+    color: 'black',
+    fontFamily: 'serif', 
+    fontSize: 12,
   },
 })

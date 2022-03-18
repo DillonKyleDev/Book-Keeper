@@ -9,43 +9,26 @@ import ReadingDayButton from './ReadingDayButton';
 import MyButton from '../Helper/MyButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { resetDailySelected, setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
+import { editBook } from '../../store/books/bookSlice';
+import { resetDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import CalculateReading from '../Helper/Functions/CalculateReading';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
 }
 
-const PickReadingDays: React.FC<Props> = ({navigation}) => {
-  const [ sunday, setSunday ] = useState(false);
-  const [ monday, setMonday ] = useState(false);
-  const [ tuesday, setTuesday ] = useState(false);
-  const [ wednesday, setWednesday ] = useState(false);
-  const [ thursday, setThursday ] = useState(false);
-  const [ friday, setFriday ] = useState(false);
-  const [ saturday, setSaturday ] = useState(false);
-  const [ minDaysSelected, setMinDaysSelected ] = useState(false);
+const PreviewGoal: React.FC<Props> = ({navigation}) => {
   //redux
   const dailySelected = useReduxSelector(state => state.dailySelected);
   const dispatch = useReduxDispatch();
 
-  useEffect(() => {
-    if(sunday || monday || tuesday || wednesday || thursday || friday || saturday) {
-      setMinDaysSelected(true);
-    } else setMinDaysSelected(false);
-  }, [ sunday, monday, tuesday, wednesday, thursday, friday, saturday ]);
-
-  const previewGoal = () => {
-    const tempSelected = dailySelected;
-    dispatch(setDailySelected({
-      ...tempSelected,
-      readingDays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
-      goalFinalized: true,
-    }));
-    if(minDaysSelected) {
-      navigation.push("PreviewGoalTab");
-    }
+  const handleCreateGoal = () => {
+    // navigation.pop(4);
+    // dispatch(editBook(dailySelected))
+    // navigation.push("DailyTab");
+    CalculateReading(dailySelected);
   }
 
   return (
@@ -64,27 +47,27 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
           <MyText style={{textAlign: 'center'}} text="Pick reading days:" size={16} />
           <View style={styles.weekdayContainer}>
             <View style={styles.weekdayByTwo}>
-              <ReadingDayButton weekday='Sunday' dateIsActive={sunday} setFunction={setSunday} />
-              <ReadingDayButton weekday='Monday' dateIsActive={monday} setFunction={setMonday} />
+              <ReadingDayButton weekday='Sunday' dateIsActive={dailySelected.readingDays[0]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Monday' dateIsActive={dailySelected.readingDays[1]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
             </View>
             <View style={styles.weekdayByTwo}>
-              <ReadingDayButton weekday='Tuesday' dateIsActive={tuesday} setFunction={setTuesday} />
-              <ReadingDayButton weekday='Wednesday' dateIsActive={wednesday} setFunction={setWednesday} />
-              <ReadingDayButton weekday='Thursday' dateIsActive={thursday} setFunction={setThursday} />
+              <ReadingDayButton weekday='Tuesday' dateIsActive={dailySelected.readingDays[2]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Wednesday' dateIsActive={dailySelected.readingDays[3]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Thursday' dateIsActive={dailySelected.readingDays[4]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
             </View>
             <View style={styles.weekdayByTwo}>
-              <ReadingDayButton weekday='Friday' dateIsActive={friday} setFunction={setFriday} />
-              <ReadingDayButton weekday='Saturday' dateIsActive={saturday} setFunction={setSaturday} />
+              <ReadingDayButton weekday='Friday' dateIsActive={dailySelected.readingDays[5]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Saturday' dateIsActive={dailySelected.readingDays[6]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
             </View>
           </View>
         </View>
-        <MyButton title="Preview Goal" isActive={minDaysSelected} onPress={previewGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
+        <MyButton title="Create Goal" onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
       </View>
     </View>
   )
 }
 
-export default PickReadingDays
+export default PreviewGoal
 
 const styles = StyleSheet.create({
   flexContainer: {

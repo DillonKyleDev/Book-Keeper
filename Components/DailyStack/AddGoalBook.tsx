@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { screenHeight } from '../../App';
+import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { resetSelected } from '../../store/selectedBook/selectedSlice';
+import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import MyButton from '../Helper/MyButton';
 
 interface Props {
@@ -14,32 +14,32 @@ interface Props {
 }
 
 const AddGoalBook: React.FC<Props> = ({navigation}) => {
-  const selected = useReduxSelector(state => state.selected);
+  const selected = useReduxSelector(state => state.librarySelected);
   const dispatch = useReduxDispatch();
 
   return (
     <View>
       <TopBar />
-      <View style={[{height: screenHeight - 130}, styles.flexContainer]}>
+      <View style={[{height: screenHeight - 100}, styles.flexContainer]}>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Use book from library"
             onPress={() => {
-              dispatch(resetSelected());
+              dispatch(resetLibrarySelected());
               navigation.push("AddFromLibraryTab");
             }}/>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Scan new book"
             onPress={() => {
-              dispatch(resetSelected());
+              dispatch(resetLibrarySelected());
               navigation.push("AddFromLibraryTab");
             }}/>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Enter book manually"
             onPress={() => {
-              dispatch(resetSelected());
+              dispatch(resetLibrarySelected());
               navigation.push("AddFromLibraryTab");
             }}/>
       </View>

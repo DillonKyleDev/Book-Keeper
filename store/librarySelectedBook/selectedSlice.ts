@@ -16,14 +16,14 @@ const initialState: Book = {
   goalFinalized: false,
 };
 
-const selectedSlice = createSlice({
-  name: 'selected',
+const librarySelectedSlice = createSlice({
+  name: 'librarySelected',
   initialState: initialState,
   reducers: {
-    resetSelected: (state) => initialState,
-    setSelected: (state, action: PayloadAction<Book>) => action.payload,
+    resetLibrarySelected: (state) => initialState,
+    setLibrarySelected: (state, action: PayloadAction<Book>) => action.payload,
   }
 })
 
-export const { resetSelected, setSelected } = selectedSlice.actions;
-export default selectedSlice.reducer
+export const { resetLibrarySelected, setLibrarySelected } = librarySelectedSlice.actions;
+export default librarySelectedSlice.reducer

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screenHeight } from '../../App';
+import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import TopBar from '../Helper/TopBar';
@@ -18,7 +18,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
-  const selected = useReduxSelector(state => state.selected);
+  const selected = useReduxSelector(state => state.librarySelected);
 
   return (
     <View>

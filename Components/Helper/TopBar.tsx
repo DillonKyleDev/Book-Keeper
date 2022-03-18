@@ -37,6 +37,8 @@ export default TopBar
 const styles = StyleSheet.create({
   navBody: {
     height: 70,
+    position: 'relative',
+    top: 0,
     width: '100%',
   },
   navBar: {

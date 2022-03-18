@@ -5,22 +5,26 @@ import { Button } from 'react-native-elements';
 interface Props {
   weekday: string;
   dateIsActive: boolean;
-  setFunction: (previous:boolean) => void;
+  setFunction?: (previous:boolean) => void;
+  buttonStyle?: {};
+  titleStyle?: {};
 }
 
-const ReadingDayButton: React.FC<Props> = ({weekday, dateIsActive, setFunction}) => {
+const ReadingDayButton: React.FC<Props> = ({weekday, dateIsActive, setFunction, buttonStyle, titleStyle}) => {
   return (
     <Button 
       title={weekday}
       titleStyle={[
         styles.titleStyles,
-        {color: `${dateIsActive ? 'white' : '#5e5e5e'}`}  
+        {color: `${dateIsActive ? 'white' : '#5e5e5e'}`}  ,
+        titleStyle,
       ]}
       buttonStyle={[
         styles.weekdayButton, 
         {backgroundColor: `${dateIsActive ? '#6c77f0' : '#f2f2f2'}`},
+        buttonStyle
       ]}
-      onPress={() => setFunction(!dateIsActive)}/>
+      onPress={() => {setFunction !== undefined && setFunction(!dateIsActive)}}/>
   )
 }
 

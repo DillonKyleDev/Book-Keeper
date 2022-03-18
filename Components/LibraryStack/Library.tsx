@@ -9,7 +9,7 @@ import SectionHeader from '../Helper/SectionHeader';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { resetSelected } from '../../store/selectedBook/selectedSlice';
+import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -18,7 +18,7 @@ interface Props {
 const Library: React.FC<Props> = ({navigation}) => {
   //store
   const books = useReduxSelector(state => state.books);
-  const selected = useReduxSelector(state => state.selected);
+  const selected = useReduxSelector(state => state.librarySelected);
   const dispatch = useReduxDispatch();
 
   const searchBar = 
@@ -50,7 +50,7 @@ const Library: React.FC<Props> = ({navigation}) => {
   <>
     <Button
       onPress={() => {
-        dispatch(resetSelected());
+        dispatch(resetLibrarySelected());
         navigation.push("AddBookTab")
       }}
       buttonStyle={{backgroundColor: 'transparent', padding: 0, marginRight: 20}}

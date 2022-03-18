@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { screenHeight } from '../../App';
+import { screenHeight } from './Functions/ScreenHeight';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -8,7 +8,7 @@ import { ISBN, FetchIsbn } from './Functions/FetchBooks';
 import MyText from './MyText';
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
-import { setSelected } from '../../store/selectedBook/selectedSlice';
+import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import { Book, bookNotFoundBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -23,8 +23,9 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [openScanner, setOpenScanner] = useState(true);
+  const [deviceHeight, setDeviceHeight] = useState(screenHeight !== undefined ? screenHeight - 130 : '100%')
   const dispatch = useReduxDispatch();
-  const selected = useReduxSelector(state => state.selected);
+  const selected = useReduxSelector(state => state.librarySelected);
   const bookNotFound: Book = bookNotFoundBook;
   
   useFocusEffect(() => {
@@ -47,10 +48,10 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
     const isbnData:ISBN = {path: "ISBN", isbn: data};
     const response = await FetchIsbn({isbnData: isbnData});
     if(response !== undefined && response[0] && response[0].title) {
-      dispatch(setSelected(response[0]));
+      dispatch(setLibrarySelected(response[0]));
       navigation.push("ShowSingleBookTab");
     } else {
-      dispatch(setSelected(bookNotFound));
+      dispatch(setLibrarySelected(bookNotFound));
       navigation.push("ShowSingleBookTab");
     }
   };
@@ -65,7 +66,7 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   return (
     <View>
       <TopBar />
-      <View style={[{height: screenHeight - 130, paddingTop: 40}]}>
+      <View style={[{height: deviceHeight, paddingTop: 40}]}>
         <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
         <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>

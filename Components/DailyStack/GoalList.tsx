@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
-import { screenHeight } from '../../App';
+import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
 //Redux
 import { useReduxDispatch } from '../../store';
-import { setSelected } from '../../store/selectedBook/selectedSlice';
+import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -53,7 +53,7 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
           return (
           <Pressable
             onPress={() => {
-              dispatch(setSelected(book));
+              dispatch(setLibrarySelected(book));
               if(goTo !== "") {navigation.push(goTo)}
             }} 
             key={`${index} ${book.title}`} 

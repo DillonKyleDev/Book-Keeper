@@ -1,17 +1,13 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-
-//Redux
-import { useReduxSelector } from './store';
 
 //Library tab imports
 import Library from './Components/LibraryStack/Library';
 import AddBook from './Components/LibraryStack/AddBook';
 import BarcodeScan from './Components/Helper/BarcodeScan';
 import FindBook from './Components/Helper/FindBook';
-import ShowSingleBook from './Components/Helper/ShowSingleBook';
+import ShowSingleBook from './Components/LibraryStack/ShowSingleBook';
 import BookList from './Components/Helper/BookList';
 
 //Daily tab imports
@@ -21,6 +17,7 @@ import LibraryList from './Components/DailyStack/LibraryList';
 import FinishBy from './Components/DailyStack/FinishBy';
 import PickReadingDays from './Components/DailyStack/PickReadingDays';
 import ShowSingleGoal from './Components/DailyStack/ShowSingleGoal';
+import PreviewGoal from './Components/DailyStack/PreviewGoal';
 
 //Preferences tab imports
 import Preferences from './Components/PreferencesStack/Preferences';
@@ -34,9 +31,6 @@ const LibraryStack = createNativeStackNavigator();
 const DailyStack = createNativeStackNavigator();
 const PreferencesStack = createNativeStackNavigator();
 
-//Screen dimensions
-export const screenWidth = Dimensions.get('window').width;
-export const screenHeight = Dimensions.get('window').height;
 
 const LibraryStackScreen = () => {
   return(
@@ -63,6 +57,7 @@ const DailyStackScreen = () => {
       <DailyStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
       <DailyStack.Screen name="PickReadingDaysTab" component={PickReadingDays} />
       <DailyStack.Screen name="ShowSingleGoalTab" component={ShowSingleGoal} />
+      <DailyStack.Screen name="PreviewGoalTab" component={PreviewGoal} />
     </DailyStack.Navigator>
   )
 }
@@ -75,7 +70,6 @@ const PreferencesStackScreen = () => {
 }
 
 export default function App() {
-  const selected = useReduxSelector(state => state.selected);
   const Tab = createMaterialTopTabNavigator();
 
   return (

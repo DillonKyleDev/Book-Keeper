@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { View, SafeAreaView, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
-import { screenHeight } from '../../App';
+import { View, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
+import { screenHeight } from './Functions/ScreenHeight';
 import BookList from './BookList';
 import SectionHeader from './SectionHeader';
 import TopBar from './TopBar';
@@ -29,7 +29,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
     <View>
       <TopBar />
       {searchResults[0].title === '' ?
-        <View style={[{height: screenHeight - 130, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
+        <View style={[{height: screenHeight - 100, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
           { !showAuthor ? 
           <>
             <MyText text='Enter book title' size={22} style={styles.searchText}/>
