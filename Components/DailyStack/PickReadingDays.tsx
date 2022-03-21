@@ -37,15 +37,13 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
   }, [ sunday, monday, tuesday, wednesday, thursday, friday, saturday ]);
 
   const previewGoal = () => {
-    const tempSelected = dailySelected;
     dispatch(setDailySelected({
-      ...tempSelected,
+      ...dailySelected,
       readingDays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
       goalFinalized: true,
     }));
-    if(minDaysSelected) {
-      navigation.push("PreviewGoalTab");
-    }
+    console.log(dailySelected.readingDays)
+    navigation.push("PreviewGoalTab");
   }
 
   return (

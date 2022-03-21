@@ -10,31 +10,17 @@ import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ReturnDateString from '../Helper/Functions/ReturnDateString';
-import ReturnReadingDays from '../Helper/Functions/ReturnReadingDays';
+import ReturnReadingDays from '../Helper/ReturnReadingDays';
 
 interface Props {
   books: Book[] | [];
   navigation: NativeStackNavigationProp<any>;
   goTo: string;
-  cardStyle?: {
-    card?: {} | {}[];
-    thumbnail?: {} | {}[];
-    text?: {} | {}[];
-    font?: {} | {}[];
-    textSize?: number;
-    maxCharacters?: number;
-  }
 }
 
-const GoalList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
-  let fontSize: number = 12;
-  if(cardStyle?.textSize) {
-    fontSize = cardStyle?.textSize;
-  }
-  let maxLetters: number = 28;
-  if(cardStyle?.maxCharacters) {
-    maxLetters = cardStyle?.maxCharacters;
-  }
+const GoalList: React.FC<Props> = ({books, navigation, goTo}) => {
+  const fontSize: number = 12;
+  const maxLetters: number = 28;
   //redux selected
   const dispatch = useReduxDispatch();
 
@@ -50,33 +36,33 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
               if(goTo !== "") {navigation.push(goTo)}
             }} 
             key={`${index} ${book.title}`} 
-            style={[styles.bookCard, cardStyle?.card]}>
+            style={[styles.bookCard]}>
 
             <View style={{display: 'flex'}}>
             {book.imageUrl !== '' ? 
               <View style={[styles.flexCenter, styles.margin]}>
-                <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
+                <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>
               </View>
             :
-              <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
+              <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
                 <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
               </View>
             }
             </View>
             <View style={{display: 'flex', flexDirection: 'column'}}>
-              <View style={[styles.bookInfo, cardStyle?.text]}>
+              <View style={[styles.bookInfo]}>
                 <View style={{display: 'flex', flexDirection: 'row'}}>
-                  <MyText text="Title:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
+                  <MyText text="Title:" size={fontSize} style={[styles.sectionText]} />
                   <MyText 
-                    text={`  ${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}`} 
-                    size={fontSize} style={cardStyle?.font} />
+                    text={`  ${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '..' : ''}`} 
+                    size={fontSize} />
                 </View>
                 <View style={{display: 'flex', flexDirection: 'row', marginTop: 5}}>
-                  <MyText text="Finish On:" size={fontSize} style={[styles.sectionText, cardStyle?.font]}/>
-                  <MyText text={`  ${ReturnDateString(book.finishOn).slice(2, -2)}`} size={fontSize} style={cardStyle?.font} />    
+                  <MyText text="Finish On:" size={fontSize} style={[styles.sectionText]}/>
+                  <MyText text={`  ${ReturnDateString(book.finishOn, false).slice(2, -2)}`} size={fontSize}/>    
                 </View>
                 <View style={{marginTop: 5}}>
-                  <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, cardStyle?.font, {marginBottom: 5, paddingBottom: 0}]} /><MyText text={``} size={fontSize} style={cardStyle?.font} />
+                  <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5, paddingBottom: 0}]} /><MyText text={``} size={fontSize} />
                   {ReturnReadingDays(book)}
                 </View>
               </View>

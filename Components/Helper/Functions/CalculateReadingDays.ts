@@ -1,6 +1,6 @@
 import { Book } from "../../../store/books/bookSlice"
 
-const CalculateReading = (book:Book) => {
+const CalculateReadingDays = (book:Book) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   let tomorrow =  new Date()
@@ -26,4 +26,4 @@ const CalculateReading = (book:Book) => {
   } else return 0;
 }
 
-export default CalculateReading
+export default CalculateReadingDays
