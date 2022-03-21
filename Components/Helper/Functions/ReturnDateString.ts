@@ -1,6 +1,14 @@
-  const ReturnDateString = (date: Date) => {
-    const monthNumber = date.getMonth();
-    const weekdayNumber = date.getDay();
+  const ReturnDateString = (date: Date | null) => {
+    let monthNumber = 0;
+    let weekdayNumber = 0;
+    let dateNumber = 0; 
+    let yearNumber = 0;  
+    if(typeof date !== 'string' && date !== null) {
+      monthNumber = date.getMonth();
+      weekdayNumber = date.getDay();
+      dateNumber = date.getDate();
+      yearNumber = date.getFullYear();
+    }
     let month:string = '';
     let weekday:string = '';
 
@@ -69,8 +77,7 @@
       default:
         break;
     }
-
-    return(`- ${weekday}, ${month} ${date.getDate()}, ${date.getFullYear()} -`);
+    return(`- ${weekday}, ${month} ${dateNumber}, ${yearNumber} -`);
   }
 
   export default ReturnDateString

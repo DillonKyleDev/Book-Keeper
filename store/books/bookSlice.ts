@@ -61,7 +61,12 @@ const bookSlice = createSlice({
     editBook: (state, action: PayloadAction<Book>) => {
       let tempState = state.map(book => {
         if(book.title === action.payload.title) {
-          return action.payload
+          return {
+            ...book,
+            goalFinalized: true,
+            finishOn: action.payload.finishOn,
+            readingDays: action.payload.readingDays,
+          }
         } else return book
       })
       return(tempState)

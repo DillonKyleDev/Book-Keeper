@@ -9,6 +9,8 @@ import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlic
 import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import ReturnDateString from '../Helper/Functions/ReturnDateString';
+import ReturnReadingDays from '../Helper/Functions/ReturnReadingDays';
 
 interface Props {
   books: Book[] | [];
@@ -36,15 +38,6 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
   //redux selected
   const dispatch = useReduxDispatch();
 
-  const returnReadingDays = (book:Book) => {
-    let daysArray: string[] = [];
-    for(let i = 0; i < 7; i++) {
-      if(book.readingDays[i]) {
-        daysArray.push('')
-      }
-    }
-  }
-
   return (
     <View style={{height: screenHeight - 156}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -59,37 +52,35 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, cardStyle}) => {
             key={`${index} ${book.title}`} 
             style={[styles.bookCard, cardStyle?.card]}>
 
+            <View style={{display: 'flex'}}>
             {book.imageUrl !== '' ? 
-            <View style={[styles.flexCenter, styles.margin]}>
-              <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
-            </View>
+              <View style={[styles.flexCenter, styles.margin]}>
+                <Image style={[styles.bookImage, cardStyle?.thumbnail]} source={{uri: book.imageUrl}}/>
+              </View>
             :
-            <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
-              <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
-            </View>
+              <View style={[styles.bookImage, styles.flexCenter, styles.margin, cardStyle?.thumbnail]}>
+                <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+              </View>
             }
-
-            <View style={[styles.bookInfo, cardStyle?.text]}>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="To read:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
-                <MyText 
-                  text={`  ${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}`} 
-                  size={fontSize} style={cardStyle?.font} />
-              </View>
-
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Pages Read:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.pagesRead} / ${book.pages}`} size={fontSize} style={cardStyle?.font} />
-              </View>
-
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Finish By:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={`  ${book.finishOn}`} size={fontSize} style={cardStyle?.font} />
-              </View>
-
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} /><MyText text={``} size={fontSize} style={cardStyle?.font} />
+            </View>
+            <View style={{display: 'flex', flexDirection: 'column'}}>
+              <View style={[styles.bookInfo, cardStyle?.text]}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <MyText text="Title:" size={fontSize} style={[styles.sectionText, cardStyle?.font]} />
+                  <MyText 
+                    text={`  ${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '...' : ''}`} 
+                    size={fontSize} style={cardStyle?.font} />
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row', marginTop: 5}}>
+                  <MyText text="Finish On:" size={fontSize} style={[styles.sectionText, cardStyle?.font]}/>
+                  <MyText text={`  ${ReturnDateString(book.finishOn).slice(2, -2)}`} size={fontSize} style={cardStyle?.font} />    
+                </View>
+                <View style={{marginTop: 5}}>
+                  <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, cardStyle?.font, {marginBottom: 5, paddingBottom: 0}]} /><MyText text={``} size={fontSize} style={cardStyle?.font} />
+                  {ReturnReadingDays(book)}
+                </View>
               </View>
             </View>
-
           </Pressable>
         )}})}
       </ScrollView>

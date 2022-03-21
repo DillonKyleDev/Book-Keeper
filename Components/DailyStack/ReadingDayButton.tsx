@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
   },
   titleStyles: {
     color: '#5e5e5e',
-    fontFamily: 'serif'
+    fontFamily: 'serif',
+    display: 'flex',
+    flexWrap: 'nowrap'
   },
 })

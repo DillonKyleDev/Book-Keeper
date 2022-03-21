@@ -60,7 +60,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
   const handleSetReadingGoal = () => {
     dispatch(setDailySelected(librarySelected));
     dispatch(resetLibrarySelected());
-    navigation.pop(3);
+    navigation.pop(2);
     navigation.navigate("SetGoalTab");
   }
 

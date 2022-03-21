@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import TopBar from '../Helper/TopBar';
@@ -10,7 +10,6 @@ import MyButton from '../Helper/MyButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { editBook } from '../../store/books/bookSlice';
-import { resetDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CalculateReading from '../Helper/Functions/CalculateReading';
@@ -25,10 +24,16 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const handleCreateGoal = () => {
-    // navigation.pop(4);
-    // dispatch(editBook(dailySelected))
-    // navigation.push("DailyTab");
-    CalculateReading(dailySelected);
+    dispatch(editBook(dailySelected))
+    navigation.pop(4);
+    navigation.push("DailyTab");
+  }
+
+  const returnReadingPerDay = () => {
+    if(CalculateReading(dailySelected) !== 0) {
+      return Math.floor(dailySelected.pages - dailySelected.pagesRead / CalculateReading(dailySelected));
+    }
+    return 0
   }
 
   return (
@@ -43,8 +48,8 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
           <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${ReturnDateString(dailySelected.finishOn)}`} size={16} />}
         </View>
 
-        <View style={{paddingTop: 10, borderTopColor: '#f2f2f2', borderTopWidth: 1, width: "90%", marginLeft: 'auto', marginRight: 'auto'}}>
-          <MyText style={{textAlign: 'center'}} text="Pick reading days:" size={16} />
+        <View style={styles.selectedDays}>
+          <MyText style={[{textAlign: 'center', paddingBottom: 5}, styles.titleStyles]} text="Selected reading days:" size={12} />
           <View style={styles.weekdayContainer}>
             <View style={styles.weekdayByTwo}>
               <ReadingDayButton weekday='Sunday' dateIsActive={dailySelected.readingDays[0]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
@@ -61,7 +66,14 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
             </View>
           </View>
         </View>
-        <MyButton title="Create Goal" onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
+        <View style={styles.readingPerDay}>
+          <MyText text="You'll need to read:" size={16} style={{textAlign: 'center'}}/>
+          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+            <MyText text={`${returnReadingPerDay() !== 0 ? `${returnReadingPerDay()} pages ` : "Please choose valid reading days"}`} size={20} style={{color: '#4b59f5'}}/>
+            <MyText text={`${returnReadingPerDay() !== 0 ? "every reading day" : ''}`} size={20}/>
+          </View>
+        </View>
+        <MyButton title="Create Goal" isActive={returnReadingPerDay() !== 0} onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
       </View>
     </View>
   )
@@ -80,14 +92,23 @@ const styles = StyleSheet.create({
     zIndex: 0,
     marginBottom: -290, 
   },
+  selectedDays: {
+    paddingTop: 20, 
+    paddingBottom: 20,
+    borderBottomColor: '#f2f2f2', 
+    borderBottomWidth: 1, 
+    borderTopColor: '#f2f2f2', 
+    borderTopWidth: 1, 
+    width: "90%", 
+    marginLeft: 'auto', 
+    marginRight: 'auto',
+  },
   weekdayContainer: {
-    marginTop: 10,
-    marginBottom: 0,
-    paddingBottom: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignContent: 'center', 
+    borderBottomColor: '#f2f2f2', 
   },
   weekdayByTwo: {
     display: 'flex',
@@ -105,5 +126,8 @@ const styles = StyleSheet.create({
   titleStyles: {
     color: '#5e5e5e',
     fontFamily: 'serif'
+  },
+  readingPerDay: {
+
   },
 });
