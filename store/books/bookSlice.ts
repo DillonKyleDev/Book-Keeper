@@ -58,7 +58,7 @@ const bookSlice = createSlice({
       const newState = state.filter((book: Book) => book.title !== action.payload.title)
       return(newState);
     },
-    editBook: (state, action: PayloadAction<Book>) => {
+    createGoal: (state, action: PayloadAction<Book>) => {
       let tempState = state.map(book => {
         if(book.title === action.payload.title) {
           return {
@@ -71,8 +71,19 @@ const bookSlice = createSlice({
       })
       return(tempState)
     },
+    updatePages: (state, action: PayloadAction<Book>) => {
+      let tempState = state.map(book => {
+        if(book.title === action.payload.title) {
+          return {
+            ...book,
+            pagesRead: action.payload.pagesRead
+          }
+        } else return book
+      })
+      return(tempState)
+    }
   },
 })
 
-export const { setBooks, resetBooks, addBook, removeBook, editBook } = bookSlice.actions
+export const { setBooks, resetBooks, addBook, removeBook, createGoal, updatePages } = bookSlice.actions
 export default bookSlice.reducer

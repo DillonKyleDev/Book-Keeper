@@ -5,8 +5,13 @@ const CalculateReadingDays = (book:Book) => {
   today.setHours(0, 0, 0, 0);
   let tomorrow =  new Date()
   tomorrow.setDate(today.getDate() + 1)
-  book.finishOn?.setHours(0,0,0,0);
-  const endDate:Date | null = book.finishOn;
+  let endDate:Date = new Date();
+  if(typeof book.finishOn === 'string') {
+    endDate = new Date(book.finishOn);
+  } else if(typeof book.finishOn !== 'string' && book.finishOn !== null) {
+    endDate = book.finishOn;
+  }
+  endDate.setHours(0,0,0,0);
 
   if(endDate !== null) {
     //find total number of days between today and finish date

@@ -10,7 +10,7 @@ import MyButton from '../Helper/MyButton';
 import CalculatePagesPerDay from '../Helper/Functions/CalculatePagesPerDay';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { editBook } from '../../store/books/bookSlice';
+import { createGoal } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -24,7 +24,7 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const handleCreateGoal = () => {
-    dispatch(editBook(dailySelected))
+    dispatch(createGoal(dailySelected))
     navigation.pop(4);
     navigation.push("DailyTab");
   }

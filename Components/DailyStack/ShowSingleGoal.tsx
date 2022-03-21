@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TextInput } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper//MyText';
+import ReturnDateString from '../Helper/Functions/ReturnDateString';
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
-//Navigation
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-
-interface Props {
-  navigation: NativeStackNavigationProp<any, any>;
-}
-
-const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
+const ShowSingleGoal: React.FC = () => {
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
   const selected = useReduxSelector(state => state.librarySelected);
+
+  const [ newPages, setNewPages ] = useState<number | string>(selected.pagesRead);
+
+  const handleChange = (e:string) => {
+
+  }
 
   return (
     <View>
@@ -39,10 +40,20 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
               
             <View style={styles.bookInfo}>
               <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{selected.title}"</Text>
+              
+              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
+                <MyText text="Finish On:" size={14} style={[styles.sectionText]}/>
+                <MyText text={`  ${ReturnDateString(selected.finishOn, true).slice(2, -2)}`} size={14}/>    
+              </View>
 
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Progress:</Text>  {selected.pages}</Text>
+              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
+                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 10}}>
+                  <MyText text="Pages read:  " size={14} style={styles.sectionText}/>
+                  <MyText text={`${selected.pagesRead}`} size={16} style={{color: 'green'}}/>
+                </View>
+                <Button title="...edit..." buttonStyle={styles.editButton} titleStyle={styles.buttonText}/>
+              </View>
             </View>
-                
           </View>
         </ScrollView>
       </View>
@@ -101,5 +112,14 @@ const styles = StyleSheet.create({
   },
   genreItem: {
     padding: 1,
+  },
+  editButton: {
+    backgroundColor: 'transparent', 
+    padding: 0, 
+  },
+  buttonText: {
+    color: '#4b59f5', 
+    fontFamily: 'serif',
+    fontSize: 14
   },
 })

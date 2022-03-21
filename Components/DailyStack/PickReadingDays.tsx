@@ -9,7 +9,7 @@ import ReadingDayButton from './ReadingDayButton';
 import MyButton from '../Helper/MyButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { resetDailySelected, setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
+import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -55,7 +55,7 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
         <View>
           <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`Finish date selected: `} size={12} />
           {dailySelected.finishOn !== null && 
-          <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${ReturnDateString(dailySelected.finishOn)}`} size={16} />}
+          <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${ReturnDateString(dailySelected.finishOn, true)}`} size={16} />}
         </View>
 
         <View style={{paddingTop: 10, borderTopColor: '#f2f2f2', borderTopWidth: 1, width: "90%", marginLeft: 'auto', marginRight: 'auto'}}>
