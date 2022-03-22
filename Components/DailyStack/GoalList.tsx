@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { Button } from 'react-native-elements';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
-//Redux
-import { useReduxDispatch } from '../../store';
-import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
-import { Book, updatePages } from '../../store/books/bookSlice';
-//Navigation
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ReturnReadingDays from '../Helper/ReturnReadingDays';
 import ProgressBar from './ProgressBar';
 import CalculatePagesPerDay from '../Helper/Functions/CalculatePagesPerDay';
+//Redux
+import { useReduxDispatch } from '../../store';
+import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
+import { Book, ReadingDate, updatePages } from '../../store/books/bookSlice';
+//Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import SetReadingDaysState from '../Helper/Functions/ReturnReadingDates';
 
 interface Props {
   books: Book[] | [];
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const GoalList: React.FC<Props> = ({books, navigation, goTo}) => {
+  const [ dailyDone, setDailyDone ] = useState(false);
   const fontSize: number = 12;
   const maxLetters: number = 28;
   //redux selected
@@ -32,12 +34,17 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo}) => {
   }
 
   const handleCompletedReading = (book:Book) => {
-    console.log(CalculatePagesPerDay(book))
-    const tempBook:Book = {
-      ...book,
-      pagesRead: CalculatePagesPerDay(book)
-    }
-    dispatch(updatePages(tempBook))
+    SetReadingDaysState(book)
+    //TODO
+
+    // if(!dailyDone) {
+    //   setDailyDone(true);
+    //   const tempBook:Book = {
+    //     ...book,
+    //     pagesRead: CalculatePagesPerDay(book)
+    //   }
+    //   dispatch(updatePages(tempBook))
+    // }
   }
 
   return (
@@ -76,7 +83,7 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo}) => {
                     <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
                     {ReturnReadingDays(book)}
                     <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <MyText text="Completed Reading?" size={10} style={{marginRight: 6}}/><Button onPress={ () => handleCompletedReading(book)} buttonStyle={{width: 25, height: 25, borderWidth: 3, borderColor: '#249c00', backgroundColor: 'transparent'}}/>
+                    <MyText text="Completed Reading?" size={15} style={{marginRight: 6}}/><Button onPress={ () => handleCompletedReading(book)} buttonStyle={{width: 25, height: 25, borderWidth: 3, borderColor: '#249c00', backgroundColor: 'transparent'}}/>
                     </View>
                   </View>
                 </View>

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Book } from '../books/bookSlice';
+import { Book, ReadingDate } from '../books/bookSlice';
 
 const initialState: Book = {
   title: '',
@@ -14,6 +14,7 @@ const initialState: Book = {
   readingDays: [],
   finishOn: new Date(),
   goalFinalized: false,
+  readingDates: [],
 };
 
 const librarySelectedSlice = createSlice({

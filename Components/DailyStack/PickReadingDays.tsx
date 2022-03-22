@@ -10,8 +10,10 @@ import MyButton from '../Helper/MyButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
+import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import ReturnReadingDates from '../Helper/Functions/ReturnReadingDates';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -37,12 +39,15 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
   }, [ sunday, monday, tuesday, wednesday, thursday, friday, saturday ]);
 
   const previewGoal = () => {
-    dispatch(setDailySelected({
+    let tempSelected:Book = {
       ...dailySelected,
       readingDays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
       goalFinalized: true,
+    }
+    dispatch(setDailySelected({
+      ...tempSelected,
+      readingDates: ReturnReadingDates(tempSelected)
     }));
-    console.log(dailySelected.readingDays)
     navigation.push("PreviewGoalTab");
   }
 

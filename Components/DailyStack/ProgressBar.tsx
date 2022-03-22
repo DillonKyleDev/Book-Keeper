@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Book } from '../../store/books/bookSlice';
 import { Entypo } from '@expo/vector-icons';
@@ -13,10 +13,6 @@ const ProgressBar: React.FC<Props> = ({book}) => {
   const pagesRead = book.pagesRead;
   const outOf = book.pages;
   const percentage = parseFloat((pagesRead/outOf).toString().slice(0, 4));
-
-  useEffect(() => {
-    console.log(pagesRead, outOf, percentage.toString().slice(0, 4))
-  },[])
 
   return (
     <View style={styles.barContainer}>

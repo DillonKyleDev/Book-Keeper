@@ -6,17 +6,20 @@ import { Foundation } from '@expo/vector-icons';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper//MyText';
 import ReturnDateString from '../Helper/Functions/ReturnDateString';
+import ReturnReadingDays from '../Helper/ReturnReadingDays';
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
+import ReturnReadingDates from '../Helper/Functions/ReturnReadingDates';
 
 const ShowSingleGoal: React.FC = () => {
   //redux persist
   const dispatch = useReduxDispatch()
-  const books = useReduxSelector(state => state.books);
-  const selected = useReduxSelector(state => state.librarySelected);
+  const dailySelected = useReduxSelector(state => state.dailySelected);
 
-  const [ newPages, setNewPages ] = useState<number | string>(selected.pagesRead);
-
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const todaysDate = ReturnDateString(today, true);
+  const [ newPages, setNewPages ] = useState<number | string>(dailySelected.pagesRead);
   const handleChange = (e:string) => {
 
   }
@@ -28,9 +31,9 @@ const ShowSingleGoal: React.FC = () => {
         <ScrollView>
           <View style={styles.bookCard}>
 
-            {selected.imageUrl !== '' ? 
+            {dailySelected.imageUrl !== '' ? 
             <View style={[styles.flexCenter, styles.margin]}>
-              <Image style={styles.bookImage} source={{uri: selected.imageUrl}}/>
+              <Image style={styles.bookImage} source={{uri: dailySelected.imageUrl}}/>
             </View>
             :
             <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
@@ -39,20 +42,28 @@ const ShowSingleGoal: React.FC = () => {
             }
               
             <View style={styles.bookInfo}>
-              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{selected.title}"</Text>
+              <Text style={{fontFamily: 'serif'}}><Text style={styles.sectionText}>Title:</Text>  "{dailySelected.title}"</Text>
               
               <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
                 <MyText text="Finish On:" size={14} style={[styles.sectionText]}/>
-                <MyText text={`  ${ReturnDateString(selected.finishOn, true).slice(2, -2)}`} size={14}/>    
+                <MyText text={`  ${ReturnDateString(dailySelected.finishOn, true).slice(2, -2)}`} size={14}/>    
               </View>
 
               <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 10}}>
                   <MyText text="Pages read:  " size={14} style={styles.sectionText}/>
-                  <MyText text={`${selected.pagesRead}`} size={16} style={{color: 'green'}}/>
+                  <MyText text={`${dailySelected.pagesRead} / ${dailySelected.pages}`} size={16} style={{color: 'green'}}/>
                 </View>
                 <Button title="...edit..." buttonStyle={styles.editButton} titleStyle={styles.buttonText}/>
               </View>
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}>
+                <MyText text="Next reading day: " size={14} style={styles.sectionText} />
+                <MyText text={` ${ReturnReadingDates(dailySelected)[0].date !== todaysDate ? ReturnReadingDates(dailySelected)[0].date : "Today"}`} size={14}/>
+              </View>
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: -10}}>
+                {ReturnReadingDays(dailySelected)}
+              </View>
+
             </View>
           </View>
         </ScrollView>

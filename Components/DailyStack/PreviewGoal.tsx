@@ -24,6 +24,7 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const handleCreateGoal = () => {
+    //console.log(dailySelected.readingDates, "In here!")
     dispatch(createGoal(dailySelected))
     navigation.pop(4);
     navigation.push("DailyTab");
