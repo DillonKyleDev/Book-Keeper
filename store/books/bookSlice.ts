@@ -62,6 +62,12 @@ export const Statuses = {
   todayPending: "TodayPending"
 }
 
+type UpdateRead = {
+  book:Book;
+  daysRead:number;
+  totalPages:number;
+}
+
 const bookSlice = createSlice({
   name: 'books',
   initialState: initialState,
@@ -97,13 +103,15 @@ const bookSlice = createSlice({
       })
       return(tempState)
     },
-    updateSingleDate: (state, action: PayloadAction<Book>) => {
-      let tempState = state.map(book => {
-        if(book.title === action.payload.title) {
-          let singleChange = false;
+    updateDatesRead: (state, action: PayloadAction<UpdateRead>) => {
+      let tempState:Book[] = state.map(book => {
+        if(book.title === action.payload.book.title) {
+          let max = action.payload.daysRead;
+          let count = 1;
+          let prevPagesRead = book.pagesRead
           const tempDates = book.readingDates.map(date => {
-            if(!singleChange && !date.completed) {
-              singleChange = true;
+            if(!date.completed && count <= max) {
+              count++;
               return {
                 ...date,
                 completed: true
@@ -112,7 +120,8 @@ const bookSlice = createSlice({
           })
           return {
             ...book,
-            readingDates: tempDates
+            readingDates: tempDates,
+            pagesRead: prevPagesRead + action.payload.totalPages
           }
         } else return book
       })
@@ -121,5 +130,5 @@ const bookSlice = createSlice({
   },
 })
 
-export const { setBooks, resetBooks, addBook, removeBook, createGoal, updatePages, updateSingleDate } = bookSlice.actions
+export const { setBooks, resetBooks, addBook, removeBook, createGoal, updatePages, updateDatesRead } = bookSlice.actions
 export default bookSlice.reducer

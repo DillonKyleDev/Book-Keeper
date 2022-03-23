@@ -7,7 +7,7 @@ const ReturnGoalStatus = (book:Book) => {
   let isLate = false;
   let todaysGoal = false;
   //For testing late goal logic
-  //today.setDate(today.getDate() + 2)
+  today.setDate(today.getDate())
 
   if(book.goalFinalized) {
     if(book.readingDates !== undefined) {
@@ -16,7 +16,7 @@ const ReturnGoalStatus = (book:Book) => {
       book.readingDates.every((dateObject:ReadingDate) => {
         const tempDate = new Date(dateObject.date);
         tempDate.setHours(0,0,0,0);
-        if(today.getTime() > tempDate.getTime()) {
+        if(today.getTime() > tempDate.getTime() && dateObject.completed === false) {
           status = Statuses.late;
           isLate = true;
           return false;

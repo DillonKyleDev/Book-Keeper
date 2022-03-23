@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Book } from '../../store/books/bookSlice';
+import MyText from '../Helper/MyText';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -12,8 +13,8 @@ interface Props {
 const ProgressBar: React.FC<Props> = ({book}) => {
   const pagesRead = book.pagesRead;
   const outOf = book.pages;
-  const percentage = parseFloat((pagesRead/outOf).toString().slice(0, 4));
-
+  const percentage = parseFloat((pagesRead/outOf).toString().slice(0, 4)) * 100;
+  console.log(book.title, percentage)
   return (
     <View style={styles.barContainer}>
       <View style={[styles.iconContainer]}>
@@ -26,7 +27,11 @@ const ProgressBar: React.FC<Props> = ({book}) => {
       <View style={[styles.progressBar, {width: `${percentage}%`}]} />
       <View style={[{width: '100%', position: 'absolute', display: 'flex', flexDirection: 'row'}]}>
       <View style={{width: `${percentage}%`}}/>
-        {percentage <= 95 && percentage >= 1 && <MaterialIcons style={[styles.icon, {right: 12, bottom: 2}]} name="menu-book" size={24} color="#249c00" />}
+        {percentage <= 95 && percentage >= 1 && 
+        <>
+          <MaterialIcons style={[styles.icon, {right: 12, bottom: 2}]} name="menu-book" size={24} color="#249c00" />
+          <MyText text={`${percentage}%`} size={8} style={{color: "green", position: "relative", top: 20, right: 30}}/>
+        </>}
       </View>
     </View>
   )

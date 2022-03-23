@@ -9,7 +9,7 @@ import SectionNavigator from './SectionNavigator';
 import ReturnGoalStatus from '../Helper/Functions/ReturnGoalStatus';
 //Redux
 import { useReduxSelector } from '../../store';
-import { Book, Statuses } from '../../store/books/bookSlice';
+import { Book, Statuses, emptyBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -61,19 +61,26 @@ const Daily: React.FC<Props> = ({navigation}) => {
         if(displaySection === "Today") {
           if(ReturnGoalStatus(book) === Statuses.todayDone || ReturnGoalStatus(book) === Statuses.todayPending) {
             return book;
-          }
+          } else return emptyBook;
         } else
         if(displaySection === "Late") {
           if(ReturnGoalStatus(book) === Statuses.late) {
             return book;
-          }
+          } else return emptyBook;
         } else
         return book;
       };
     })
-    return {goalArray: tempArray, hasLateGoals: hasLateGoals}
-  }
+    let containsGoals = false;
+    tempArray.every(goal => {
+      if(goal !== undefined && goal.title !== '') {
+        containsGoals = true;
+        return false;
+      } return true;
+    })
 
+    return {goalArray: tempArray, hasLateGoals: hasLateGoals, containsGoals: containsGoals}
+  }
 
   const sectionNav = <SectionNavigator displaySection={displaySection} handleSectionChange={(section) => handleSectionChange(section)} hasLateGoals={booksWithStatus().hasLateGoals}/>
 
@@ -81,7 +88,7 @@ const Daily: React.FC<Props> = ({navigation}) => {
     <View>
       <TopBar />
       <SectionHeader title='Daily Goals' button={plusButton}/>
-      <GoalList books={booksWithStatus().goalArray} navigation={navigation} goTo={'ShowSingleGoalTab'} sectionNavigator={sectionNav} hasLateGoals={booksWithStatus().hasLateGoals}/>
+      <GoalList books={booksWithStatus().goalArray} containsGoals={booksWithStatus().containsGoals} navigation={navigation} goTo={'ShowSingleGoalTab'} sectionNavigator={sectionNav} hasLateGoals={booksWithStatus().hasLateGoals}/>
     </View>
   )
 }
