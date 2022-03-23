@@ -47,8 +47,9 @@ const mapData = (data: []) => {
       link: book.volumeInfo.previewLink ? book.volumeInfo.previewLink : '',
       rating: book.volumeInfo.averageRating ? book.volumeInfo.averageRating : 0,
       finishOn: null,
-      readingDays: [],
+      readingWeekdays: [],
       goalFinalized: false,
+      readingDates: [],
     }
     return(singleBook)
   })

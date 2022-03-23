@@ -74,10 +74,11 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
       pagesRead: 0,
       pages: librarySelected.pages,
       finishOn: null,
-      readingDays: [],
+      readingWeekdays: [],
       link: librarySelected.link,
       rating: librarySelected.rating,
       goalFinalized: false,
+      readingDates: [],
     }))
     setBookSaved(true);
   };

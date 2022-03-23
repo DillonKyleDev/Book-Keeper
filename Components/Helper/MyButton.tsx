@@ -11,18 +11,19 @@ interface Props {
   inactiveTextColor?: string;
   isActive?: boolean;
   customStyle?: {};
+  titleStyle?: {};
 }
 
-const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, activeTextColor, inactiveTextColor, isActive, customStyle}) => {
+const MyButton: React.FC<Props> = ({title, onPress, activeColor, inactiveColor, activeTextColor, inactiveTextColor, isActive, customStyle, titleStyle}) => {
   return (
     <>
     { isActive !== undefined ?
     <Button 
       title={title}
-      titleStyle={{
-        fontFamily: 'serif',
-        color: 'white'
-      }}
+      titleStyle={[
+        {fontFamily: 'serif', color: 'white'},
+        titleStyle
+      ]}
       buttonStyle={[
         styles.constantButton, 
         {backgroundColor: `${isActive ? '#4b59f5' : '#bec3fa'}`},

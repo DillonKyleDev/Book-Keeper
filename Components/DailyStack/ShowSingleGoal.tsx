@@ -58,7 +58,7 @@ const ShowSingleGoal: React.FC = () => {
               </View>
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}>
                 <MyText text="Next reading day: " size={14} style={styles.sectionText} />
-                <MyText text={` ${ReturnReadingDates(dailySelected)[0].date !== todaysDate ? ReturnReadingDates(dailySelected)[0].date : "Today"}`} size={14}/>
+                <MyText text={` ${dailySelected.readingDates[0].date !== today ? ReturnDateString(dailySelected.readingDates[0].date, true).slice(2,-2) : "Today"}`} size={14}/>
               </View>
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: -10}}>
                 {ReturnReadingDays(dailySelected)}

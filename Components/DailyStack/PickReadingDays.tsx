@@ -41,7 +41,7 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
   const previewGoal = () => {
     let tempSelected:Book = {
       ...dailySelected,
-      readingDays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
+      readingWeekdays: [sunday, monday, tuesday, wednesday, thursday, friday, saturday],
       goalFinalized: true,
     }
     dispatch(setDailySelected({

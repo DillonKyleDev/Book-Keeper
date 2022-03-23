@@ -16,13 +16,13 @@ const CalculateReadingDays = (book:Book) => {
   if(endDate !== null) {
     //find total number of days between today and finish date
     const timeDiff:number = endDate.getTime() - today.getTime();
-    const daysBetween:number = timeDiff / (1000 * 3600 * 24);
+    const daysBetween:number = (timeDiff / (1000 * 3600 * 24)) + 1;
 
     //find total active reading days based on selected reading days
     let totalReadingDays:number = 0;
-    let currentDate = tomorrow;
+    let currentDate = today;
     for(let i = 0; i < daysBetween; i++) {
-      if(book.readingDays[currentDate.getDay()]) {
+      if(book.readingWeekdays[currentDate.getDay()]) {
         totalReadingDays++;
       }
       currentDate.setDate(currentDate.getDate() + 1)

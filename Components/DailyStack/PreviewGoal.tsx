@@ -24,9 +24,8 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const handleCreateGoal = () => {
-    //console.log(dailySelected.readingDates, "In here!")
     dispatch(createGoal(dailySelected))
-    navigation.pop(4);
+    navigation.pop(3);
     navigation.push("DailyTab");
   }
 
@@ -46,17 +45,17 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
           <MyText style={[{textAlign: 'center', paddingBottom: 5}, styles.titleStyles]} text="Selected reading days:" size={12} />
           <View style={styles.weekdayContainer}>
             <View style={styles.weekdayByTwo}>
-              <ReadingDayButton weekday='Sunday' dateIsActive={dailySelected.readingDays[0]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
-              <ReadingDayButton weekday='Monday' dateIsActive={dailySelected.readingDays[1]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Sunday' dateIsActive={dailySelected.readingWeekdays[0]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Monday' dateIsActive={dailySelected.readingWeekdays[1]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
             </View>
             <View style={styles.weekdayByTwo}>
-              <ReadingDayButton weekday='Tuesday' dateIsActive={dailySelected.readingDays[2]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
-              <ReadingDayButton weekday='Wednesday' dateIsActive={dailySelected.readingDays[3]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
-              <ReadingDayButton weekday='Thursday' dateIsActive={dailySelected.readingDays[4]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Tuesday' dateIsActive={dailySelected.readingWeekdays[2]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Wednesday' dateIsActive={dailySelected.readingWeekdays[3]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Thursday' dateIsActive={dailySelected.readingWeekdays[4]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
             </View>
             <View style={styles.weekdayByTwo}>
-              <ReadingDayButton weekday='Friday' dateIsActive={dailySelected.readingDays[5]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
-              <ReadingDayButton weekday='Saturday' dateIsActive={dailySelected.readingDays[6]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Friday' dateIsActive={dailySelected.readingWeekdays[5]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
+              <ReadingDayButton weekday='Saturday' dateIsActive={dailySelected.readingWeekdays[6]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />
             </View>
           </View>
         </View>

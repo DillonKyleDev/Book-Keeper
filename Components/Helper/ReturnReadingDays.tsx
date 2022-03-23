@@ -11,7 +11,7 @@ const ReturnReadingDays = (book:Book) => {
   let daysArray: React.ReactFragment[] = [];
   
   for(let i = 0; i < 7; i++) {
-    if(book.readingDays[i]) {
+    if(book.readingWeekdays[i]) {
       daysArray.push(
         <React.Fragment key={weekdays[i]}>
           <View style={{display: 'flex', flexDirection: 'column'}}>

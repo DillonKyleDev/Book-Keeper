@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: Book[] = [];
 
 export type ReadingDate = {
-  date:string;
+  date:Date;
   completed:boolean;
 }
 
@@ -18,7 +18,7 @@ export interface Book {
   pagesRead: number;
   pages: number;
   finishOn: Date | null;
-  readingDays: boolean[];
+  readingWeekdays: boolean[];
   goalFinalized: boolean;
   readingDates: ReadingDate[];
 }
@@ -32,7 +32,7 @@ export const emptyBook:Book = {
   pagesRead: 0,
   pages: 0,
   finishOn: null,
-  readingDays: [],
+  readingWeekdays: [],
   link: '',
   rating: 0,
   goalFinalized: false,
@@ -50,9 +50,16 @@ export const bookNotFoundBook:Book = {
   pagesRead: 0,
   pages: 0,
   finishOn: null,
-  readingDays: [],
+  readingWeekdays: [],
   goalFinalized: false,
   readingDates: [],
+}
+
+export const Statuses = {
+  current: "Current",
+  late: "Late",
+  todayDone: "TodayDone",
+  todayPending: "TodayPending"
 }
 
 const bookSlice = createSlice({
@@ -67,21 +74,17 @@ const bookSlice = createSlice({
       return(newState);
     },
     createGoal: (state, action: PayloadAction<Book>) => {
-      let tempState = state;
-      tempState.map(book => {
+      return state.map(book => {
         if(book.title === action.payload.title) {
-          console.log(book.readingDates)
-          const tempBook:Book = book;
           return {
-            ...tempBook,
+            ...book,
             goalFinalized: true,
             finishOn: action.payload.finishOn,
-            readingDays: action.payload.readingDays,
+            readingWeekdays: action.payload.readingWeekdays,
             readingDates: [...action.payload.readingDates],
           }
         } else return book
       })
-      return(tempState)
     },
     updatePages: (state, action: PayloadAction<Book>) => {
       let tempState = state.map(book => {
@@ -94,21 +97,29 @@ const bookSlice = createSlice({
       })
       return(tempState)
     },
-    updateReadingDates: (state, action: PayloadAction<Book>) => {
+    updateSingleDate: (state, action: PayloadAction<Book>) => {
       let tempState = state.map(book => {
-        console.log(action.payload.readingDates)
         if(book.title === action.payload.title) {
-          const tempBook:Book = book;
+          let singleChange = false;
+          const tempDates = book.readingDates.map(date => {
+            if(!singleChange && !date.completed) {
+              singleChange = true;
+              return {
+                ...date,
+                completed: true
+              }
+            } else return date
+          })
           return {
-            ...tempBook,
-            readingDates: action.payload.readingDates
+            ...book,
+            readingDates: tempDates
           }
         } else return book
       })
       return(tempState)
-    }
+    },
   },
 })
 
-export const { setBooks, resetBooks, addBook, removeBook, createGoal, updatePages, updateReadingDates } = bookSlice.actions
+export const { setBooks, resetBooks, addBook, removeBook, createGoal, updatePages, updateSingleDate } = bookSlice.actions
 export default bookSlice.reducer

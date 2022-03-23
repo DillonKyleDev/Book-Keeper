@@ -11,7 +11,7 @@ const initialState: Book = {
   pages: 0,
   link: '',
   rating: 0,
-  readingDays: [],
+  readingWeekdays: [],
   finishOn: new Date(),
   goalFinalized: false,
   readingDates: [],
