@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: Book[] = [];
-
 export type ReadingDate = {
   date:Date;
   completed:boolean;
@@ -21,6 +19,8 @@ export interface Book {
   readingWeekdays: boolean[];
   goalFinalized: boolean;
   readingDates: ReadingDate[];
+  goalCompleted: boolean;
+  completionDate: Date | null;
 }
 
 export const emptyBook:Book = {
@@ -37,6 +37,8 @@ export const emptyBook:Book = {
   rating: 0,
   goalFinalized: false,
   readingDates: [],
+  goalCompleted: false,
+  completionDate: null,
 }
 
 export const bookNotFoundBook:Book = {
@@ -53,13 +55,17 @@ export const bookNotFoundBook:Book = {
   readingWeekdays: [],
   goalFinalized: false,
   readingDates: [],
+  goalCompleted: false,
+  completionDate: null,
 }
 
 export const Statuses = {
   current: "Current",
   late: "Late",
   todayDone: "TodayDone",
-  todayPending: "TodayPending"
+  todayPending: "TodayPending",
+  goalCompleted: "GoalCompleted",
+  goalCompletedToday: "GoalCompletedToday",
 }
 
 type UpdateRead = {
@@ -67,6 +73,8 @@ type UpdateRead = {
   daysRead:number;
   totalPages:number;
 }
+
+const initialState: Book[] = [emptyBook];
 
 const bookSlice = createSlice({
   name: 'books',
@@ -108,7 +116,10 @@ const bookSlice = createSlice({
         if(book.title === action.payload.book.title) {
           let max = action.payload.daysRead;
           let count = 1;
-          let prevPagesRead = book.pagesRead
+          let prevPagesRead = book.pagesRead;
+          let goalCompleted = false;
+          let dateCompleted = null;
+          //update readingDates
           const tempDates = book.readingDates.map(date => {
             if(!date.completed && count <= max) {
               count++;
@@ -118,10 +129,19 @@ const bookSlice = createSlice({
               }
             } else return date
           })
+          //update goalCompleted and dateCompleted if necessary
+          if(book.pagesRead + action.payload.totalPages >= book.pages) {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            goalCompleted = true;
+            dateCompleted = today;
+          }
           return {
             ...book,
             readingDates: tempDates,
-            pagesRead: prevPagesRead + action.payload.totalPages
+            pagesRead: prevPagesRead + action.payload.totalPages,
+            goalCompleted: goalCompleted,
+            completionDate: dateCompleted,
           }
         } else return book
       })

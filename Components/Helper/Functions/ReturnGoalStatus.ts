@@ -1,4 +1,5 @@
 import { Book, ReadingDate, Statuses } from '../../../store/books/bookSlice';
+import ReturnDateString from './ReturnDateString';
 
 const ReturnGoalStatus = (book:Book) => {
   let today = new Date();
@@ -8,6 +9,11 @@ const ReturnGoalStatus = (book:Book) => {
   let todaysGoal = false;
   //For testing late goal logic
   today.setDate(today.getDate())
+  let completionDate:Date | null = null;
+  if(book.completionDate !== null) {
+    completionDate = new Date(book.completionDate);
+    completionDate.setHours(0,0,0,0);
+  }
 
   if(book.goalFinalized) {
     if(book.readingDates !== undefined) {
@@ -43,6 +49,13 @@ const ReturnGoalStatus = (book:Book) => {
       //Else it's a current book
       if(!isLate && !todaysGoal) {
         status = Statuses.current;
+      }
+
+      if(book.goalCompleted) {
+        status = Statuses.goalCompleted;
+        if(ReturnDateString(completionDate, false) === ReturnDateString(today, false)) {
+          status = Statuses.goalCompletedToday;
+        }
       }
       return status
     }

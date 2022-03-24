@@ -2,6 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import MyText from './MyText';
 
 const styles = StyleSheet.create({
@@ -31,4 +32,9 @@ export const lateIcon =
   <View style={styles.statusIcon}>
     <MyText text='Behind ' size={8} style={{color: "#e82323"}}/>
     <MaterialCommunityIcons name="calendar-clock" size={18} color="#e82323" />
+  </View>
+export const completedIcon =
+  <View style={styles.statusIcon}>
+    <MyText text='Complete! ' size={8} style={{color: "gold"}}/>
+    <Entypo name="star" size={18} color="gold" />
   </View>

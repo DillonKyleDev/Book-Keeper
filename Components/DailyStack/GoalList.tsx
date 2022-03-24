@@ -7,14 +7,14 @@ import MyText from '../Helper/MyText';
 import ReturnReadingDays from '../Helper/ReturnReadingDays';
 import ProgressBar from './ProgressBar';
 import CalculatePagesPerDay from '../Helper/Functions/CalculatePagesPerDay';
-import { currentIcon, todayIcon, todayCompleteIcon, lateIcon } from '../Helper/StatusIcons';
+import { currentIcon, todayIcon, todayCompleteIcon, lateIcon, completedIcon } from '../Helper/StatusIcons';
 import ReturnGoalStatus from '../Helper/Functions/ReturnGoalStatus';
-import ReturnDateString from '../Helper/Functions/ReturnDateString';
 import ReturnNextReadingDay from '../Helper/Functions/ReturnNextReadingDay';
 //Redux
 import { useReduxDispatch } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { Book, Statuses, updateDatesRead } from '../../store/books/bookSlice';
+import { addBookRead } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MyButton from '../Helper/MyButton';
@@ -43,6 +43,9 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
   const handleCompletedReading = (book:Book) => {
     const daysRead = ReturnDaysDue(book);
     const totalPages = CalculatePagesPerDay(book) * daysRead;
+    if(totalPages + book.pagesRead >= book.pages) {
+      dispatch(addBookRead(book));
+    }
     dispatch(updateDatesRead({book, daysRead, totalPages}));
   }
 
@@ -54,7 +57,7 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
           <View key={`${index}`}>
           {book !== undefined && book.title !== '' && 
             <Pressable onPress={() => handlePress(book)} style={[styles.bookCard]}>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: `${book.goalCompleted ? 'space-evenly' : 'flex-start'}`}}>
                 <View style={{display: 'flex'}}>
                 {book.imageUrl !== '' ? 
                   <View style={[styles.flexCenter, styles.margin]}>
@@ -67,35 +70,37 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
                 }
                 </View>
 
-                <View style={{display: 'flex', flexDirection: 'column'}}>
+                <View style={{display: 'flex', flexDirection: 'column', justifyContent: `${book.goalCompleted ? "center" : "flex-start"}`}}>
                   <View style={{position: 'absolute', right: -10, top: 5}}>
                     {ReturnGoalStatus(book) === Statuses.todayPending && todayIcon}
                     {ReturnGoalStatus(book) === Statuses.todayDone && todayCompleteIcon}
                     {ReturnGoalStatus(book) === Statuses.current && currentIcon}
                     {ReturnGoalStatus(book) === Statuses.late && lateIcon}
+                    {ReturnGoalStatus(book) === Statuses.goalCompleted && completedIcon}
+                    {ReturnGoalStatus(book) === Statuses.goalCompletedToday && completedIcon}
                   </View>
                   
                   <View style={[styles.bookInfo]}>
                     <View style={{display: 'flex', flexDirection: 'row', paddingTop: 5}}>
-                      <MyText text="Title:" size={fontSize} style={[styles.sectionText]} />
-                      <MyText 
-                        text={`  ${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '..' : ''}`} 
-                        size={fontSize} />
+                      <MyText text="Title:  " size={fontSize} style={[styles.sectionText]} />
+                      <MyText text={`${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '..' : ''}`} size={fontSize} style={{fontStyle: 'italic'}}/>
                     </View>
-                    <View style={{marginTop: 5}}>
+                    <View style={{marginTop: 5, flexGrow: 1}}>
+
+                      {!book.goalCompleted &&
                       <View style={{marginBottom: -10}}>
                         <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
                         {ReturnReadingDays(book)}
-                      </View>
+                      </View>}
 
                       {ReturnGoalStatus(book) === Statuses.current &&
                       <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}>
-                        <MyText text="Next reading day: " size={fontSize} style={styles.sectionText} />
-                        <MyText text={` ${ReturnNextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>
+                        <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
+                        <MyText text={`${ReturnNextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>
                       </View>}
 
                       {ReturnGoalStatus(book) === Statuses.todayPending &&
-                      <View style={{display: 'flex', flexDirection: 'row', marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
+                      <View style={{display: 'flex', flexDirection: 'row', marginTop: -5, marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
                         <MyText text="Today's Reading:  " size={12} style={styles.sectionText}/>
                         <MyText text={`${CalculatePagesPerDay(book) * ReturnDaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
                       </View>}
@@ -117,15 +122,21 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
                         {ReturnGoalStatus(book) === Statuses.todayDone &&
                         <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: -5}}>
                           <MyText text='All Caught Up!' size={16} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>
-                          <MyText text="Next reading day: " size={fontSize} style={styles.sectionText} />
-                          <MyText text={` ${ReturnNextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
+                          <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
+                          <MyText text={`${ReturnNextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
+                        </View>}
+
+                        {ReturnGoalStatus(book) === Statuses.goalCompletedToday &&
+                        <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 5}}>
+                          <MyText text='Goal Completed!' size={16} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>   
+                          <MyText text='Nice Work!' size={16} style={{color: "#4b59f5", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>                
                         </View>}
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-              <ProgressBar book={book}/>
+              <ProgressBar book={book} withPercent={false}/>
             </Pressable>}
           </View>
         ))}
@@ -189,6 +200,7 @@ const styles = StyleSheet.create({
   },
   bookInfo: {
     marginLeft: 10,
+    
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'center',

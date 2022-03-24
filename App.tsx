@@ -1,6 +1,7 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 //Library tab imports
 import Library from './Components/LibraryStack/Library';
@@ -20,7 +21,7 @@ import ShowSingleGoal from './Components/DailyStack/ShowSingleGoal';
 import PreviewGoal from './Components/DailyStack/PreviewGoal';
 
 //Preferences tab imports
-import Preferences from './Components/PreferencesStack/Preferences';
+import Achievements from './Components/AchievementsStack/Achievements';
 
 //Navigator
 import { NavigationContainer } from '@react-navigation/native';
@@ -29,7 +30,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const LibraryStack = createNativeStackNavigator();
 const DailyStack = createNativeStackNavigator();
-const PreferencesStack = createNativeStackNavigator();
+const AchievementsStack = createNativeStackNavigator();
 
 
 const LibraryStackScreen = () => {
@@ -61,11 +62,11 @@ const DailyStackScreen = () => {
     </DailyStack.Navigator>
   )
 }
-const PreferencesStackScreen = () => {
+const AchievementsStackScreen = () => {
   return(
-    <PreferencesStack.Navigator screenOptions={{headerShown: false}}>
-      <PreferencesStack.Screen name="PreferencesTab" component={Preferences} />
-    </PreferencesStack.Navigator>
+    <AchievementsStack.Navigator screenOptions={{headerShown: false}}>
+      <AchievementsStack.Screen name="AchievementsTab" component={Achievements} />
+    </AchievementsStack.Navigator>
   )
 }
 
@@ -99,10 +100,10 @@ export default function App() {
           tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
           tabBarStyle:{width: '100%', height: 60},
           tabBarActiveTintColor: '#4b59f5',
-          tabBarIcon: (props) => <MaterialCommunityIcons name="account-settings" size={20} color={props.color} />,
+          tabBarIcon: (props) => <FontAwesome5 name="flag-checkered" size={18} color={props.color} />,
           tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2 }}} 
-          name="Preferences" 
-          component={PreferencesStackScreen} 
+          name="Achievements" 
+          component={AchievementsStackScreen} 
         />
       </Tab.Navigator>
     </NavigationContainer>

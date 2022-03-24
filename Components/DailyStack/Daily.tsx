@@ -12,6 +12,7 @@ import { useReduxSelector } from '../../store';
 import { Book, Statuses, emptyBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import SortGoals from '../Helper/SortGoals';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -42,6 +43,9 @@ const Daily: React.FC<Props> = ({navigation}) => {
       case "Late":
         setDisplaySection("Late");
         break;
+      case "Completed":
+        setDisplaySection("Completed");
+        break;
       default:
         setDisplaySection("Today");
         break;
@@ -50,16 +54,22 @@ const Daily: React.FC<Props> = ({navigation}) => {
 
   const booksWithStatus = () => {
     let hasLateGoals = false;
-    let tempArray = books.map((book:Book) => {
-      if(ReturnGoalStatus(book) === "Late") {
+    let hasCompletedGoals = false;
+    let tempArray:Book[] = books.map((book:Book) => {
+      if(ReturnGoalStatus(book) === Statuses.late) {
         hasLateGoals = true;
+      }
+      if(ReturnGoalStatus(book) === Statuses.goalCompleted || ReturnGoalStatus(book) === Statuses.goalCompletedToday) {
+        hasCompletedGoals = true;
       }
       if(book.goalFinalized) {
         if(displaySection === "All") {
-          return book;
+          if(!book.goalCompleted) {
+            return book;
+          } else return emptyBook;
         } else
         if(displaySection === "Today") {
-          if(ReturnGoalStatus(book) === Statuses.todayDone || ReturnGoalStatus(book) === Statuses.todayPending) {
+          if(ReturnGoalStatus(book) === Statuses.todayDone || ReturnGoalStatus(book) === Statuses.todayPending || ReturnGoalStatus(book) === Statuses.goalCompletedToday) {
             return book;
           } else return emptyBook;
         } else
@@ -68,21 +78,33 @@ const Daily: React.FC<Props> = ({navigation}) => {
             return book;
           } else return emptyBook;
         } else
+        if(displaySection === "Completed") {
+          if(ReturnGoalStatus(book) === Statuses.goalCompletedToday || ReturnGoalStatus(book) === Statuses.goalCompleted) {
+            return book;
+          } else return emptyBook;
+        }
         return book;
-      };
+      } else return emptyBook
+      
     })
+    let filteredArray = tempArray.filter(goal => goal !== undefined);
     let containsGoals = false;
-    tempArray.every(goal => {
-      if(goal !== undefined && goal.title !== '') {
-        containsGoals = true;
-        return false;
-      } return true;
-    })
-
-    return {goalArray: tempArray, hasLateGoals: hasLateGoals, containsGoals: containsGoals}
+    if(filteredArray.length > 0) {
+      containsGoals = true;
+    }
+    return {
+      goalArray: SortGoals(filteredArray),
+      hasLateGoals: hasLateGoals, 
+      hasCompletedGoals: hasCompletedGoals, 
+      containsGoals: containsGoals}
   }
 
-  const sectionNav = <SectionNavigator displaySection={displaySection} handleSectionChange={(section) => handleSectionChange(section)} hasLateGoals={booksWithStatus().hasLateGoals}/>
+  const sectionNav = 
+  <SectionNavigator 
+  displaySection={displaySection} 
+  hasCompletedGoals={booksWithStatus().hasCompletedGoals}
+  handleSectionChange={(section) => handleSectionChange(section)} 
+  hasLateGoals={booksWithStatus().hasLateGoals}/>
 
   return (
     <View>

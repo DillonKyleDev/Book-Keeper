@@ -1,21 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Book, ReadingDate } from '../books/bookSlice';
+import { Book, emptyBook } from '../books/bookSlice';
 
-const initialState: Book = {
-  title: '',
-  authors: [''],
-  genres: [''],
-  description: '',
-  imageUrl: '',
-  pagesRead: 0,
-  pages: 0,
-  link: '',
-  rating: 0,
-  readingWeekdays: [],
-  finishOn: new Date(),
-  goalFinalized: false,
-  readingDates: [],
-};
+const initialState: Book = emptyBook;
 
 const dailySelectedSlice = createSlice({
   name: 'dailySelected',
