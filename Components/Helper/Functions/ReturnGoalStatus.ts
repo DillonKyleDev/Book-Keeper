@@ -4,7 +4,7 @@ import ReturnDateString from './ReturnDateString';
 const ReturnGoalStatus = (book:Book) => {
   let today = new Date();
   today.setHours(0,0,0,0);
-  let status:string = '';
+  let status:string = Statuses.noGoal;
   let isLate = false;
   let todaysGoal = false;
   //For testing late goal logic

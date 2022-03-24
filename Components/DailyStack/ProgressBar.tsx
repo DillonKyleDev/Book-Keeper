@@ -19,17 +19,17 @@ const ProgressBar: React.FC<Props> = ({book, withPercent}) => {
     <View style={styles.barContainer}>
       <View style={[styles.iconContainer]}>
         {book.goalCompleted ? 
-        <Entypo style={[styles.icon, {left: 36, bottom: 0}]} name="dot-single" size={60} color="gold" />
+        <Entypo style={[styles.icon, {left: 30, bottom: 0}]} name="dot-single" size={50} color="gold" />
         :
-        <Entypo style={[styles.icon, {left: 36, bottom: 0}]} name="dot-single" size={60} color="#2bba00" />
+        <Entypo style={[styles.icon, {left: 30, bottom: 0}]} name="dot-single" size={50} color="#2bba00" />
         }   
       </View>
       <View style={styles.emptyBar} />
       <View style={[styles.iconContainer, {width: '100%'}]}>
         {book.goalCompleted ?
-        <FontAwesome5 style={[styles.icon, {right: 16, bottom: 2, zIndex: 20}]} name="flag-checkered" size={18} color="gold" />
+        <FontAwesome5 style={[styles.icon, {right: 15, bottom: 2, zIndex: 16}]} name="flag-checkered" size={16} color="gold" />
         : 
-        <FontAwesome5 style={[styles.icon, {right: 16, bottom: 2, zIndex: 20}]} name="flag-checkered" size={18} color="#4b59f5" />
+        <FontAwesome5 style={[styles.icon, {right: 15, bottom: 2, zIndex: 16}]} name="flag-checkered" size={16} color="#4b59f5" />
         }
       </View>
       {book.goalCompleted ?
@@ -41,8 +41,8 @@ const ProgressBar: React.FC<Props> = ({book, withPercent}) => {
       <View style={{width: `${percentage}%`}}/>
         {percentage <= 95 && percentage >= 1 && 
         <>
-          <MaterialIcons style={[styles.icon, {right: 11, bottom: 2}]} name="menu-book" size={24} color="#249c00" />
-          {withPercent && <MyText text={`${percentage}%`} size={16} style={{color: "green", position: "relative", top: 20, right: 35}}/>}
+          <MaterialIcons style={[styles.icon, {right: 10, bottom: 1}]} name="menu-book" size={20} color="#249c00" />
+          {withPercent && <MyText text={`${Math.trunc(percentage)}%`} size={14} style={{color: "green", position: "relative", top: 20, right: 30}}/>}
         </>}
       </View>
     </View>

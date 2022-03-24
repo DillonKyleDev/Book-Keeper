@@ -66,12 +66,18 @@ export const Statuses = {
   todayPending: "TodayPending",
   goalCompleted: "GoalCompleted",
   goalCompletedToday: "GoalCompletedToday",
+  noGoal: "NoGoal",
 }
 
 type UpdateRead = {
   book:Book;
   daysRead:number;
   totalPages:number;
+}
+
+type UpdatePages = {
+  book:Book;
+  pages:number;
 }
 
 const initialState: Book[] = [emptyBook];
@@ -87,6 +93,20 @@ const bookSlice = createSlice({
       const newState = state.filter((book: Book) => book.title !== action.payload.title)
       return(newState);
     },
+    changeBookPages: (state, action: PayloadAction<UpdatePages>) => {
+      return state.map(book => {
+        if(book.title === action.payload.book.title) {
+          let newPages:number = book.pages;
+          if(action.payload.pages > book.pagesRead) {
+            newPages = action.payload.pages;
+          }
+          return {
+            ...book,
+            pages: newPages
+          }
+        } else return book
+      })
+    },
     createGoal: (state, action: PayloadAction<Book>) => {
       return state.map(book => {
         if(book.title === action.payload.title) {
@@ -100,12 +120,21 @@ const bookSlice = createSlice({
         } else return book
       })
     },
-    updatePages: (state, action: PayloadAction<Book>) => {
+    updatePages: (state, action: PayloadAction<UpdatePages>) => {
       let tempState = state.map(book => {
-        if(book.title === action.payload.title) {
+        if(book.title === action.payload.book.title) {
+          let today:Date | null = null;
+          let goalCompleted = false;
+          if(action.payload.pages >= book.pages) {
+            today = new Date();
+            today.setHours(0,0,0,0);
+            goalCompleted = true;
+          }
           return {
             ...book,
-            pagesRead: action.payload.pagesRead
+            pagesRead: action.payload.pages,
+            goalCompleted: goalCompleted,
+            completionDate: today,
           }
         } else return book
       })
@@ -150,5 +179,5 @@ const bookSlice = createSlice({
   },
 })
 
-export const { setBooks, resetBooks, addBook, removeBook, createGoal, updatePages, updateDatesRead } = bookSlice.actions
+export const { setBooks, resetBooks, addBook, removeBook, changeBookPages, createGoal, updatePages, updateDatesRead } = bookSlice.actions
 export default bookSlice.reducer

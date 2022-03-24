@@ -14,7 +14,7 @@ import ReturnNextReadingDay from '../Helper/Functions/ReturnNextReadingDay';
 import { useReduxDispatch } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { Book, Statuses, updateDatesRead } from '../../store/books/bookSlice';
-import { addBookRead } from '../../store/Achievements/achievementsSlice';
+import { addBookRead, updateAchievementsPages } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MyButton from '../Helper/MyButton';
@@ -41,6 +41,8 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
   const handleCompletedReading = (book:Book) => {
     const daysRead = ReturnDaysDue(book);
     const totalPages = CalculatePagesPerDay(book) * daysRead;
+
+    dispatch(updateAchievementsPages(totalPages));
     if(totalPages + book.pagesRead >= book.pages) {
       dispatch(addBookRead(book));
     }
@@ -139,7 +141,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
           </View>
         ))}
 
-        {!(goals.length > 0) && 
+        {goals.length === 0 && 
         <View>
           <MyText text="No Goals Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
           {hasLateGoals ?

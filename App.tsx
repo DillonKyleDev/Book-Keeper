@@ -10,6 +10,7 @@ import BarcodeScan from './Components/Helper/BarcodeScan';
 import FindBook from './Components/Helper/FindBook';
 import ShowSingleBook from './Components/LibraryStack/ShowSingleBook';
 import BookList from './Components/Helper/BookList';
+import EditLibraryPages from './Components/LibraryStack/EditLibraryPages';
 
 //Daily tab imports
 import Daily from './Components/DailyStack/Daily';
@@ -19,6 +20,7 @@ import FinishBy from './Components/DailyStack/FinishBy';
 import PickReadingDays from './Components/DailyStack/PickReadingDays';
 import ShowSingleGoal from './Components/DailyStack/ShowSingleGoal';
 import PreviewGoal from './Components/DailyStack/PreviewGoal';
+import EditPages from './Components/DailyStack/EditPages';
 
 //Preferences tab imports
 import Achievements from './Components/AchievementsStack/Achievements';
@@ -42,6 +44,7 @@ const LibraryStackScreen = () => {
       <LibraryStack.Screen name="FindBookTab" component={FindBook} />
       <LibraryStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
       <LibraryStack.Screen name="BookListTab" component={BookList} />
+      <LibraryStack.Screen name="EditLibraryPagesTab" component={EditLibraryPages} />
     </LibraryStack.Navigator>
   )
 }
@@ -59,6 +62,7 @@ const DailyStackScreen = () => {
       <DailyStack.Screen name="PickReadingDaysTab" component={PickReadingDays} />
       <DailyStack.Screen name="ShowSingleGoalTab" component={ShowSingleGoal} />
       <DailyStack.Screen name="PreviewGoalTab" component={PreviewGoal} />
+      <DailyStack.Screen name="EditPagesTab" component={EditPages} />
     </DailyStack.Navigator>
   )
 }

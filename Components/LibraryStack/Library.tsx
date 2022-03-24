@@ -10,6 +10,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
+import MyText from '../Helper/MyText';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -18,7 +19,6 @@ interface Props {
 const Library: React.FC<Props> = ({navigation}) => {
   //store
   const books = useReduxSelector(state => state.books);
-  const selected = useReduxSelector(state => state.librarySelected);
   const dispatch = useReduxDispatch();
 
   const searchBar = 
@@ -65,6 +65,14 @@ const Library: React.FC<Props> = ({navigation}) => {
           <View>
             <SectionHeader title="My Library" button={plusButton} />
           </View>
+          {books.length === 0 &&
+          <View>
+            <MyText text="No Books Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <MyText text="Tap the plus to add some!" size={20} style={{paddingTop: 10}}/>
+            </View>
+          </View>
+          }
           <BookList books={books} navigation={navigation} goTo="ShowSingleBookTab"/>
         </View>
     </View>

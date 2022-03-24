@@ -36,14 +36,14 @@ const Daily: React.FC<Props> = ({navigation}) => {
     let hasLateGoals = false;
     let hasCompletedGoals = false;
     let tempArray:Book[] = books.map((book:Book) => {
-      const status = ReturnGoalStatus(book);
-      if(status === Statuses.late) {
-        hasLateGoals = true;
-      }
-      if(status === Statuses.goalCompleted || status === Statuses.goalCompletedToday) {
-        hasCompletedGoals = true;
-      }
       if(book.goalFinalized) {
+        const status = ReturnGoalStatus(book);
+        if(status === Statuses.late) {
+          hasLateGoals = true;
+        }
+        if(status === Statuses.goalCompleted || status === Statuses.goalCompletedToday) {
+          hasCompletedGoals = true;
+        }
         if(displaySection === "All") {
           if(!book.goalCompleted) {
             return book;
@@ -67,8 +67,9 @@ const Daily: React.FC<Props> = ({navigation}) => {
         return book;
       } else return emptyBook
     })
+    
     return {
-      goalArray: tempArray,
+      goalArray: tempArray.filter(goal => goal.title !== ""),
       hasLateGoals: hasLateGoals, 
       hasCompletedGoals: hasCompletedGoals,
     }

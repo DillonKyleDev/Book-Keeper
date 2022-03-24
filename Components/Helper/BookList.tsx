@@ -46,8 +46,8 @@ const BookList: React.FC<Props> = ({books, navigation, goTo}) => {
             <View style={styles.bookInfo}>
               <View style={styles.bookInfo}>
                 <Text style={[styles.contentText, styles.title]}><Text style={styles.sectionText}>Title:</Text>  {book.title.slice(0, 30)}{book.title.length >= 30 ? "..." : ""}</Text>
-                <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {book.authors && book.authors}</Text> 
-                <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {book.genres}</Text>
+                {book.authors[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {book.authors}</Text>}
+                {book.genres[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {book.genres}</Text>}
                 <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
               </View>
             </View>

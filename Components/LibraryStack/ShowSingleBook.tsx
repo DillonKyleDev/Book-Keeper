@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Linking } from 'react-native';
+import { Button } from 'react-native-elements';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -66,19 +67,14 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
 
   const addBookToBooks = () => {
     dispatch(addBook({
-      title: librarySelected.title,
-      authors: librarySelected.authors,
-      genres: librarySelected.genres,
-      description: librarySelected.description,
-      imageUrl: librarySelected.imageUrl,
+      ...librarySelected,
       pagesRead: 0,
-      pages: librarySelected.pages,
       finishOn: null,
       readingWeekdays: [],
-      link: librarySelected.link,
-      rating: librarySelected.rating,
       goalFinalized: false,
       readingDates: [],
+      completionDate: null,
+      goalCompleted: false,
     }))
     setBookSaved(true);
   };
@@ -101,7 +97,9 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
               {librarySelected.imageUrl !== '' ? 
                 <Image style={styles.bookImage} source={{uri: librarySelected.imageUrl}}/>
               :
-                <Foundation style={styles.bookImage} name="book-bookmark" size={75} color="#636363" />
+                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                  <Foundation name="book-bookmark" size={150} color="#636363" />
+                </View>
               }
 
               {bookSaved ?
@@ -111,19 +109,25 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
               }
        
               <View style={styles.bookInfo}>
-                <Text style={styles.ratingText}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : "No rating."}</Text>
+                <Text style={styles.ratingText}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : " No rating."}</Text>
                 <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
-                <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.authors && librarySelected.authors}</Text> 
-                <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {librarySelected.genres}</Text>
-                <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-                <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {librarySelected.description}</Text>
+                {librarySelected.authors[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.authors && librarySelected.authors}</Text>}
+                {librarySelected.genres[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {librarySelected.genres}</Text>}
+
+                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
+                  <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
+                  <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
+                  <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" />
+                </View>
+              
+                {librarySelected.description !== '' && <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {librarySelected.description}</Text>}
               </View>
-                          
+              {librarySelected.imageUrl !== '' && 
               <View style={styles.linkContainer}>
                 <Text onPress={() =>
                   Linking.openURL(`${librarySelected.link}`)} style={styles.linkText}>See on Google Books
                 </Text>
-              </View>
+              </View>}
             </View>
           </>
           :
@@ -179,6 +183,14 @@ const styles = StyleSheet.create({
     width: "75%",
     height: 200,
     resizeMode: 'contain',
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 15, 
+    marginBottom: 15
+  },
+  emptyBookImage: {
+    width: "100%",
+    height: 200,
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 15, 
@@ -262,5 +274,17 @@ const styles = StyleSheet.create({
   removeContainer: {
     padding: 20,
     backgroundColor: '#cacded',
+  },
+  editButton: {
+    backgroundColor: '#4b59f5', 
+    padding: 2, 
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginLeft: 5,
+  },
+  buttonText: {
+    color: 'white', 
+    fontFamily: 'serif',
+    fontSize: 14
   },
 })
