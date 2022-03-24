@@ -32,34 +32,15 @@ const Daily: React.FC<Props> = ({navigation}) => {
     />
   </>
 
-  const handleSectionChange = (to:string) => {
-    switch(to) {
-      case "All":
-        setDisplaySection("All");
-        break;
-      case "Today":
-        setDisplaySection("Today");
-        break;
-      case "Late":
-        setDisplaySection("Late");
-        break;
-      case "Completed":
-        setDisplaySection("Completed");
-        break;
-      default:
-        setDisplaySection("Today");
-        break;
-    }
-  }
-
-  const booksWithStatus = () => {
+  const returnSpecificGoals = () => {
     let hasLateGoals = false;
     let hasCompletedGoals = false;
     let tempArray:Book[] = books.map((book:Book) => {
-      if(ReturnGoalStatus(book) === Statuses.late) {
+      const status = ReturnGoalStatus(book);
+      if(status === Statuses.late) {
         hasLateGoals = true;
       }
-      if(ReturnGoalStatus(book) === Statuses.goalCompleted || ReturnGoalStatus(book) === Statuses.goalCompletedToday) {
+      if(status === Statuses.goalCompleted || status === Statuses.goalCompletedToday) {
         hasCompletedGoals = true;
       }
       if(book.goalFinalized) {
@@ -69,48 +50,43 @@ const Daily: React.FC<Props> = ({navigation}) => {
           } else return emptyBook;
         } else
         if(displaySection === "Today") {
-          if(ReturnGoalStatus(book) === Statuses.todayDone || ReturnGoalStatus(book) === Statuses.todayPending || ReturnGoalStatus(book) === Statuses.goalCompletedToday) {
+          if(status === Statuses.todayDone || status === Statuses.todayPending || status === Statuses.goalCompletedToday) {
             return book;
           } else return emptyBook;
         } else
         if(displaySection === "Late") {
-          if(ReturnGoalStatus(book) === Statuses.late) {
+          if(status === Statuses.late) {
             return book;
           } else return emptyBook;
         } else
         if(displaySection === "Completed") {
-          if(ReturnGoalStatus(book) === Statuses.goalCompletedToday || ReturnGoalStatus(book) === Statuses.goalCompleted) {
+          if(status === Statuses.goalCompletedToday || status === Statuses.goalCompleted) {
             return book;
           } else return emptyBook;
         }
         return book;
       } else return emptyBook
-      
     })
-    let filteredArray = tempArray.filter(goal => goal !== undefined);
-    let containsGoals = false;
-    if(filteredArray.length > 0) {
-      containsGoals = true;
-    }
     return {
-      goalArray: SortGoals(filteredArray),
+      goalArray: tempArray,
       hasLateGoals: hasLateGoals, 
-      hasCompletedGoals: hasCompletedGoals, 
-      containsGoals: containsGoals}
+      hasCompletedGoals: hasCompletedGoals,
+    }
   }
+  const { goalArray, hasLateGoals, hasCompletedGoals} = returnSpecificGoals();
 
   const sectionNav = 
   <SectionNavigator 
   displaySection={displaySection} 
-  hasCompletedGoals={booksWithStatus().hasCompletedGoals}
-  handleSectionChange={(section) => handleSectionChange(section)} 
-  hasLateGoals={booksWithStatus().hasLateGoals}/>
+  hasCompletedGoals={hasCompletedGoals}
+  handleSectionChange={(section) => setDisplaySection(section)} 
+  hasLateGoals={hasLateGoals}/>
 
   return (
     <View>
       <TopBar />
       <SectionHeader title='Daily Goals' button={plusButton}/>
-      <GoalList books={booksWithStatus().goalArray} containsGoals={booksWithStatus().containsGoals} navigation={navigation} goTo={'ShowSingleGoalTab'} sectionNavigator={sectionNav} hasLateGoals={booksWithStatus().hasLateGoals}/>
+      <GoalList goals={SortGoals(goalArray)} navigation={navigation} sectionNavigator={sectionNav} hasLateGoals={hasLateGoals}/>
     </View>
   )
 }

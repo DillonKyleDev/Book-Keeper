@@ -21,15 +21,13 @@ import MyButton from '../Helper/MyButton';
 import ReturnDaysDue from '../Helper/Functions/ReturnDaysDue';
 
 interface Props {
-  books: (Book | undefined)[] | [];
+  goals: Book[];
   navigation: NativeStackNavigationProp<any>;
-  goTo: string;
   sectionNavigator: ReactFragment;
   hasLateGoals: boolean;
-  containsGoals: boolean;
 }
 
-const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, hasLateGoals, containsGoals}) => {
+const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLateGoals}) => {
   const fontSize: number = 12;
   const maxLetters: number = 20;
   //redux selected
@@ -37,7 +35,7 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
 
   const handlePress = (book:Book) => {
     dispatch(setDailySelected(book));
-    if(goTo !== "") {navigation.push(goTo)}
+    navigation.push("ShowSingleGoalTab")
   }
 
   const handleCompletedReading = (book:Book) => {
@@ -53,9 +51,9 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
     <View style={{height: screenHeight - 156}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {sectionNavigator}
-        {books.map((book, index) => (
+        {goals.map((book, index) => (
           <View key={`${index}`}>
-          {book !== undefined && book.title !== '' && 
+          {book.title !== '' && 
             <Pressable onPress={() => handlePress(book)} style={[styles.bookCard]}>
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: `${book.goalCompleted ? 'space-evenly' : 'flex-start'}`}}>
                 <View style={{display: 'flex'}}>
@@ -141,7 +139,7 @@ const GoalList: React.FC<Props> = ({books, navigation, goTo, sectionNavigator, h
           </View>
         ))}
 
-        {!containsGoals && 
+        {!(goals.length > 0) && 
         <View>
           <MyText text="No Goals Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
           {hasLateGoals ?
