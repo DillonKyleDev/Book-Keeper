@@ -1,5 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
+import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import SectionHeader from '../Helper/SectionHeader';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper/MyText';
@@ -18,7 +19,7 @@ const Achievements: React.FC = () => {
     <View>
       <TopBar />
       <SectionHeader title="Achievements" />
-      <View>
+      <ScrollView contentContainerStyle={{}}>
         <MyText text="Books Read: " size={26} />
         <View style={{display: 'flex', flexDirection: 'column'}}>
         {achievements.booksRead.length > 0 ? achievements.booksRead.map((bookRead:Book, index:number) => (
@@ -39,7 +40,7 @@ const Achievements: React.FC = () => {
         </View>
 
         <MyButton onPress={() => dispatch(resetAchievements())} title="Reset Achievements" />
-      </View>
+      </ScrollView>
     </View>
   )
 }
