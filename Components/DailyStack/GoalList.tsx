@@ -19,6 +19,7 @@ import { Book, Statuses, updateDatesRead } from '../../store/books/bookSlice';
 import { addBookRead, updateAchievementsPages, addDayRead, updateTodaysReading } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import SingleGoalInList from './SingleGoalInList';
 
 interface Props {
   goals: Book[];
@@ -29,7 +30,7 @@ interface Props {
 
 const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLateGoals}) => {
   const fontSize: number = 12;
-  const maxLetters: number = 20;
+  const maxLetters: number = 25;
   //redux selected
   const dispatch = useReduxDispatch();
 
@@ -58,85 +59,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
           <View key={`${index}`}>
           {book.title !== '' && 
             <Pressable onPress={() => handlePress(book)} style={[styles.bookCard]}>
-              <View style={{display: 'flex', flexDirection: 'row', justifyContent: `${book.goalCompleted ? 'space-evenly' : 'flex-start'}`}}>
-                <View style={{display: 'flex'}}>
-                {book.imageUrl !== '' ? 
-                  <View style={[styles.flexCenter, styles.margin]}>
-                    <Image style={styles.bookImage} source={{uri: book.imageUrl}}/>
-                  </View>
-                :
-                  <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
-                    <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
-                  </View>
-                }
-                </View>
-
-                <View style={{display: 'flex', flexDirection: 'column', justifyContent: `${book.goalCompleted ? "center" : "flex-start"}`}}>
-                  <View style={{position: 'absolute', right: -10, top: 5}}>
-                    {GoalStatus(book) === Statuses.todayPending && todayIcon}
-                    {GoalStatus(book) === Statuses.todayDone && todayCompleteIcon}
-                    {GoalStatus(book) === Statuses.current && currentIcon}
-                    {GoalStatus(book) === Statuses.late && lateIcon}
-                    {GoalStatus(book) === Statuses.goalCompleted && completedIcon}
-                    {GoalStatus(book) === Statuses.goalCompletedToday && completedIcon}
-                  </View>
-                  
-                  <View style={[styles.bookInfo]}>
-                    <View style={{display: 'flex', flexDirection: 'row', paddingTop: 5}}>
-                      <MyText text="Title:  " size={fontSize} style={[styles.sectionText]} />
-                      <MyText text={`${book.title.slice(0, maxLetters)}${book.title.length >= maxLetters ? '..' : ''}`} size={fontSize} style={{fontStyle: 'italic'}}/>
-                    </View>
-                    <View style={{marginTop: 5, flexGrow: 1}}>
-
-                      {!book.goalCompleted &&
-                      <View style={{marginBottom: -10}}>
-                        <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
-                        {ReadingDays(book)}
-                      </View>}
-
-                      {GoalStatus(book) === Statuses.current &&
-                      <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}>
-                        <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-                        <MyText text={`${NextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>
-                      </View>}
-
-                      {GoalStatus(book) === Statuses.todayPending &&
-                      <View style={{display: 'flex', flexDirection: 'row', marginTop: -5, marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
-                        <MyText text="Today's Reading:  " size={12} style={styles.sectionText}/>
-                        <MyText text={`${PagesPerDay(book) * DaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
-                      </View>}
-                        
-                      {GoalStatus(book) === Statuses.late &&
-                      <View style={{display: 'flex', flexDirection: 'row', marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
-                        <MyText text="Reading Due:  " size={12} style={styles.sectionText}/>
-                        <MyText text={`${PagesPerDay(book) * DaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
-                      </View>}
-
-                      <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center'}}>
-                        {GoalStatus(book) === Statuses.todayPending &&
-                        <MyButton title='Mark Complete' onPress={() => handleCompletedReading(book)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: '#2bba00'}} titleStyle={{fontSize: 8}}/>}
-                      </View>
-
-                      <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center'}}>
-                        {GoalStatus(book) === Statuses.late &&
-                        <MyButton title='Mark Complete' onPress={() => handleCompletedReading(book)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: 'orange'}} titleStyle={{fontSize: 8}}/>}
-                        {GoalStatus(book) === Statuses.todayDone &&
-                        <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: -5}}>
-                          <MyText text='All Caught Up!' size={16} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>
-                          <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-                          <MyText text={`${NextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
-                        </View>}
-
-                        {GoalStatus(book) === Statuses.goalCompletedToday &&
-                        <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 5}}>
-                          <MyText text='Goal Complete' size={22} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5, textDecorationLine: "underline"}}/>   
-                          <MyText text='Nice Work!' size={26} style={{color: "#4b59f5", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>                
-                        </View>}
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
+              <SingleGoalInList goal={book}/>
               <ProgressBar book={book} withPercent={false}/>
             </Pressable>}
           </View>

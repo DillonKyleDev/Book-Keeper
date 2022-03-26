@@ -33,7 +33,7 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: 'white'}}>
-      <TopBar isSearchBar={false}/>
+      <TopBar/>
       <View style={[styles.flexContainer, {height: screenHeight - 100}]}>
         <DisplayBookForGoal book={dailySelected}/>
 
@@ -68,7 +68,7 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
             <MyText text={`${PagesPerDay(dailySelected) !== 0 ? "every reading day" : ''}`} size={20}/>
           </View>
         </View>
-        <MyButton title="Create Goal" isActive={PagesPerDay(dailySelected) !== 0} onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
+        <MyButton title="Finalize Goal" isActive={PagesPerDay(dailySelected) !== 0} onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
       </View>
     </View>
   )
