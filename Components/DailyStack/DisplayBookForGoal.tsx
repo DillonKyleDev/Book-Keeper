@@ -24,8 +24,8 @@ const DisplayBookForGoal: React.FC<Props> = ({book}) => {
       }
       <View style={styles.bookInfo}>
         <Text style={styles.sectionText}><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
-        <Text style={styles.sectionText}><Text style={styles.sectionText}>Author:</Text>  {book.authors && book.authors}</Text> 
-        <Text style={styles.sectionText}><Text style={styles.sectionText}>Genre:</Text>  {book.genres}</Text>
+        <Text style={styles.sectionText}><Text style={styles.sectionText}>Author:</Text>  {book.author && book.author}</Text> 
+        <Text style={styles.sectionText}><Text style={styles.sectionText}>Genre:</Text>  {book.genre}</Text>
         <Text style={styles.sectionText}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
       </View>
     </View>

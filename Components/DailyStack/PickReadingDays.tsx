@@ -4,7 +4,7 @@ import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper/MyText';
 import DisplayBookForGoal from './DisplayBookForGoal';
-import ReturnDateString from '../Helper/Functions/ReturnDateString';
+import DateString from '../Helper/Functions/DateString';
 import ReadingDayButton from './ReadingDayButton';
 import MyButton from '../Helper/MyButton';
 //Redux
@@ -13,7 +13,7 @@ import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import ReturnReadingDates from '../Helper/Functions/ReturnReadingDates';
+import ReadingDates from '../Helper/Functions/ReadingDates';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -46,7 +46,7 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
     }
     dispatch(setDailySelected({
       ...tempSelected,
-      readingDates: ReturnReadingDates(tempSelected)
+      readingDates: ReadingDates(tempSelected)
     }));
     navigation.push("PreviewGoalTab");
   }
@@ -60,7 +60,7 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
         <View>
           <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`Finish date selected: `} size={12} />
           {dailySelected.finishOn !== null && 
-          <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${ReturnDateString(dailySelected.finishOn, true)}`} size={16} />}
+          <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${DateString(dailySelected.finishOn, true)}`} size={16} />}
         </View>
 
         <View style={{paddingTop: 10, borderTopColor: '#f2f2f2', borderTopWidth: 1, width: "90%", marginLeft: 'auto', marginRight: 'auto'}}>

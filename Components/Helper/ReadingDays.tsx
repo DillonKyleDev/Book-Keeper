@@ -4,7 +4,7 @@ import { Book } from "../../store/books/bookSlice";
 import MyText from './MyText';
 import { Entypo } from '@expo/vector-icons';
 
-const ReturnReadingDays = (book:Book) => {
+const ReadingDays = (book:Book) => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -45,4 +45,4 @@ const ReturnReadingDays = (book:Book) => {
   )
 }
 
-export default ReturnReadingDays
+export default ReadingDays

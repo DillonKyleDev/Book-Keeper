@@ -7,7 +7,7 @@ import MyButton from '../Helper/MyButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { updatePages } from '../../store/books/bookSlice';
-import { updateAchievementsPages } from '../../store/Achievements/achievementsSlice';
+import { updateAchievementsPages, addBookRead } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -20,12 +20,14 @@ const EditPages: React.FC<Props> = ({navigation}) => {
   const [ pagesRead, setPagesRead ] = useState<string>('');
   //redux
   const dailySelected = useReduxSelector(state => state.dailySelected);
-  const books = useReduxSelector(state => state.books);
   const dispatch = useReduxDispatch();
 
   const handleSubmitPages = () => {
     let pageChange = parseInt(pagesRead.replace(/[^0-9 ]/g, "")) - dailySelected.pagesRead;
     dispatch(updateAchievementsPages(pageChange));
+    if(parseInt(pagesRead.replace(/[^0-9 ]/g, "")) >= dailySelected.pages) {
+      dispatch(addBookRead(dailySelected));
+    }
     dispatch(updatePages({book: dailySelected, pages: parseInt(pagesRead.replace(/[^0-9 ]/g, ""))}));
     navigation.pop(2);
   }

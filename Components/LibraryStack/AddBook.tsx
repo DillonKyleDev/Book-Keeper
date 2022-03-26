@@ -18,7 +18,7 @@ const AddBook: React.FC<Props> = ({navigation}) => {
 
   return (
     <View>
-      <TopBar />
+      <TopBar/>
       <View style={[{height: screenHeight - 100}, styles.addBookContainer]}>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}

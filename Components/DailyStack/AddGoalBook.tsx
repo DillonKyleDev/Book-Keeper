@@ -5,7 +5,7 @@ import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
-import { useReduxSelector, useReduxDispatch } from '../../store';
+import { useReduxDispatch } from '../../store';
 import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import MyButton from '../Helper/MyButton';
 
@@ -14,7 +14,6 @@ interface Props {
 }
 
 const AddGoalBook: React.FC<Props> = ({navigation}) => {
-  const selected = useReduxSelector(state => state.librarySelected);
   const dispatch = useReduxDispatch();
 
   return (

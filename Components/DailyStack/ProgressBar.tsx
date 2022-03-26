@@ -18,25 +18,18 @@ const ProgressBar: React.FC<Props> = ({book, withPercent}) => {
   return (
     <View style={styles.barContainer}>
       <View style={[styles.iconContainer]}>
-        {book.goalCompleted ? 
-        <Entypo style={[styles.icon, {left: 30, bottom: 0}]} name="dot-single" size={50} color="gold" />
-        :
         <Entypo style={[styles.icon, {left: 30, bottom: 0}]} name="dot-single" size={50} color="#2bba00" />
-        }   
       </View>
       <View style={styles.emptyBar} />
       <View style={[styles.iconContainer, {width: '100%'}]}>
         {book.goalCompleted ?
-        <FontAwesome5 style={[styles.icon, {right: 15, bottom: 2, zIndex: 16}]} name="flag-checkered" size={16} color="gold" />
+        <FontAwesome5 style={[styles.icon, {right: 15, bottom: 2, zIndex: 16}]} name="flag-checkered" size={16} color="#ffcc00" />
         : 
         <FontAwesome5 style={[styles.icon, {right: 15, bottom: 2, zIndex: 16}]} name="flag-checkered" size={16} color="#4b59f5" />
         }
       </View>
-      {book.goalCompleted ?
-      <View style={[styles.progressBar, {width: `${percentage}%`, backgroundColor: 'gold'}]} />
-      :
       <View style={[styles.progressBar, {width: `${percentage}%`, backgroundColor: '#2bba00'}]} />
-      } 
+
       <View style={[{width: '100%', position: 'absolute', display: 'flex', flexDirection: 'row'}]}>
       <View style={{width: `${percentage}%`}}/>
         {percentage <= 95 && percentage >= 1 && 

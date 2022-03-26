@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { screenHeight } from './Functions/ScreenHeight';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { ISBN, FetchIsbn } from './Functions/FetchBooks';
 import MyText from './MyText';
@@ -25,11 +24,11 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   const [openScanner, setOpenScanner] = useState(true);
   const [deviceHeight, setDeviceHeight] = useState(screenHeight !== undefined ? screenHeight - 130 : '100%')
   const dispatch = useReduxDispatch();
-  const selected = useReduxSelector(state => state.librarySelected);
+  const librarySelected = useReduxSelector(state => state.librarySelected);
   const bookNotFound: Book = bookNotFoundBook;
   
   useFocusEffect(() => {
-    if(selected.title !== '') {
+    if(librarySelected.title !== '') {
       navigation.goBack();
     }
   });
@@ -57,10 +56,13 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   };
 
   if (hasPermission === null) {
-    return <MyText size={16} text="...Requesting camera permission..." style={{marginTop: 200}} />;
+    return  (
+      <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
+        <ActivityIndicator animating={true} size="large" color="#4b59f5" style={{position: 'absolute', top: 50}} />
+      </View>)
   }
   if (hasPermission === false) {
-    return <MyText size={16} text="Can't scan... No access to camera" style={{marginTop: 200}} />;
+    return <MyText size={16} text="Can't scan... No access to camera" style={{marginTop: 200, marginLeft: 'auto', marginRight: 'auto'}} />;
   }
 
   return (

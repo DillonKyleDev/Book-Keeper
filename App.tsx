@@ -22,8 +22,9 @@ import ShowSingleGoal from './Components/DailyStack/ShowSingleGoal';
 import PreviewGoal from './Components/DailyStack/PreviewGoal';
 import EditPages from './Components/DailyStack/EditPages';
 
-//Preferences tab imports
+//Achievements tab imports
 import Achievements from './Components/AchievementsStack/Achievements';
+import Settings from './Components/AchievementsStack/Settings';
 
 //Navigator
 import { NavigationContainer } from '@react-navigation/native';
@@ -70,6 +71,7 @@ const AchievementsStackScreen = () => {
   return(
     <AchievementsStack.Navigator screenOptions={{headerShown: false}}>
       <AchievementsStack.Screen name="AchievementsTab" component={Achievements} />
+      <AchievementsStack.Screen name="SettingsTab" component={Settings} />
     </AchievementsStack.Navigator>
   )
 }

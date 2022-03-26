@@ -4,13 +4,14 @@ import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper/MyText';
 import DisplayBookForGoal from './DisplayBookForGoal';
-import ReturnDateString from '../Helper/Functions/ReturnDateString';
+import DateString from '../Helper/Functions/DateString';
 import ReadingDayButton from './ReadingDayButton';
 import MyButton from '../Helper/MyButton';
-import CalculatePagesPerDay from '../Helper/Functions/CalculatePagesPerDay';
+import PagesPerDay from '../Helper/Functions/PagesPerDay';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { createGoal } from '../../store/books/bookSlice';
+import { firstGoalMade } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -24,6 +25,7 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const handleCreateGoal = () => {
+    dispatch(firstGoalMade());
     dispatch(createGoal(dailySelected))
     navigation.pop(3);
     navigation.push("DailyTab");
@@ -31,14 +33,14 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: 'white'}}>
-      <TopBar />
+      <TopBar isSearchBar={false}/>
       <View style={[styles.flexContainer, {height: screenHeight - 100}]}>
         <DisplayBookForGoal book={dailySelected}/>
 
         <View>
           <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`Finish date selected: `} size={12} />
           {dailySelected.finishOn !== null && 
-          <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${ReturnDateString(dailySelected.finishOn, true)}`} size={16} />}
+          <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${DateString(dailySelected.finishOn, true)}`} size={16} />}
         </View>
 
         <View style={styles.selectedDays}>
@@ -62,11 +64,11 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
         <View style={styles.readingPerDay}>
           <MyText text="You'll need to read:" size={16} style={{textAlign: 'center'}}/>
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-            <MyText text={`${CalculatePagesPerDay(dailySelected) !== 0 ? `${CalculatePagesPerDay(dailySelected)} pages ` : "Please choose valid reading days"}`} size={20} style={{color: '#4b59f5'}}/>
-            <MyText text={`${CalculatePagesPerDay(dailySelected) !== 0 ? "every reading day" : ''}`} size={20}/>
+            <MyText text={`${PagesPerDay(dailySelected) !== 0 ? `${PagesPerDay(dailySelected)} pages ` : "Please choose valid reading days"}`} size={20} style={{color: '#4b59f5'}}/>
+            <MyText text={`${PagesPerDay(dailySelected) !== 0 ? "every reading day" : ''}`} size={20}/>
           </View>
         </View>
-        <MyButton title="Create Goal" isActive={CalculatePagesPerDay(dailySelected) !== 0} onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
+        <MyButton title="Create Goal" isActive={PagesPerDay(dailySelected) !== 0} onPress={handleCreateGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
       </View>
     </View>
   )

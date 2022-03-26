@@ -1,6 +1,6 @@
 import { Book, ReadingDate } from '../../../store/books/bookSlice';
 
-const ReturnDaysDue = (book:Book) => {
+const DaysDue = (book:Book) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   today.setDate(today.getDate())
@@ -18,4 +18,4 @@ const ReturnDaysDue = (book:Book) => {
   return daysDue
 }
 
-export default ReturnDaysDue
+export default DaysDue

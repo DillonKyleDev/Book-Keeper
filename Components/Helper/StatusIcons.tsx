@@ -35,6 +35,6 @@ export const lateIcon =
   </View>
 export const completedIcon =
   <View style={styles.statusIcon}>
-    <MyText text='Complete! ' size={8} style={{color: "gold"}}/>
-    <Entypo name="star" size={18} color="gold" />
+    <MyText text='Complete! ' size={12} style={{color: "black"}}/>
+    <Entypo name="star" size={18} color="#ffcc00" />
   </View>

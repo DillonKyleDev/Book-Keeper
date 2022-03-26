@@ -1,11 +1,14 @@
-import { Book } from "../../../store/books/bookSlice"
+//Redux
+import { Book, ReadingDate } from "../../../store/books/bookSlice";
 
-const CalculateReadingDays = (book:Book) => {
+const ReadingDates = (book:Book) => {
+  let readingDates:ReadingDate[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   let tomorrow =  new Date()
   tomorrow.setDate(today.getDate() + 1)
   let endDate:Date = new Date();
+
   if(typeof book.finishOn === 'string') {
     endDate = new Date(book.finishOn);
   } else if(typeof book.finishOn !== 'string' && book.finishOn !== null) {
@@ -17,18 +20,21 @@ const CalculateReadingDays = (book:Book) => {
     //find total number of days between today and finish date
     const timeDiff:number = endDate.getTime() - today.getTime();
     const daysBetween:number = (timeDiff / (1000 * 3600 * 24)) + 1;
-
-    //find total active reading days based on selected reading days
-    let totalReadingDays:number = 0;
+    //find and set active reading days based on selected reading days
     let currentDate = today;
     for(let i = 0; i < daysBetween; i++) {
       if(book.readingWeekdays[currentDate.getDay()]) {
-        totalReadingDays++;
+        let tempDate:Date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0,0,0,0);
+        readingDates.push({
+          date: tempDate,
+          completed: false,
+        })
       }
       currentDate.setDate(currentDate.getDate() + 1)
     }
-    return totalReadingDays
-  } else return 0;
+    return readingDates
+  }
+  return []
 }
 
-export default CalculateReadingDays
+export default ReadingDates

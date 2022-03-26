@@ -1,5 +1,5 @@
 import { Book, Statuses } from '../../store/books/bookSlice';
-import ReturnGoalStatus from './Functions/ReturnGoalStatus';
+import GoalStatus from './Functions/GoalStatus';
 
 const SortGoals = (books:Book[]) => {
 
@@ -8,13 +8,13 @@ const SortGoals = (books:Book[]) => {
   let doneArray:Book[] = [];
 
   books.forEach(book => {
-    if(ReturnGoalStatus(book) === Statuses.todayPending) {
+    if(GoalStatus(book) === Statuses.todayPending) {
       todoArray.push(book);
     } else
-    if(ReturnGoalStatus(book) === Statuses.current) {
+    if(GoalStatus(book) === Statuses.current) {
       currentArray.push(book);
     } else
-    if(ReturnGoalStatus(book) === Statuses.todayDone) {
+    if(GoalStatus(book) === Statuses.todayDone) {
       doneArray.push(book);
     } else {
       doneArray.push(book);

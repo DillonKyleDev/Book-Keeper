@@ -17,7 +17,7 @@ interface Props {
 }
 
 const BookList: React.FC<Props> = ({books, navigation, goTo}) => {
-  //redux selected
+  //redux
   const dispatch = useReduxDispatch();
 
   const handleBookPress = (book:Book) => {
@@ -46,14 +46,14 @@ const BookList: React.FC<Props> = ({books, navigation, goTo}) => {
             <View style={styles.bookInfo}>
               <View style={styles.bookInfo}>
                 <Text style={[styles.contentText, styles.title]}><Text style={styles.sectionText}>Title:</Text>  {book.title.slice(0, 30)}{book.title.length >= 30 ? "..." : ""}</Text>
-                {book.authors[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {book.authors}</Text>}
-                {book.genres[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {book.genres}</Text>}
+                {book.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {book.author}</Text>}
+                {book.genre !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {book.genre}</Text>}
                 <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
               </View>
             </View>
             <View>
               {book.goalFinalized ? 
-                <MaterialIcons style={{position: 'relative', right: 100}} name="menu-book" size={24} color="#2bba00" />
+                <MaterialIcons style={{position: 'relative', right: 95}} name="menu-book" size={20} color="#2bba00" />
               :
                 <View style={{width: 24}}>
                 

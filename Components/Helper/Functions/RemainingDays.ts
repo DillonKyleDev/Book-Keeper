@@ -1,6 +1,6 @@
 import { Book } from "../../../store/books/bookSlice"
 
-const CalculateRemainingDays = (book:Book) => {
+const RemainingDays = (book:Book) => {
   let remainingDays = 0;
   book.readingDates.forEach(date => {
     if(date.completed === false) {
@@ -10,4 +10,4 @@ const CalculateRemainingDays = (book:Book) => {
   return remainingDays;
 }
 
-export default CalculateRemainingDays
+export default RemainingDays

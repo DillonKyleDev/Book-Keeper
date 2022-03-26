@@ -1,7 +1,7 @@
 import { Book, ReadingDate, Statuses } from '../../../store/books/bookSlice';
-import ReturnDateString from './ReturnDateString';
+import DateString from './DateString';
 
-const ReturnGoalStatus = (book:Book) => {
+const GoalStatus = (book:Book) => {
   let today = new Date();
   today.setHours(0,0,0,0);
   let status:string = Statuses.noGoal;
@@ -53,7 +53,7 @@ const ReturnGoalStatus = (book:Book) => {
 
       if(book.goalCompleted) {
         status = Statuses.goalCompleted;
-        if(ReturnDateString(completionDate, false) === ReturnDateString(today, false)) {
+        if(DateString(completionDate, false) === DateString(today, false)) {
           status = Statuses.goalCompletedToday;
         }
       }
@@ -62,4 +62,4 @@ const ReturnGoalStatus = (book:Book) => {
   }
 }
 
-export default ReturnGoalStatus
+export default GoalStatus

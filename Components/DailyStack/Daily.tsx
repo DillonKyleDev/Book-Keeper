@@ -6,7 +6,7 @@ import SectionHeader from '../Helper/SectionHeader';
 import TopBar from '../Helper/TopBar';
 import GoalList from './GoalList';
 import SectionNavigator from './SectionNavigator';
-import ReturnGoalStatus from '../Helper/Functions/ReturnGoalStatus';
+import GoalStatus from '../Helper/Functions/GoalStatus';
 //Redux
 import { useReduxSelector } from '../../store';
 import { Book, Statuses, emptyBook } from '../../store/books/bookSlice';
@@ -37,7 +37,7 @@ const Daily: React.FC<Props> = ({navigation}) => {
     let hasCompletedGoals = false;
     let tempArray:Book[] = books.map((book:Book) => {
       if(book.goalFinalized) {
-        const status = ReturnGoalStatus(book);
+        const status = GoalStatus(book);
         if(status === Statuses.late) {
           hasLateGoals = true;
         }

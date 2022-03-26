@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Book } from '../../../store/books/bookSlice';
+import { Book, emptyBook } from '../../../store/books/bookSlice';
 
 export type ISBN = {
   path: string;
@@ -24,32 +24,16 @@ export type TitleAuthor = {
 
 const mapData = (data: []) => {
   const bookData: Book[] = data.map((book: any) => {
-    let tempAuthors: [] = [];
-    if(book.volumeInfo.authors) {
-      tempAuthors = book.volumeInfo.authors.map((author: string) => {
-        return author;
-      });
-    }
-    let tempGenres: [] = [];
-    if(book.volumeInfo.categories) {
-       tempGenres = book.volumeInfo.categories.map((category: string) => {
-        return category;
-      }) 
-    }
     const singleBook: Book = {
+      ...emptyBook,
       title: book.volumeInfo.title ? book.volumeInfo.title : '',
-      authors: tempAuthors,
-      genres: tempGenres,
+      author: book.volumeInfo.authors[0],
+      genre: book.volumeInfo.categories[0],
       description: book.volumeInfo.description ? book.volumeInfo.description : '',
       imageUrl: book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail ? book.volumeInfo.imageLinks.thumbnail : '',
-      pagesRead: 0,
       pages: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
       link: book.volumeInfo.previewLink ? book.volumeInfo.previewLink : '',
       rating: book.volumeInfo.averageRating ? book.volumeInfo.averageRating : 0,
-      finishOn: null,
-      readingWeekdays: [],
-      goalFinalized: false,
-      readingDates: [],
     }
     return(singleBook)
   })

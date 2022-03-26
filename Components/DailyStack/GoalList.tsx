@@ -4,21 +4,21 @@ import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
-import ReturnReadingDays from '../Helper/ReturnReadingDays';
+import ReadingDays from '../Helper/ReadingDays';
 import ProgressBar from './ProgressBar';
-import CalculatePagesPerDay from '../Helper/Functions/CalculatePagesPerDay';
+import PagesPerDay from '../Helper/Functions/PagesPerDay';
 import { currentIcon, todayIcon, todayCompleteIcon, lateIcon, completedIcon } from '../Helper/StatusIcons';
-import ReturnGoalStatus from '../Helper/Functions/ReturnGoalStatus';
-import ReturnNextReadingDay from '../Helper/Functions/ReturnNextReadingDay';
+import GoalStatus from '../Helper/Functions/GoalStatus';
+import NextReadingDay from '../Helper/Functions/NextReadingDay';
+import MyButton from '../Helper/MyButton';
+import DaysDue from '../Helper/Functions/DaysDue';
 //Redux
 import { useReduxDispatch } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { Book, Statuses, updateDatesRead } from '../../store/books/bookSlice';
-import { addBookRead, updateAchievementsPages } from '../../store/Achievements/achievementsSlice';
+import { addBookRead, updateAchievementsPages, addDayRead, updateTodaysReading } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import MyButton from '../Helper/MyButton';
-import ReturnDaysDue from '../Helper/Functions/ReturnDaysDue';
 
 interface Props {
   goals: Book[];
@@ -39,9 +39,10 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
   }
 
   const handleCompletedReading = (book:Book) => {
-    const daysRead = ReturnDaysDue(book);
-    const totalPages = CalculatePagesPerDay(book) * daysRead;
-
+    const daysRead = DaysDue(book);
+    const totalPages = PagesPerDay(book) * daysRead;
+    dispatch(updateTodaysReading(totalPages));
+    dispatch(addDayRead());
     dispatch(updateAchievementsPages(totalPages));
     if(totalPages + book.pagesRead >= book.pages) {
       dispatch(addBookRead(book));
@@ -72,12 +73,12 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
 
                 <View style={{display: 'flex', flexDirection: 'column', justifyContent: `${book.goalCompleted ? "center" : "flex-start"}`}}>
                   <View style={{position: 'absolute', right: -10, top: 5}}>
-                    {ReturnGoalStatus(book) === Statuses.todayPending && todayIcon}
-                    {ReturnGoalStatus(book) === Statuses.todayDone && todayCompleteIcon}
-                    {ReturnGoalStatus(book) === Statuses.current && currentIcon}
-                    {ReturnGoalStatus(book) === Statuses.late && lateIcon}
-                    {ReturnGoalStatus(book) === Statuses.goalCompleted && completedIcon}
-                    {ReturnGoalStatus(book) === Statuses.goalCompletedToday && completedIcon}
+                    {GoalStatus(book) === Statuses.todayPending && todayIcon}
+                    {GoalStatus(book) === Statuses.todayDone && todayCompleteIcon}
+                    {GoalStatus(book) === Statuses.current && currentIcon}
+                    {GoalStatus(book) === Statuses.late && lateIcon}
+                    {GoalStatus(book) === Statuses.goalCompleted && completedIcon}
+                    {GoalStatus(book) === Statuses.goalCompletedToday && completedIcon}
                   </View>
                   
                   <View style={[styles.bookInfo]}>
@@ -90,46 +91,46 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
                       {!book.goalCompleted &&
                       <View style={{marginBottom: -10}}>
                         <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
-                        {ReturnReadingDays(book)}
+                        {ReadingDays(book)}
                       </View>}
 
-                      {ReturnGoalStatus(book) === Statuses.current &&
+                      {GoalStatus(book) === Statuses.current &&
                       <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}>
                         <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-                        <MyText text={`${ReturnNextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>
+                        <MyText text={`${NextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>
                       </View>}
 
-                      {ReturnGoalStatus(book) === Statuses.todayPending &&
+                      {GoalStatus(book) === Statuses.todayPending &&
                       <View style={{display: 'flex', flexDirection: 'row', marginTop: -5, marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
                         <MyText text="Today's Reading:  " size={12} style={styles.sectionText}/>
-                        <MyText text={`${CalculatePagesPerDay(book) * ReturnDaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
+                        <MyText text={`${PagesPerDay(book) * DaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
                       </View>}
                         
-                      {ReturnGoalStatus(book) === Statuses.late &&
+                      {GoalStatus(book) === Statuses.late &&
                       <View style={{display: 'flex', flexDirection: 'row', marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
                         <MyText text="Reading Due:  " size={12} style={styles.sectionText}/>
-                        <MyText text={`${CalculatePagesPerDay(book) * ReturnDaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
+                        <MyText text={`${PagesPerDay(book) * DaysDue(book)} pages`} size={16} style={{color: 'green'}}/>
                       </View>}
 
                       <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center'}}>
-                        {ReturnGoalStatus(book) === Statuses.todayPending &&
+                        {GoalStatus(book) === Statuses.todayPending &&
                         <MyButton title='Mark Complete' onPress={() => handleCompletedReading(book)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: '#2bba00'}} titleStyle={{fontSize: 8}}/>}
                       </View>
 
                       <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center'}}>
-                        {ReturnGoalStatus(book) === Statuses.late &&
+                        {GoalStatus(book) === Statuses.late &&
                         <MyButton title='Mark Complete' onPress={() => handleCompletedReading(book)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: 'orange'}} titleStyle={{fontSize: 8}}/>}
-                        {ReturnGoalStatus(book) === Statuses.todayDone &&
+                        {GoalStatus(book) === Statuses.todayDone &&
                         <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: -5}}>
                           <MyText text='All Caught Up!' size={16} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>
                           <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-                          <MyText text={`${ReturnNextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
+                          <MyText text={`${NextReadingDay(book, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
                         </View>}
 
-                        {ReturnGoalStatus(book) === Statuses.goalCompletedToday &&
+                        {GoalStatus(book) === Statuses.goalCompletedToday &&
                         <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 5}}>
-                          <MyText text='Goal Completed!' size={16} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>   
-                          <MyText text='Nice Work!' size={16} style={{color: "#4b59f5", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>                
+                          <MyText text='Goal Complete' size={22} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5, textDecorationLine: "underline"}}/>   
+                          <MyText text='Nice Work!' size={26} style={{color: "#4b59f5", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>                
                         </View>}
                       </View>
                     </View>

@@ -47,7 +47,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
     if(librarySelected.rating) {
       for(let i = 1; i < 6; i++) {
         if(librarySelected && librarySelected.rating && librarySelected.rating >= i) {
-          tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="gold" />)
+          tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="#ffcc00" />)
         } else {
           tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="grey" />)
         }
@@ -61,7 +61,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
   const handleSetReadingGoal = () => {
     dispatch(setDailySelected(librarySelected));
     dispatch(resetLibrarySelected());
-    navigation.pop(2);
+    navigation.pop(4);
     navigation.navigate("SetGoalTab");
   }
 
@@ -83,6 +83,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
     setShowWarning(false);
     dispatch(removeBook(librarySelected))
     setBookSaved(false);
+    navigation.pop(2);
   };
 
   return (
@@ -111,13 +112,14 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
               <View style={styles.bookInfo}>
                 <Text style={styles.ratingText}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : " No rating."}</Text>
                 <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
-                {librarySelected.authors[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.authors && librarySelected.authors}</Text>}
-                {librarySelected.genres[0] !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {librarySelected.genres}</Text>}
+                {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
+                {librarySelected.genre !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {librarySelected.genre}</Text>}
 
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
                   <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
+                  {bookSaved &&  <>
                   <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
-                  <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" />
+                  <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
                 </View>
               
                 {librarySelected.description !== '' && <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {librarySelected.description}</Text>}
@@ -152,7 +154,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
             {showWarning ?
             <>
               <MyText style={{textAlign: 'center'}} text="WARNING" size={12} />
-              <MyText style={{textAlign: 'center'}} text="Removing from library will also remove any goals associated with this book." size={10} />
+              <MyText style={{textAlign: 'center'}} text="Removing a book from your library will also remove any goals associated with this book.  Achievement data, like pages read and completed books, though, will be saved." size={10} />
               <View style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center'}}>
                 <MyButton title='Remove' onPress={() => removeBookFromBooks()} customStyle={{marginBottom: 0, width: 'auto', height: 'auto', marginRight: 10, backgroundColor: 'red'}}/>
                 <MyButton title='Do not Remove' onPress={() => setShowWarning(false)} customStyle={{marginBottom: 0, width: 'auto', height: 'auto'}}/>

@@ -7,8 +7,8 @@ export type ReadingDate = {
 
 export interface Book {
   title: string;
-  authors: string[];
-  genres: string[];
+  author: string;
+  genre: string;
   description: string;
   imageUrl: string;
   link: string;
@@ -25,8 +25,8 @@ export interface Book {
 
 export const emptyBook:Book = {
   title: '',
-  authors: [''],
-  genres: [''],
+  author: '',
+  genre: '',
   description: '',
   imageUrl: '',
   pagesRead: 0,
@@ -43,8 +43,8 @@ export const emptyBook:Book = {
 
 export const bookNotFoundBook:Book = {
   title: "Book Not Found",
-  authors: [''],
-  genres: [''],
+  author: '',
+  genre: '',
   description: '',
   rating: 0,
   imageUrl: '',

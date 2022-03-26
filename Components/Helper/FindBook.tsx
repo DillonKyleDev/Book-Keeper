@@ -5,13 +5,14 @@ import BookList from './BookList';
 import SectionHeader from './SectionHeader';
 import TopBar from './TopBar';
 import MyText from './MyText';
+import MyButton from './MyButton';
+import { HandleFindBook } from './Functions/HandleFindBook';
 //Redux
 import { Book, emptyBook, addBook } from '../../store/books/bookSlice';
 import { useReduxDispatch } from '../../store';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import MyButton from './MyButton';
-import { HandleFindBook } from './Functions/HandleFindBook';
+
 
 
 interface Props {
@@ -34,7 +35,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
     dispatch(addBook({
       ...emptyBook,
       title: title,
-      authors: [author],
+      author: author,
       pages: parseInt(pageCount.replace(/[^0-9 ]/g, "")),
     }))
     navigation.pop(3);
@@ -90,7 +91,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
           placeholder="page count"
           keyboardType='numeric'
         />
-        <MyButton isActive={title !== ''} title="Create Book" onPress={() => handleCreateBook()} />
+        <MyButton isActive={pageCount !== ''} title="Create Book" onPress={() => handleCreateBook()} />
       </View>}
     </View>
 

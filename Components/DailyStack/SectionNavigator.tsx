@@ -30,7 +30,7 @@ const SectionNavigator: React.FC<Props> = ({hasLateGoals, hasCompletedGoals, dis
         <Button title="Late" titleStyle={[styles.sectionButtonTitle, {color:"#cccccc", width: 50, paddingTop: 3, paddingBottom: 3}]} buttonStyle={[styles.sectionButton, {backgroundColor: `${displaySection === "Late" ? "#6c77f0" : "white"}`}]} onPress={() => {}}/>
         }
         {hasCompletedGoals ?
-        <Button icon={<FontAwesome5 name="flag-checkered" size={18} color="gold" />}  buttonStyle={[styles.sectionButton, {padding: 7, paddingTop: 5, paddingBottom: 5, backgroundColor: `${displaySection === "Completed" ? "#6c77f0" : "white"}`}]} onPress={() => handleSectionChange(COMPLETED)}/>
+        <Button icon={<FontAwesome5 name="flag-checkered" size={18} color="#ffcc00" />}  buttonStyle={[styles.sectionButton, {padding: 7, paddingTop: 5, paddingBottom: 5, backgroundColor: `${displaySection === "Completed" ? "#6c77f0" : "white"}`}]} onPress={() => handleSectionChange(COMPLETED)}/>
         :
         <Button icon={<FontAwesome5 name="flag-checkered" size={18} color="#cccccc" />}  buttonStyle={[styles.sectionButton, {padding: 7, paddingTop: 5, paddingBottom: 5, backgroundColor: `${displaySection === "Completed" ? "#6c77f0" : "white"}`}]}/>
         }

@@ -1,4 +1,4 @@
-  const ReturnDateString = (date: Date | null | string, withWeekday: boolean) => {
+  const DateString = (date: Date | null | string, withWeekday: boolean) => {
     let monthNumber = 0;
     let weekdayNumber = 0;
     let dateNumber = 0; 
@@ -91,4 +91,4 @@
     return(`- ${month} ${dateNumber}, ${yearNumber} -`);
   }
 
-  export default ReturnDateString
+  export default DateString

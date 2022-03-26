@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
-import { View, StyleSheet, Image, TextInput } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper//MyText';
-import ReturnDateString from '../Helper/Functions/ReturnDateString';
-import ReturnReadingDays from '../Helper/ReturnReadingDays';
-import CalculateRemainingDays from '../Helper/Functions/CalculateRemainingDays';
+import DateString from '../Helper/Functions/DateString';
+import ReadingDays from '../Helper/ReadingDays';
+import RemainingDays from '../Helper/Functions/RemainingDays';
 //redux
-import { useReduxDispatch, useReduxSelector } from '../../store';
-import ReturnNextReadingDay from '../Helper/Functions/ReturnNextReadingDay';
+import { useReduxSelector } from '../../store';
+import NextReadingDay from '../Helper/Functions/NextReadingDay';
 import ProgressBar from './ProgressBar';
 import MyButton from '../Helper/MyButton';
 //Navigation
@@ -22,12 +22,11 @@ interface Props {
 
 const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   //redux persist
-  const dispatch = useReduxDispatch()
   const dailySelected = useReduxSelector(state => state.dailySelected);
 
   const today = new Date();
   today.setHours(0,0,0,0);
-  const todaysDate = ReturnDateString(today, true).slice(2,-2);
+  const todaysDate = DateString(today, true).slice(2,-2);
 
   return (
     <View>
@@ -60,7 +59,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
               {!dailySelected.goalCompleted ?
             <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
               <MyText text="Finish On:  " size={14} style={[styles.sectionText]}/>
-              <MyText text={`${ReturnDateString(dailySelected.finishOn, true).slice(2, -2)}`} size={14}/>    
+              <MyText text={`${DateString(dailySelected.finishOn, true).slice(2, -2)}`} size={14}/>    
             </View>
             :
             <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
@@ -80,12 +79,12 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
             {!dailySelected.goalCompleted &&
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5}}>
               <MyText text="Next reading day:  " size={14} style={styles.sectionText} />
-              <MyText text={`${ReturnNextReadingDay(dailySelected, true) !== todaysDate ? ReturnNextReadingDay(dailySelected, true) : "Today"}`} size={14}/>
+              <MyText text={`${NextReadingDay(dailySelected, true) !== todaysDate ? NextReadingDay(dailySelected, true) : "Today"}`} size={14}/>
             </View>}
             {!dailySelected.goalCompleted ?
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', marginLeft: 'auto', marginRight: 'auto', marginTop: 20}}>
               <MyText text="Just " size={20}/>
-              <MyText text={`${CalculateRemainingDays(dailySelected)}`} size={20} style={{marginLeft: 'auto', marginRight: 'auto', color: '#4b59f5', textDecorationLine: 'underline'}} />
+              <MyText text={`${RemainingDays(dailySelected)}`} size={20} style={{marginLeft: 'auto', marginRight: 'auto', color: '#4b59f5', textDecorationLine: 'underline'}} />
               <MyText text=" more reading days to go!" size={20}/>
             </View>
             :
@@ -94,7 +93,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
             </View>
             }
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: -10}}>
-              {ReturnReadingDays(dailySelected)}
+              {ReadingDays(dailySelected)}
             </View>
           </View>
 
