@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import TopBar from '../Helper/TopBar';
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const Library: React.FC<Props> = ({navigation}) => {
+  const [ searchFor, setSearchFor ] = useState('');
   //store
   const books = useReduxSelector(state => state.books);
   const dispatch = useReduxDispatch();
@@ -41,8 +42,10 @@ const Library: React.FC<Props> = ({navigation}) => {
         paddingLeft: 12,
         paddingRight: 35,
         zIndex: 4,
-        position: 'relative'
-      }} />
+        position: 'relative',
+      }} 
+      value={searchFor}
+      onChangeText={setSearchFor}/>
     </View>
   </>
 
@@ -73,7 +76,7 @@ const Library: React.FC<Props> = ({navigation}) => {
             </View>
           </View>
           }
-          <BookList books={books} navigation={navigation} goTo="ShowSingleBookTab"/>
+          <BookList books={books} filter={searchFor} navigation={navigation} goTo="ShowSingleBookTab"/>
         </View>
     </View>
   )

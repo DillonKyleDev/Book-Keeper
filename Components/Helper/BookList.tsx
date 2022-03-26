@@ -14,9 +14,10 @@ interface Props {
   books: Book[] | [];
   navigation: NativeStackNavigationProp<any>;
   goTo: string;
+  filter?: string;
 }
 
-const BookList: React.FC<Props> = ({books, navigation, goTo}) => {
+const BookList: React.FC<Props> = ({books, navigation, goTo, filter}) => {
   //redux
   const dispatch = useReduxDispatch();
 
@@ -31,7 +32,7 @@ const BookList: React.FC<Props> = ({books, navigation, goTo}) => {
     <View style={{height: screenHeight - 156}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {books && books.length > 0 && books.map((book, index) => {
-          if(book) {
+          if(book && (filter !== undefined && book.title.toLowerCase().includes(filter.toLowerCase()) || filter !== undefined && book.author.toLowerCase().includes(filter.toLowerCase()))) {
           return (
           <Pressable onPress={() => handleBookPress(book)} key={`${index} ${book.title}`} style={styles.bookCard}>
             {book.imageUrl !== '' ? 

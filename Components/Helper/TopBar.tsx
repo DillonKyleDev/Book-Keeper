@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import MyText from './MyText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
   button?: React.ReactFragment;
@@ -15,7 +17,10 @@ const TopBar: React.FC<Props> = ({button}) => {
       <View style={styles.navBar}>
         <View style={styles.titleContainer}>
           <View style={styles.icon}>
-            <MaterialCommunityIcons name="book-open-page-variant" size={26} color="white" />
+            <Ionicons name="md-book" size={24} color="white" />
+          </View>
+          <View style={[styles.icon, {top: 35, left: 29}]}>
+            <Octicons name="pencil" size={18} color="#ffcc00" />
           </View>
           <MyText text="       Book" size={20} style={styles.NavTitle} />
           <MyText text="Keeper" size={20} style={[styles.NavTitle, styles.italics]} />
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: -15,
     position: 'relative',
-    top: 35,
+    top: 40,
     left: 32,
   },
   titleContainer: {
