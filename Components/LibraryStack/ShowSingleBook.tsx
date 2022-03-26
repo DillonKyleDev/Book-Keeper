@@ -102,12 +102,16 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
                   <Foundation name="book-bookmark" size={150} color="#636363" />
                 </View>
               }
-
+              
+              {!librarySelected.goalCompleted ?
+              <>
               {bookSaved ?
                 <MyButton title={`${librarySelected.goalFinalized ? "Edit Reading Goal" : "Set Reading Goal"}`} customStyle={{width: 'auto', height: 'auto'}} onPress={() => handleSetReadingGoal()}/>
               :
                 <MyButton title='Add To Library' customStyle={{width: 'auto', height: 'auto'}} onPress={addBookToBooks}/>
-              }
+              }</>
+              :
+              <View style={{marginBottom: 40}}></View>}
        
               <View style={styles.bookInfo}>
                 <Text style={styles.ratingText}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : " No rating."}</Text>
@@ -117,7 +121,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
 
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
                   <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-                  {bookSaved &&  <>
+                  {bookSaved  && !librarySelected.goalCompleted &&  <>
                   <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
                   <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
                 </View>

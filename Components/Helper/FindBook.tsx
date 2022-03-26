@@ -53,7 +53,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
             <MyText text='Enter book title' size={22} style={styles.searchText}/>
             <TextInput
               style={styles.inputs}
-              onChangeText={e => setTitle(e)}
+              onChangeText={setTitle}
               value={title}
               placeholder="title"
             />
@@ -65,7 +65,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
               <ActivityIndicator animating={isLoading} size="large" color="#4b59f5" style={{position: 'absolute', bottom: 15}}/>
             </View>
             <MyText text='Enter author name' size={22} style={styles.searchText}/>
-            <TextInput style={styles.inputs} onChangeText={e => setAuthor(e)} value={author} placeholder={placeHolder} />
+            <TextInput style={styles.inputs} onChangeText={setAuthor} value={author} placeholder={placeHolder} />
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <MyButton title="Search for Book" customStyle={{marginBottom: 15, width: 'auto', paddingLeft: 30, paddingRight: 30}} onPress={() => HandleFindBook({author, title, setIsLoading, setPlaceHolder, setSearchResults})}/>
               <MyText text='Or...' size={16} style={{marginTop: 0, marginBottom: 10, marginLeft: 'auto', marginRight: 'auto'}}/>
@@ -77,7 +77,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
       :
         <>
           <SectionHeader title="Search results"/>
-          <BookList books={searchResults} navigation={navigation} goTo="ShowSingleBookTab"/>
+          <BookList filter='' books={searchResults} navigation={navigation} goTo="ShowSingleBookTab"/>
         </>
       }
       </>
@@ -86,7 +86,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
         <MyText text='Enter book page count' size={22} style={styles.searchText}/>
         <TextInput
           style={styles.inputs}
-          onChangeText={e => setPageCount(e)}
+          onChangeText={setPageCount}
           value={pageCount.toString()}
           placeholder="page count"
           keyboardType='numeric'

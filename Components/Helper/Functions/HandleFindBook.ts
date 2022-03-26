@@ -37,7 +37,10 @@ export const HandleFindBook = async ({title, author, setIsLoading, setSearchResu
     await FetchTitle({titleData: titleData})
     .then(books => {
       setIsLoading(false);
-      setSearchResults(books);
+        console.log(titleData, books)
+      if(books !== undefined) {
+        setSearchResults(books);
+      }
     })
     .catch(err => {
       setIsLoading(false);

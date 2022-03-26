@@ -1,21 +1,15 @@
 import React, { ReactFragment } from 'react';
-import { View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
-import { Foundation } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
-import ReadingDays from '../Helper/ReadingDays';
 import ProgressBar from './ProgressBar';
 import PagesPerDay from '../Helper/Functions/PagesPerDay';
-import { currentIcon, todayIcon, todayCompleteIcon, lateIcon, completedIcon } from '../Helper/StatusIcons';
-import GoalStatus from '../Helper/Functions/GoalStatus';
-import NextReadingDay from '../Helper/Functions/NextReadingDay';
-import MyButton from '../Helper/MyButton';
 import DaysDue from '../Helper/Functions/DaysDue';
 //Redux
 import { useReduxDispatch } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
-import { Book, Statuses, updateDatesRead } from '../../store/books/bookSlice';
+import { Book, updateDatesRead } from '../../store/books/bookSlice';
 import { addBookRead, updateAchievementsPages, addDayRead, updateTodaysReading } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';

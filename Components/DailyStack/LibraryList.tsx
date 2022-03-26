@@ -23,7 +23,7 @@ const Library: React.FC<Props> = ({navigation}) => {
           <View>
             <SectionHeader title="Add from Library" />
           </View>
-          <BookList books={books} navigation={navigation} goTo="FinishByTab"/>
+          <BookList books={books} navigation={navigation} goTo="FinishByTab" filter='' includeFinished={false}/>
         </View>
     </View>
   )

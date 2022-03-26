@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, Image, ScrollView, Pressable } from 'react-nati
 import { screenHeight } from './Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import MyText from './MyText';
 //Redux
 import { useReduxDispatch } from '../../store';
 import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
@@ -14,10 +17,15 @@ interface Props {
   books: Book[] | [];
   navigation: NativeStackNavigationProp<any>;
   goTo: string;
-  filter?: string;
+  filter: string;
+  includeFinished?: boolean;
 }
 
-const BookList: React.FC<Props> = ({books, navigation, goTo, filter}) => {
+const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFinished}) => {
+  let tempBooks = books;
+  if(includeFinished !== undefined && includeFinished === false) {
+    tempBooks = books.filter(book => book.goalCompleted === false)
+  }
   //redux
   const dispatch = useReduxDispatch();
 
@@ -31,8 +39,10 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter}) => {
   return (
     <View style={{height: screenHeight - 156}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {books && books.length > 0 && books.map((book, index) => {
-          if(book && (filter !== undefined && book.title.toLowerCase().includes(filter.toLowerCase()) || filter !== undefined && book.author.toLowerCase().includes(filter.toLowerCase()))) {
+        {tempBooks && tempBooks.length > 0 ? tempBooks.map((book, index) => {
+          if(book &&
+            (book.title.toLowerCase().includes(filter.toLowerCase()) || 
+            book.author.toLowerCase().includes(filter.toLowerCase()))) {
           return (
           <Pressable onPress={() => handleBookPress(book)} key={`${index} ${book.title}`} style={styles.bookCard}>
             {book.imageUrl !== '' ? 
@@ -53,16 +63,27 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter}) => {
               </View>
             </View>
             <View>
-              {book.goalFinalized ? 
+              {(book.goalFinalized && !book.goalCompleted) ? 
                 <MaterialIcons style={{position: 'relative', right: 95}} name="menu-book" size={20} color="#2bba00" />
               :
-                <View style={{width: 24}}>
-                
-                </View>
+                <View style={{width: 24}}/>
+              }
+              {book.goalFinalized && book.goalCompleted ?
+              
+                <Entypo name="star" size={18} color="#ffcc00" style={{position: 'relative', right: 94, top: 3}}/>
+              :
+                <View style={{width: 24}}/>
               }
             </View>
           </Pressable>
-        )}})}
+        )}}):
+        <View>
+          <MyText text="No books here you haven't read yet.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
+          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <MyText text="Add new books to your library!" size={20} style={{paddingTop: 10}}/>
+          </View>
+        </View>
+        }
       </ScrollView>
     </View>
   )

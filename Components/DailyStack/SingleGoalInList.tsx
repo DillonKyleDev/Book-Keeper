@@ -1,18 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { Foundation } from '@expo/vector-icons';
-import MyText from '../Helper/MyText';
-import ReadingDays from '../Helper/ReadingDays';
+import { View, StyleSheet } from 'react-native';
 import PagesPerDay from '../Helper/Functions/PagesPerDay';
-import { currentIcon, todayIcon, todayCompleteIcon, lateIcon, completedIcon } from '../Helper/StatusIcons';
 import GoalStatus from '../Helper/Functions/GoalStatus';
-import NextReadingDay from '../Helper/Functions/NextReadingDay';
-import MyButton from '../Helper/MyButton';
 import DaysDue from '../Helper/Functions/DaysDue';
 //Redux
 import { useReduxDispatch } from '../../store';
 import { Book, Statuses, updateDatesRead } from '../../store/books/bookSlice';
 import { addBookRead, updateAchievementsPages, addDayRead, updateTodaysReading } from '../../store/Achievements/achievementsSlice';
+import Complete from './GoalTypesInList/Complete';
+import Today from './GoalTypesInList/Today';
+import TodayDone from './GoalTypesInList/TodayDone';
+import Current from './GoalTypesInList/Current';
+import Late from './GoalTypesInList/Late';
 //Navigation
 
 interface Props {
@@ -21,8 +20,6 @@ interface Props {
 
 const SingleGoalInList: React.FC<Props> = ({goal}) => {
   const goalStatus = GoalStatus(goal);
-  const fontSize: number = 12;
-  const maxLetters: number = 20;
   //redux selected
   const dispatch = useReduxDispatch();
 
@@ -40,31 +37,17 @@ const SingleGoalInList: React.FC<Props> = ({goal}) => {
 
   return (
     <View style={{display: 'flex', flexDirection: 'row', justifyContent: `${goal.goalCompleted ? 'space-evenly' : 'flex-start'}`}}>
-      <View style={{display: 'flex'}}>
-      {goal.imageUrl !== '' ? 
-        <View style={[styles.flexCenter, styles.margin]}>
-          <Image style={styles.goalImage} source={{uri: goal.imageUrl}}/>
-        </View>
-      :
-        <View style={[styles.goalImage, styles.flexCenter, styles.margin]}>
-          <Foundation style={styles.flexCenter} book="goal-goalmark" size={75} color="#636363" />
-        </View>
-      }
-      </View>
-
       
-
       <View style={{display: 'flex', flexDirection: 'column', justifyContent: `${goal.goalCompleted ? "center" : "flex-start"}`}}>
-        <View style={{position: 'absolute', right: -10, top: 5}}>
-          {GoalStatus(goal) === Statuses.todayPending && todayIcon}
-          {GoalStatus(goal) === Statuses.todayDone && todayCompleteIcon}
-          {GoalStatus(goal) === Statuses.current && currentIcon}
-          {GoalStatus(goal) === Statuses.late && lateIcon}
-          {GoalStatus(goal) === Statuses.goalCompleted && completedIcon}
-          {GoalStatus(goal) === Statuses.goalCompletedToday && completedIcon}
-        </View>
-        
-        <View style={[styles.goalInfo]}>
+
+        {goalStatus === Statuses.todayPending && <Today goal={goal} />}
+        {goalStatus === Statuses.todayDone && <TodayDone goal={goal} />}
+        {goalStatus === Statuses.current && <Current goal={goal} />}
+        {goalStatus === Statuses.late && <Late goal={goal} />}
+        {goalStatus === Statuses.goalCompleted && <Complete goal={goal} />}
+        {goalStatus === Statuses.goalCompletedToday && <Complete goal={goal} />}
+
+        {/* <View style={[styles.goalInfo]}>
           <View style={{display: 'flex', flexDirection: 'row', paddingTop: 5}}>
             <MyText text="Title:  " size={fontSize} style={[styles.sectionText]} />
             <MyText text={`${goal.title.slice(0, maxLetters)}${goal.title.length >= maxLetters ? '..' : ''}`} size={fontSize} style={{fontStyle: 'italic'}}/>
@@ -117,7 +100,7 @@ const SingleGoalInList: React.FC<Props> = ({goal}) => {
               </View>}
             </View>
           </View>
-        </View>
+        </View> */}
       </View>
     </View>
   )

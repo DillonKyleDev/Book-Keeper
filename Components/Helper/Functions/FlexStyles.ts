@@ -1,27 +1,44 @@
 import { StyleSheet } from "react-native"
 
-export const flexStyles = StyleSheet.create({
+const flexStyles = StyleSheet.create({
   flexRowReg: {
-
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  flexRowEven: {
+    display: 'flex', 
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly'
   },
   flexRowCenter: {
     display: 'flex', 
     flexDirection: 'row', 
     justifyContent: 'center', 
-    marginLeft: 'auto', 
-    marginRight: 'auto', 
-    alignItems: 'center'
   },
-  flexColumnCenter: {
+  flexColCenter: {
     display: 'flex', 
     flexDirection: 'column', 
     justifyContent: 'center', 
-    alignItems: 'center', 
-    marginLeft: 'auto', 
-    marginRight: 'auto', 
   },
   autoMargin: {
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  flexRowStart: {
+    display: 'flex', 
+    flexDirection: 'row', 
+    justifyContent: 'flex-start'
+  },
+  flexRowEnd: {
+    display: 'flex', 
+    flexDirection: 'row', 
+    alignItems: 'flex-end',
+  },
+  flexColStart: {
+    display: 'flex', 
+    flexDirection: 'column', 
+    justifyContent: "flex-start"
   }
 })
+
+export default flexStyles

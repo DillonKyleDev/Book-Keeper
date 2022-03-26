@@ -32,14 +32,14 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
             title="Scan new book"
             onPress={() => {
               dispatch(resetLibrarySelected());
-              navigation.push("AddFromLibraryTab");
+              navigation.push("ScanBookTab");
             }}/>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Enter book manually"
             onPress={() => {
               dispatch(resetLibrarySelected());
-              navigation.push("AddFromLibraryTab");
+              navigation.push("FindBookTab");
             }}/>
       </View>
     </View>
