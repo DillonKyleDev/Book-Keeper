@@ -21,6 +21,7 @@ export interface Book {
   readingDates: ReadingDate[];
   goalCompleted: boolean;
   completionDate: Date | null;
+  customBook: boolean;
 }
 
 export const emptyBook:Book = {
@@ -39,6 +40,7 @@ export const emptyBook:Book = {
   readingDates: [],
   goalCompleted: false,
   completionDate: null,
+  customBook: false,
 }
 
 export const bookNotFoundBook:Book = {
@@ -57,6 +59,7 @@ export const bookNotFoundBook:Book = {
   readingDates: [],
   goalCompleted: false,
   completionDate: null,
+  customBook: false,
 }
 
 export const Statuses = {

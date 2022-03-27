@@ -37,6 +37,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
       title: title,
       author: author,
       pages: parseInt(pageCount.replace(/[^0-9 ]/g, "")),
+      customBook: true,
     }))
     navigation.pop(3);
   }
@@ -57,7 +58,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
               value={title}
               placeholder="title"
             />
-            <MyButton isActive={title !== ''} title="Enter Author" onPress={() => setShowAuthor(true)} />
+            <MyButton isActive={title !== '' && title.replace(/\s+/g, '') !== ''} title="Enter Author" onPress={() => setShowAuthor(true)} />
           </>
           :
           <>
@@ -67,7 +68,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
             <MyText text='Enter author name' size={22} style={styles.searchText}/>
             <TextInput style={styles.inputs} onChangeText={setAuthor} value={author} placeholder={placeHolder} />
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-              <MyButton title="Search for Book" customStyle={{marginBottom: 15, width: 'auto', paddingLeft: 30, paddingRight: 30}} onPress={() => HandleFindBook({author, title, setIsLoading, setPlaceHolder, setSearchResults})}/>
+              <MyButton isActive={title.replace(/\s+/g, '') !== ''} title="Search for Book" customStyle={{marginBottom: 15, width: 'auto', paddingLeft: 30, paddingRight: 30}} onPress={() => HandleFindBook({author, title, setIsLoading, setPlaceHolder, setSearchResults})}/>
               <MyText text='Or...' size={16} style={{marginTop: 0, marginBottom: 10, marginLeft: 'auto', marginRight: 'auto'}}/>
               <MyButton title="Create New Book" customStyle={{marginBottom: 0, width: 'auto', paddingLeft: 30, paddingRight: 30}} onPress={() => setCreatingNewBook(true)}/>
             </View>
@@ -91,7 +92,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
           placeholder="page count"
           keyboardType='numeric'
         />
-        <MyButton isActive={pageCount !== ''} title="Create Book" onPress={() => handleCreateBook()} />
+        <MyButton isActive={pageCount !== '' && pageCount.replace(/[^0-9 ]/g, "") !== ''} title="Create Book" onPress={() => handleCreateBook()} />
       </View>}
     </View>
 

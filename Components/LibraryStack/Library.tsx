@@ -76,7 +76,7 @@ const Library: React.FC<Props> = ({navigation}) => {
             </View>
           </View>
           }
-          <BookList books={books} filter={searchFor} navigation={navigation} goTo="ShowSingleBookTab"/>
+          <BookList books={books} filter={searchFor} navigation={navigation} includeFinished={true} goTo="ShowSingleBookTab"/>
         </View>
     </View>
   )

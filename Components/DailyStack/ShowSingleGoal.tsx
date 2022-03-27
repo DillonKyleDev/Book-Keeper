@@ -15,6 +15,7 @@ import ProgressBar from './ProgressBar';
 import MyButton from '../Helper/MyButton';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import TotalReadingDays from '../Helper/Functions/TotalReadingDays';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -27,6 +28,10 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   const today = new Date();
   today.setHours(0,0,0,0);
   const todaysDate = DateString(today, true).slice(2,-2);
+  const startedOn = DateString(dailySelected.readingDates[0].date, true).slice(2,-2);
+  const completedOn = DateString(dailySelected.completionDate, true).slice(2,-2);
+  const activeReadingDays = dailySelected.readingDates.length;
+  const pagesPerDay = Math.ceil(dailySelected.pages / dailySelected.readingDates.length);
 
   return (
     <View>
@@ -40,7 +45,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
           </View>
           :
           <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
-            <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+            <Foundation style={styles.flexCenter} name="book-bookmark" size={150} color="#636363" />
           </View>
           }
 
@@ -62,10 +67,24 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
               <MyText text={`${DateString(dailySelected.finishOn, true).slice(2, -2)}`} size={14}/>    
             </View>
             :
-            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
-              <MyText text="Finish On:  " size={14} style={[styles.sectionText]}/>
-              <MyText text="Finished!" size={14}/>    
-            </View>}
+            <>
+              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
+                <MyText text="Started On:  " size={14} style={[styles.sectionText]}/>
+                <MyText text={`${startedOn}`} size={14}/>    
+              </View>
+              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
+                <MyText text="Finished On:  " size={14} style={[styles.sectionText]}/>
+                <MyText text={`${completedOn}`} size={14}/>    
+              </View>
+              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
+                <MyText text="Total active reading days:  " size={14} style={[styles.sectionText]}/>
+                <MyText text={`${activeReadingDays}`} size={14}/>    
+              </View>
+              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 6}}>
+                <MyText text="Pages read per day:  " size={14} style={[styles.sectionText]}/>
+                <MyText text={`${pagesPerDay}`} size={14}/>    
+              </View>
+            </>}
 
             <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
               <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 10}}>

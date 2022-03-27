@@ -15,7 +15,7 @@ const GoalImage: React.FC<Props> = ({url}) => {
         </View>
       :
         <View style={[styles.goalImage, styles.flexCenter, styles.margin]}>
-          <Foundation style={styles.flexCenter} book="goal-goalmark" size={75} color="#636363" />
+          <Foundation name="book-bookmark" size={125} color="#636363" />
         </View>
       }
       </View>

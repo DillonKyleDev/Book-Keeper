@@ -39,68 +39,12 @@ const SingleGoalInList: React.FC<Props> = ({goal}) => {
     <View style={{display: 'flex', flexDirection: 'row', justifyContent: `${goal.goalCompleted ? 'space-evenly' : 'flex-start'}`}}>
       
       <View style={{display: 'flex', flexDirection: 'column', justifyContent: `${goal.goalCompleted ? "center" : "flex-start"}`}}>
-
         {goalStatus === Statuses.todayPending && <Today goal={goal} />}
         {goalStatus === Statuses.todayDone && <TodayDone goal={goal} />}
         {goalStatus === Statuses.current && <Current goal={goal} />}
         {goalStatus === Statuses.late && <Late goal={goal} />}
         {goalStatus === Statuses.goalCompleted && <Complete goal={goal} />}
         {goalStatus === Statuses.goalCompletedToday && <Complete goal={goal} />}
-
-        {/* <View style={[styles.goalInfo]}>
-          <View style={{display: 'flex', flexDirection: 'row', paddingTop: 5}}>
-            <MyText text="Title:  " size={fontSize} style={[styles.sectionText]} />
-            <MyText text={`${goal.title.slice(0, maxLetters)}${goal.title.length >= maxLetters ? '..' : ''}`} size={fontSize} style={{fontStyle: 'italic'}}/>
-          </View>
-          <View style={{marginTop: 5, flexGrow: 1}}>
-
-            {!goal.goalCompleted &&
-            <View style={{marginBottom: -10}}>
-              <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
-              {ReadingDays(goal)}
-            </View>}
-
-            {GoalStatus(goal) === Statuses.current &&
-            <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}>
-              <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-              <MyText text={`${NextReadingDay(goal, false)}`} size={16} style={{color: "#4b59f5"}}/>
-            </View>}
-
-            {GoalStatus(goal) === Statuses.todayPending &&
-            <View style={{display: 'flex', flexDirection: 'row', marginTop: -5, marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
-              <MyText text="Today's Reading:  " size={12} style={styles.sectionText}/>
-              <MyText text={`${PagesPerDay(goal) * DaysDue(goal)} pages`} size={16} style={{color: 'green'}}/>
-            </View>}
-              
-            {GoalStatus(goal) === Statuses.late &&
-            <View style={{display: 'flex', flexDirection: 'row', marginBottom: 7, marginLeft: 'auto', marginRight: 'auto', alignItems: 'flex-end'}}>
-              <MyText text="Reading Due:  " size={12} style={styles.sectionText}/>
-              <MyText text={`${PagesPerDay(goal) * DaysDue(goal)} pages`} size={16} style={{color: 'green'}}/>
-            </View>}
-
-            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center'}}>
-              {GoalStatus(goal) === Statuses.todayPending &&
-              <MyButton title='Mark Complete' onPress={() => handleCompletedReading(goal)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: '#2bba00'}} titleStyle={{fontSize: 8}}/>}
-            </View>
-
-            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center'}}>
-              {GoalStatus(goal) === Statuses.late &&
-              <MyButton title='Mark Complete' onPress={() => handleCompletedReading(goal)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: 'orange'}} titleStyle={{fontSize: 8}}/>}
-              {GoalStatus(goal) === Statuses.todayDone &&
-              <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: -5}}>
-                <MyText text='All Caught Up!' size={16} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>
-                <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-                <MyText text={`${NextReadingDay(goal, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
-              </View>}
-
-              {GoalStatus(goal) === Statuses.goalCompletedToday &&
-              <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 5}}>
-                <MyText text='Goal Complete' size={22} style={{color: "green", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5, textDecorationLine: "underline"}}/>   
-                <MyText text='Nice Work!' size={26} style={{color: "#4b59f5", marginLeft: 'auto', marginRight: 'auto', marginBottom: 5}}/>                
-              </View>}
-            </View>
-          </View>
-        </View> */}
       </View>
     </View>
   )

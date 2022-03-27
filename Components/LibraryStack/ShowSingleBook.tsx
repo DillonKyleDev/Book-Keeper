@@ -90,6 +90,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
     <View>
       <TopBar />
       <View style={{height: screenHeight - 100, backgroundColor: 'white'}}>
+        {librarySelected.customBook === false ?
         <ScrollView>
           {librarySelected && librarySelected.title && !bookNotFound && librarySelected.title !== "Book Not Found"? 
           <>
@@ -169,6 +170,50 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
             }
           </View>}
         </ScrollView>
+
+
+        :
+
+
+        <View style={{display: "flex", flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
+          <Entypo style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />
+
+          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+            <Foundation name="book-bookmark" size={150} color="#636363" />
+          </View>
+          
+          {!librarySelected.goalCompleted && <MyButton title={`${librarySelected.goalFinalized ? "Edit Reading Goal" : "Set Reading Goal"}`} customStyle={{width: 'auto', height: 'auto'}} onPress={() => handleSetReadingGoal()}/>}
+    
+          <View style={styles.bookInfo}>
+            <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
+            {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
+
+            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
+              <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
+              {bookSaved  && !librarySelected.goalCompleted &&  <>
+              <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
+              <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
+            </View>
+        
+          </View>
+         
+          {bookSaved && 
+          <View style={styles.removeContainer}>
+            {showWarning ?
+            <>
+              <MyText style={{textAlign: 'center'}} text="WARNING" size={12} />
+              <MyText style={{textAlign: 'center'}} text="Removing a book from your library will also remove any goals associated with this book.  Achievement data, like pages read and completed books, though, will be saved." size={10} />
+              <View style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center'}}>
+                <MyButton title='Remove' onPress={() => removeBookFromBooks()} customStyle={{marginBottom: 0, width: 'auto', height: 'auto', marginRight: 10, backgroundColor: 'red'}}/>
+                <MyButton title='Do not Remove' onPress={() => setShowWarning(false)} customStyle={{marginBottom: 0, width: 'auto', height: 'auto'}}/>
+              </View>
+            </>
+            :
+            <MyButton title='Remove from library' onPress={() => setShowWarning(true)} customStyle={{marginBottom: 0, marginTop: 0, width: 'auto', height: 'auto'}}/>
+            }
+          </View>}
+        
+        </View>}
       </View>
     </View>
   )

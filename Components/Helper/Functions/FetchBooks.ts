@@ -25,15 +25,22 @@ export type TitleAuthor = {
 const mapData = (data: []) => {
   const bookData: Book[] = data.map((book: any) => {
     const singleBook: Book = {
-      ...emptyBook,
       title: book.volumeInfo.title ? book.volumeInfo.title : '',
-      author: book.volumeInfo.authors[0],
-      genre: book.volumeInfo.categories[0],
+      author: book.volumeInfo.authors ? book.volumeInfo.authors[0] : '',
+      genre: book.volumeInfo.categories ? book.volumeInfo.categories[0] : '',
       description: book.volumeInfo.description ? book.volumeInfo.description : '',
       imageUrl: book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail ? book.volumeInfo.imageLinks.thumbnail : '',
       pages: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
       link: book.volumeInfo.previewLink ? book.volumeInfo.previewLink : '',
       rating: book.volumeInfo.averageRating ? book.volumeInfo.averageRating : 0,
+      completionDate: null,
+      finishOn: null,
+      goalCompleted: false,
+      goalFinalized: false,
+      pagesRead: 0,
+      readingDates: [],
+      readingWeekdays: [],
+      customBook: false,
     }
     return(singleBook)
   })
@@ -80,11 +87,11 @@ export const FetchTitle = async ({titleData}: {titleData: Title}) => {
       "title": `${titleData.title}`
     })
     .then(response => {
-      if(response.data.Response) {
-        return(response.data.Response);
-      }
       if(response.data && response.data.length > 0) {
         return mapData(response.data);
+      }
+      if(response.data.Response) {
+        return(response.data.Response);
       }
     })
     .catch(err => {console.log(err)})

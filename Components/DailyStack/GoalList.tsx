@@ -4,13 +4,11 @@ import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Feather } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
 import ProgressBar from './ProgressBar';
-import PagesPerDay from '../Helper/Functions/PagesPerDay';
-import DaysDue from '../Helper/Functions/DaysDue';
+import flexStyles from '../Helper/Functions/FlexStyles';
 //Redux
-import { useReduxDispatch } from '../../store';
+import { useReduxDispatch, useReduxSelector } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
-import { Book, updateDatesRead } from '../../store/books/bookSlice';
-import { addBookRead, updateAchievementsPages, addDayRead, updateTodaysReading } from '../../store/Achievements/achievementsSlice';
+import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import SingleGoalInList from './SingleGoalInList';
@@ -20,29 +18,17 @@ interface Props {
   navigation: NativeStackNavigationProp<any>;
   sectionNavigator: ReactFragment;
   hasLateGoals: boolean;
+  hasGoals: boolean;
 }
 
-const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLateGoals}) => {
-  const fontSize: number = 12;
-  const maxLetters: number = 25;
+const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLateGoals, hasGoals}) => {
   //redux selected
   const dispatch = useReduxDispatch();
+  const books = useReduxSelector(state => state.books);
 
   const handlePress = (book:Book) => {
     dispatch(setDailySelected(book));
     navigation.push("ShowSingleGoalTab")
-  }
-
-  const handleCompletedReading = (book:Book) => {
-    const daysRead = DaysDue(book);
-    const totalPages = PagesPerDay(book) * daysRead;
-    dispatch(updateTodaysReading(totalPages));
-    dispatch(addDayRead());
-    dispatch(updateAchievementsPages(totalPages));
-    if(totalPages + book.pagesRead >= book.pages) {
-      dispatch(addBookRead(book));
-    }
-    dispatch(updateDatesRead({book, daysRead, totalPages}));
   }
 
   return (
@@ -61,14 +47,21 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
 
         {goals.length === 0 && 
         <View>
-          <MyText text="No Goals Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
+          <MyText text="No Goals To See.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
           {hasLateGoals ?
           <MyText text="Check Late section." size={20} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#e82323'}}/>
           :
-          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'relative', left: 15}}>
-            <MyText text="You're all caught up!" size={20} style={{paddingTop: 10}}/>
-            <Feather name="check" size={30} color="#2bba00" style={{position: 'relative', top: 6}}/>
-          </View>
+          <>
+          {books.length !== 0 && hasGoals ?
+            <View style={[flexStyles.flexRowCenter, {position: 'relative', left: 15}]}>
+              <MyText text="You're all caught up!" size={20} style={{paddingTop: 10}}/>
+              <Feather name="check" size={30} color="#2bba00" style={{position: 'relative', top: 6}}/>
+            </View>
+            :
+            <View style={flexStyles.flexRowCenter}>
+              <MyText text="Tap the plus to add one!" size={20} style={{paddingTop: 10}}/>
+            </View>}
+          </>
           }
         </View>
         }
@@ -99,34 +92,5 @@ const styles = StyleSheet.create({
     shadowRadius: 40,
     shadowOpacity: 0.8,
     elevation: 3,
-  },
-  bookImage: {
-    width: 100,
-    height: 150,
-    resizeMode: 'cover',
-    marginLeft: 10,
-  },
-  flexCenter: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
-    textAlign: 'center',
-  },
-  margin: {
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  bookInfo: {
-    marginLeft: 10,
-    
-    display: 'flex',
-    flexDirection: 'column',
-    alignContent: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    paddingLeft: 0,
-  },
-  sectionText: {
-    color: '#636363',
   },
 })

@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native';
+import { Foundation } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
 //Redux
 import { Book } from '../../store/books/bookSlice';
@@ -13,9 +14,20 @@ const DisplayBooksRead: React.FC<Props> = ({books}) => {
     <View style={styles.cardContainer}>
       <MyText style={{color: "#4b59f5", textAlign: 'center'}} text="Books Read" size={25}/>
       <View style={styles.thumbnailContainer}>
-        {books.length > 0 && books.map((book, index) => (
-          <Image key={book.title + index} style={styles.bookImage} source={{uri: book.imageUrl}}/>
-        ))}
+        {books.length > 0 ? books.map((book, index) => (
+          <View key={book.title + index}>
+            {book.imageUrl !== '' ?
+            <Image style={styles.bookImage} source={{uri: book.imageUrl !== undefined ? book.imageUrl : ''}}/>
+            :
+            <Foundation name="book-bookmark" size={110} color="#636363" />}
+          </View>
+        )):
+        <>
+          <View style={[styles.bookImage, {backgroundColor: '#787878'}]} />
+          <View style={[styles.bookImage, {backgroundColor: '#a6a6a6'}]} />
+          <View style={[styles.bookImage, {backgroundColor: '#cfcfcf'}]} />
+          <View style={[styles.bookImage, {backgroundColor: '#e3e3e3'}]} />
+        </>}
       </View>
     </View>
   )

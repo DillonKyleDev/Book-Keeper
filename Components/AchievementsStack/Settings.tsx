@@ -34,7 +34,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
             <MyText style={{textAlign: 'center'}} text="Are you sure you want to reset your achievements?" size={14} />
             <MyText style={{textAlign: 'center'}} text="You've worked so hard!" size={14} />
             <View style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center'}}>
-              <MyButton title='Reset' onPress={() => dispatch(resetAchievements())} customStyle={{marginBottom: 0, width: 'auto', height: 'auto', marginRight: 10, backgroundColor: 'red'}}/>
+              <MyButton title='Reset' onPress={() => {dispatch(resetAchievements()); setShowWarning(false)}} customStyle={{marginBottom: 0, width: 'auto', height: 'auto', marginRight: 10, backgroundColor: 'red'}}/>
               <MyButton title='Do not Reset' onPress={() => setShowWarning(false)} customStyle={{marginBottom: 0, width: 'auto', height: 'auto'}}/>
             </View>
           </>

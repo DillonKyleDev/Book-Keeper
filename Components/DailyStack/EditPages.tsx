@@ -23,10 +23,17 @@ const EditPages: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   const handleSubmitPages = () => {
+    let today = new Date();
+    today.setHours(0,0,0,0);
     let pageChange = parseInt(pagesRead.replace(/[^0-9 ]/g, "")) - dailySelected.pagesRead;
     dispatch(updateAchievementsPages(pageChange));
     if(parseInt(pagesRead.replace(/[^0-9 ]/g, "")) >= dailySelected.pages) {
-      dispatch(addBookRead(dailySelected));
+      dispatch(addBookRead({
+        ...dailySelected,
+        goalCompleted: true,
+        pagesRead: dailySelected.pages,
+        completionDate: today,
+      }));
     }
     dispatch(updatePages({book: dailySelected, pages: parseInt(pagesRead.replace(/[^0-9 ]/g, ""))}));
     navigation.pop(2);

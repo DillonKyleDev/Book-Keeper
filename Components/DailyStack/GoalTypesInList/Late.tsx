@@ -25,13 +25,20 @@ const Late: React.FC<Props> = ({goal}) => {
   const dispatch = useReduxDispatch();
 
   const handleCompletedReading = (goal:Book) => {
+    let today = new Date();
+    today.setHours(0,0,0,0);
     const daysRead = DaysDue(goal);
     const totalPages = PagesPerDay(goal) * daysRead;
     dispatch(updateTodaysReading(totalPages));
     dispatch(addDayRead());
     dispatch(updateAchievementsPages(totalPages));
     if(totalPages + goal.pagesRead >= goal.pages) {
-      dispatch(addBookRead(goal));
+      dispatch(addBookRead({
+        ...goal,
+        goalCompleted: true,
+        pagesRead: goal.pages,
+        completionDate: today,
+      }));
     }
     dispatch(updateDatesRead({book: goal, daysRead, totalPages}));
   }

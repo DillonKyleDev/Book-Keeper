@@ -22,6 +22,7 @@ const Daily: React.FC<Props> = ({navigation}) => {
   //redux
   const books = useReduxSelector(state => state.books);
   const [ displaySection, setDisplaySection ] = useState("Today");
+  let hasGoals = false;
   const plusButton = 
   <>
     <Button
@@ -37,6 +38,7 @@ const Daily: React.FC<Props> = ({navigation}) => {
     let hasCompletedGoals = false;
     let tempArray:Book[] = books.map((book:Book) => {
       if(book.goalFinalized) {
+        hasGoals = true;
         const status = GoalStatus(book);
         if(status === Statuses.late) {
           hasLateGoals = true;
@@ -87,7 +89,7 @@ const Daily: React.FC<Props> = ({navigation}) => {
     <View>
       <TopBar />
       <SectionHeader title='Daily Goals' button={plusButton}/>
-      <GoalList goals={SortGoals(goalArray)} navigation={navigation} sectionNavigator={sectionNav} hasLateGoals={hasLateGoals}/>
+      <GoalList goals={SortGoals(goalArray)} navigation={navigation} sectionNavigator={sectionNav} hasLateGoals={hasLateGoals} hasGoals={hasGoals}/>
     </View>
   )
 }

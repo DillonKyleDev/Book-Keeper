@@ -10,7 +10,7 @@ import FavGenre from '../Helper/Functions/FavGenre';
 import LowestCompletionTime from '../Helper/Functions/LowestCompletionTime';
 import { FontAwesome } from '@expo/vector-icons';
 //Redux
-import { useReduxDispatch, useReduxSelector } from '../../store';
+import { useReduxSelector } from '../../store';
 import { Button } from 'react-native-elements';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -22,7 +22,6 @@ interface Props {
 
 const Achievements: React.FC<Props> = ({navigation}) => {
   //redux persist
-  const dispatch = useReduxDispatch()
   const achievements = useReduxSelector(state => state.achievements);
   const { booksRead, pagesRead, daysRead, firstBookRead, firstGoalDate, firstGoalDoneDate, mostSingleDayReading, shortestGoalInDays } = achievements;
   const longestBook = LongestBookRead().title;
@@ -42,7 +41,7 @@ const Achievements: React.FC<Props> = ({navigation}) => {
       <TopBar />
       <SectionHeader title="Achievements" button={topbarButton}/>
       <View style={{height: screenHeight - 156}}>
-        <ScrollView contentContainerStyle={{}}>
+        <ScrollView>
 
           <View style={styles.containerContainer}>
             <View style={styles.cardsContainer}>
@@ -71,8 +70,8 @@ const Achievements: React.FC<Props> = ({navigation}) => {
             </View>
 
             <View style={styles.cardsContainer}>
-              <AchievementCard text='Favorite genre' data={`${favGenre}`} dataColor="#b400eb" dataSize={25}/>
-              <AchievementCard text='Fastest read book' data={`${fastestGoal.book}`} dataColor="#fcc603" dataStyle={{fontStyle: 'italic'}} dataSize={fastestGoal.book !== '' ? 16 : 40}/>
+              <AchievementCard text='Favorite genre' data={`${favGenre}`} dataColor="#b400eb" dataSize={favGenre === '?' ? 40 : 25}/>
+              <AchievementCard text='Fastest read book' data={`${fastestGoal.book !== '' ? fastestGoal.book : '?'}`} dataColor="#fcc603" dataStyle={{fontStyle: 'italic'}} dataSize={fastestGoal.book !== '' ? 16 : 40}/>
             </View>
 
             <View style={styles.cardsContainer}>

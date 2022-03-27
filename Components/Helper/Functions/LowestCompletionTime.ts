@@ -4,8 +4,9 @@ import { useReduxSelector } from '../../../store';
 const LowestCompletionTime = () => {
   const achievements = useReduxSelector(state => state.achievements);
   let shortestDays = {book: '', days: 0};
+
   achievements.booksRead.forEach(book => {
-    if(book.goalCompleted && book.completionDate !== null) {
+    if(book.completionDate !== null) {
       let completionTime = new Date(book.completionDate).getTime();
       let startTime = new Date(book.readingDates[0].date).getTime();
       let timeToComplete = completionTime - startTime;
@@ -16,7 +17,6 @@ const LowestCompletionTime = () => {
         }
       }
     }
-    
   }) 
   return shortestDays;
 }

@@ -77,11 +77,14 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFini
             </View>
           </Pressable>
         )}}):
+        
         <View>
+          {!includeFinished &&
+          <>
           <MyText text="No books here you haven't read yet.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <MyText text="Add new books to your library!" size={20} style={{paddingTop: 10}}/>
-          </View>
+          </View></>}
         </View>
         }
       </ScrollView>
