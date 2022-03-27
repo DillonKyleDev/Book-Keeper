@@ -86,7 +86,7 @@ const Daily: React.FC<Props> = ({navigation}) => {
   hasLateGoals={hasLateGoals}/>
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <TopBar />
       <SectionHeader title='Daily Goals' button={plusButton}/>
       <GoalList goals={SortGoals(goalArray)} navigation={navigation} sectionNavigator={sectionNav} hasLateGoals={hasLateGoals} hasGoals={hasGoals}/>

@@ -32,7 +32,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
   }
 
   return (
-    <View style={{height: screenHeight - 156}}>
+    <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {sectionNavigator}
         {goals.map((book, index) => (

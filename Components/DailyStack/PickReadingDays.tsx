@@ -52,12 +52,12 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
-      <View style={[styles.flexContainer, {height: screenHeight - 100}]}>
-        <DisplayBookForGoal book={dailySelected}/>
+      <View style={[styles.flexContainer, {flex: 1}]}>
+      {screenHeight > 640 && <DisplayBookForGoal book={dailySelected} />}
 
-        <View>
+        <View style={{marginTop: 'auto', marginBottom: 'auto'}} >
           <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`Finish date selected: `} size={12} />
           {dailySelected.finishOn !== null && 
           <MyText style={[{textAlign: 'center'}, styles.titleStyles]} text={`${DateString(dailySelected.finishOn, true)}`} size={16} />}

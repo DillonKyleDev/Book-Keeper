@@ -17,9 +17,9 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
-      <View style={[{height: screenHeight - 100}, styles.flexContainer]}>
+      <View style={[{flex: 1}, styles.flexContainer]}>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Use book from library"

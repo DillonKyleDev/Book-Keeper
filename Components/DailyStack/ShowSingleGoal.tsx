@@ -1,6 +1,6 @@
 import React from 'react';
 import { screenHeight } from '../Helper/Functions/ScreenHeight';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
 import TopBar from '../Helper/TopBar';
@@ -15,7 +15,6 @@ import ProgressBar from './ProgressBar';
 import MyButton from '../Helper/MyButton';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import TotalReadingDays from '../Helper/Functions/TotalReadingDays';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -32,11 +31,15 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   const completedOn = DateString(dailySelected.completionDate, true).slice(2,-2);
   const activeReadingDays = dailySelected.readingDates.length;
   const pagesPerDay = Math.ceil(dailySelected.pages / dailySelected.readingDates.length);
+  let statusBar:number = 0;
+  if(StatusBar.currentHeight !== undefined) {
+    statusBar = StatusBar.currentHeight;
+  }
 
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
-      <View style={{height: screenHeight - 100, backgroundColor: 'white', display: 'flex', justifyContent: 'center'}}>
+      <ScrollView contentContainerStyle={styles.bookCard}>
         <View style={styles.bookCard}>
 
           {dailySelected.imageUrl !== '' ? 
@@ -117,7 +120,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
           </View>
 
         </View>
-      </View>
+      </ScrollView>
     </View>
   )
 }

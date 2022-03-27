@@ -66,9 +66,9 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <View>
+    <View style={{flex: 1, width: '100%'}}>
       <TopBar />
-      <View style={[{height: deviceHeight, paddingTop: 40}]}>
+      <View style={[{flex: 1, paddingTop: 20}]}>
         <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
         <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
@@ -91,9 +91,10 @@ export default BarcodeScan;
 
 const styles = StyleSheet.create({
   scannerStyle: {
+    flex: 1,
     position: 'absolute',
     width: '100%',
-    top: 280,
+    top: 100,
     bottom: 0,
     zIndex: 0
   },

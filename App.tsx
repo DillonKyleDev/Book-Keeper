@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -72,7 +73,7 @@ const AchievementsStackScreen = () => {
   return(
     <AchievementsStack.Navigator screenOptions={{headerShown: false}}>
       <AchievementsStack.Screen name="AchievementsTab" component={Achievements} />
-      <AchievementsStack.Screen name="SettingsTab" component={SplashScreen} />
+      <AchievementsStack.Screen name="SettingsTab" component={Settings} />
     </AchievementsStack.Navigator>
   )
 }

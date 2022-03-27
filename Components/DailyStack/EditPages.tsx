@@ -40,9 +40,9 @@ const EditPages: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <TopBar />
-      <View style={[{height: screenHeight - 100}, styles.flexContainer]}>
+      <View style={[{flex: 1}, styles.flexContainer]}>
         <MyText style={{textAlign: 'center', paddingTop: 10}} text="Edit Pages Read" size={26} />
            <TextInput
               style={styles.inputs}

@@ -22,6 +22,7 @@ const FinishBy: React.FC<Props> = ({navigation}) => {
   //redux
   const dailySelected = useReduxSelector(state => state.dailySelected);
   const dispatch = useReduxDispatch();
+  const heightCheck = screenHeight > 640;
 
   useEffect(() => {
     setFinishBy('');
@@ -40,11 +41,11 @@ const FinishBy: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <TopBar />
-      <View style={[{height: screenHeight - 100}, styles.flexContainer]}>
-        <DisplayBookForGoal book={dailySelected} />
-        <MyText style={{textAlign: 'center',paddingTop: 10}} text="Pick date to finish by:" size={16} />
+      <View style={[{flex: 1}, styles.flexContainer]}>
+        {heightCheck && <DisplayBookForGoal book={dailySelected} />}
+        <MyText style={{textAlign: 'center', paddingTop: (screenHeight > 640) ? 10 : 20, marginBottom: (screenHeight > 640) ? 0 : -5}} text="Pick date to finish by:" size={16} />
         <Calendar setFinishBy={(finishOn) => handleDatePressed(finishOn)}/>
         <MyButton isActive={finishBy !== ''} title="Choose reading days" onPress={handleSubmitDate} customStyle={{marginTop: 0, marginBottom: 10}} />
       </View>

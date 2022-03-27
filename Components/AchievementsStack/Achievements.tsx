@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
+import { View, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import SectionHeader from '../Helper/SectionHeader';
 import TopBar from '../Helper/TopBar';
 import LongestBookRead from '../Helper/Functions/LongestBookRead';
@@ -15,6 +14,7 @@ import { Button } from 'react-native-elements';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import DisplayBooksRead from './DisplayBooksRead';
+import { screenHeight } from '../Helper/Functions/ScreenHeight';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -36,11 +36,13 @@ const Achievements: React.FC<Props> = ({navigation}) => {
       icon={<FontAwesome name="gears" size={30} color="#424242" />} 
     />
   </>
+
   return (
-    <View>
+    <SafeAreaView style={{flex: 1}}>
       <TopBar />
       <SectionHeader title="Achievements" button={topbarButton}/>
-      <View style={{height: screenHeight - 156}}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+
         <ScrollView>
 
           <View style={styles.containerContainer}>
@@ -80,7 +82,7 @@ const Achievements: React.FC<Props> = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

@@ -5,6 +5,11 @@ const flexStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  flexRowBetween: {
+    display: "flex", 
+    flexDirection: 'column', 
+    justifyContent: 'space-between',
+  },
   flexRowEven: {
     display: 'flex', 
     flexDirection: 'row', 

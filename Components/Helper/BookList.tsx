@@ -37,7 +37,7 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFini
   }
 
   return (
-    <View style={{height: screenHeight - 156}}>
+    <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {tempBooks && tempBooks.length > 0 ? tempBooks.map((book, index) => {
           if(book &&

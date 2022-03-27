@@ -21,10 +21,10 @@ const Settings: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch()
 
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
       <SectionHeader title="Settings / Information"/>
-      <View style={{height: screenHeight - 156}}>
+      <View style={{flex: 1}}>
         <View style={{margin: '8%'}}>
           <MyText text='This app was made for fun and for my own personal reading journey.  I hope it helps you too!' size={14} />
         </View>

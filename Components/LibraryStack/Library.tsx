@@ -62,12 +62,10 @@ const Library: React.FC<Props> = ({navigation}) => {
   </>
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <TopBar button={searchBar} />
-        <View>
-          <View>
-            <SectionHeader title="My Library" button={plusButton} />
-          </View>
+        <View style={{flex: 1}}>
+          <SectionHeader title="My Library" button={plusButton} />
           {books.length === 0 &&
           <View>
             <MyText text="No Books Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>

@@ -32,9 +32,9 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <TopBar/>
-      <View style={[styles.flexContainer, {height: screenHeight - 100}]}>
+      <View style={[styles.flexContainer, {flex: 1}]}>
         <DisplayBookForGoal book={dailySelected}/>
 
         <View>

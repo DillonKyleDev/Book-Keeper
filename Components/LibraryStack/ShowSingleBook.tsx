@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Linking, SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import MyButton from '../Helper/MyButton';
 import MyText from '../Helper/MyText';
+import TopBar from '../Helper/TopBar';
+import flexStyles from '../Helper/Functions/FlexStyles';
 //redux
 import { addBook, removeBook } from '../../store/books/bookSlice';
 import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { useReduxDispatch, useReduxSelector } from '../../store';
-import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -87,9 +87,9 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
   };
 
   return (
-    <View>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
-      <View style={{height: screenHeight - 100, backgroundColor: 'white'}}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         {librarySelected.customBook === false ?
         <ScrollView>
           {librarySelected && librarySelected.title && !bookNotFound && librarySelected.title !== "Book Not Found"? 
@@ -170,15 +170,11 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
             }
           </View>}
         </ScrollView>
-
-
         :
-
-
-        <View style={{display: "flex", flexDirection: 'column', justifyContent: 'space-between', flex: 1}}>
+        <View style={[flexStyles.flexRowBetween, {flex: 1}]}>
           <Entypo style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />
 
-          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+          <View style={[flexStyles.flexRowCenter, {marginTop: 40}]}>
             <Foundation name="book-bookmark" size={150} color="#636363" />
           </View>
           
@@ -188,7 +184,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
             <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
             {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
 
-            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
+            <View style={[flexStyles.flexRowCenter, {marginRight: 'auto'}]}>
               <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
               {bookSaved  && !librarySelected.goalCompleted &&  <>
               <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
@@ -215,7 +211,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
         
         </View>}
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
