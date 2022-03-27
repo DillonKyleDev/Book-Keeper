@@ -100,7 +100,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
             </View>
             {!dailySelected.goalCompleted &&
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 5}}>
-              <MyText text="Next reading day:  " size={14} style={styles.sectionText} />
+              <MyText text="Next reading day:" size={14} style={styles.sectionText} />
               <MyText text={`${NextReadingDay(dailySelected, true) !== todaysDate ? NextReadingDay(dailySelected, true) : "Today"}`} size={14}/>
             </View>}
             {!dailySelected.goalCompleted ?

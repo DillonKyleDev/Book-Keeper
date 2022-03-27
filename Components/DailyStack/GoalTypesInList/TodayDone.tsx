@@ -39,8 +39,8 @@ const TodayDone: React.FC<Props> = ({goal}) => {
             <View style={[flexStyles.flexRowCenter, flexStyles.autoMargin]}>
               <View style={[flexStyles.flexColCenter, flexStyles.autoMargin, {marginTop: -5}]}>
                 <MyText text='All Caught Up!' size={16} style={[flexStyles.autoMargin, {color: "green", marginBottom: 5}]}/>
-                <MyText text="Next reading day:  " size={fontSize} style={styles.sectionText} />
-                <MyText text={`${NextReadingDay(goal, false)}`} size={16} style={{color: "#4b59f5"}}/>                    
+                <MyText text="Next reading day:" size={fontSize} style={[styles.sectionText, flexStyles.autoMargin]} />
+                <MyText text={`${NextReadingDay(goal, false)}`} size={16} style={[flexStyles.autoMargin, {color: "#4b59f5"}]}/>                    
               </View>
             </View>
           </View>

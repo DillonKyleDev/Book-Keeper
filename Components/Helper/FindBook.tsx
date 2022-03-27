@@ -43,12 +43,12 @@ const FindBook: React.FC<Props> = ({navigation}) => {
   }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <TopBar />
       {!creatingNewBook ?
       <>
       {searchResults[0].title === '' ?
-        <View style={[{height: screenHeight - 100, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
+        <View style={[{flex: 1, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
           { !showAuthor ? 
           <>
             <MyText text='Enter book title' size={22} style={styles.searchText}/>

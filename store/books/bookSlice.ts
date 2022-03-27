@@ -83,7 +83,7 @@ type UpdatePages = {
   pages:number;
 }
 
-const initialState: Book[] = [emptyBook];
+const initialState: Book[] = [];
 
 const bookSlice = createSlice({
   name: 'books',

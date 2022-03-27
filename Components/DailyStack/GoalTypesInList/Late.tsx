@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MyText from '../../Helper/MyText';
 import ReadingDays from '../../Helper/ReadingDays';
@@ -21,14 +21,15 @@ interface Props {
 const Late: React.FC<Props> = ({goal}) => {
   const fontSize: number = 12;
   const maxLetters: number = 20;
+  const [ daysRead, setDaysRead ] = useState(DaysDue(goal))
+  const [ totalPages, setTotalPages ] = useState(PagesPerDay(goal) * daysRead)
+  const [ readingDays, setReadingDays ] = useState(ReadingDays(goal))
   //redux selected
   const dispatch = useReduxDispatch();
 
   const handleCompletedReading = (goal:Book) => {
     let today = new Date();
     today.setHours(0,0,0,0);
-    const daysRead = DaysDue(goal);
-    const totalPages = PagesPerDay(goal) * daysRead;
     dispatch(updateTodaysReading(totalPages));
     dispatch(addDayRead());
     dispatch(updateAchievementsPages(totalPages));
@@ -60,12 +61,12 @@ const Late: React.FC<Props> = ({goal}) => {
           <View style={{marginTop: 5, flexGrow: 1}}>
             <View style={{marginBottom: -10}}>
               <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
-              {ReadingDays(goal)}
+              {readingDays}
             </View>
               
             <View style={[flexStyles.flexRowEnd, flexStyles.autoMargin, {marginBottom: 7}]}>
               <MyText text="Reading Due:  " size={12} style={styles.sectionText}/>
-              <MyText text={`${PagesPerDay(goal) * DaysDue(goal)} pages`} size={16} style={{color: 'green'}}/>
+              <MyText text={`${totalPages} pages`} size={16} style={{color: 'green'}}/>
             </View>
 
             <View style={[flexStyles.flexColCenter, flexStyles.autoMargin]}>

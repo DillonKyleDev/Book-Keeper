@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import TopBar from '../Helper/TopBar';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
-import { useReduxDispatch } from '../../store';
+import { useReduxDispatch, useReduxSelector } from '../../store';
 import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import MyButton from '../Helper/MyButton';
 
@@ -14,7 +13,19 @@ interface Props {
 }
 
 const AddGoalBook: React.FC<Props> = ({navigation}) => {
+  const [ hasNotReadBooks, setHasNotReadBooks ] = useState(false);
+  //redux
+  const books = useReduxSelector(state => state.books)
   const dispatch = useReduxDispatch();
+
+  useEffect(() => {
+    books.forEach(book => {
+      if(book.goalCompleted) {
+        setHasNotReadBooks(true);
+      }
+    })
+  }, [books])
+
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -26,7 +37,8 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
             onPress={() => {
               dispatch(resetLibrarySelected());
               navigation.push("AddFromLibraryTab");
-            }}/>
+            }}
+            isActive={books.length > 0 && hasNotReadBooks}/>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Scan new book"

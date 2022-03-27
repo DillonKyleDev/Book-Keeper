@@ -9,11 +9,19 @@ function FavGenre() {
     books.forEach(book => {
       genreArray.push(book.genre);
     })
-
-    return genreArray.sort((a,b) =>
+    let sortedArray:string[];
+    sortedArray = genreArray.sort((a,b) =>
           genreArray.filter(v => v===a).length
         - genreArray.filter(v => v===b).length
-    ).pop();
+    );
+    if(sortedArray[0] !== '' && sortedArray[0] !== undefined) {
+      return sortedArray[0]
+    } else if(sortedArray[0] !== undefined) {
+      return sortedArray[sortedArray.length - 1]
+    }
+    return "?"
+
+
   } else return "?"
 
 }

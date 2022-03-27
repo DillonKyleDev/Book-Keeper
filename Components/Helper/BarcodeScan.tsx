@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { screenHeight } from './Functions/ScreenHeight';
+import { screenWidth } from './Functions/ScreenHeight';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { ISBN, FetchIsbn } from './Functions/FetchBooks';
+import TopBar from './TopBar';
+import MyButton from './MyButton';
 import MyText from './MyText';
+
+import { Camera } from 'expo-camera'
+
+
+
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
 import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import { Book, bookNotFoundBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import TopBar from './TopBar';
-import MyButton from './MyButton';
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -22,7 +27,6 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [openScanner, setOpenScanner] = useState(true);
-  const [deviceHeight, setDeviceHeight] = useState(screenHeight !== undefined ? screenHeight - 130 : '100%')
   const dispatch = useReduxDispatch();
   const librarySelected = useReduxSelector(state => state.librarySelected);
   const bookNotFound: Book = bookNotFoundBook;
@@ -64,9 +68,9 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   if (hasPermission === false) {
     return <MyText size={16} text="Can't scan... No access to camera" style={{marginTop: 200, marginLeft: 'auto', marginRight: 'auto'}} />;
   }
-
+  
   return (
-    <View style={{flex: 1, width: '100%'}}>
+    <View style={{flex: 1}}>
       <TopBar />
       <View style={[{flex: 1, paddingTop: 20}]}>
         <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
@@ -75,14 +79,17 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
         <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
           <ActivityIndicator animating={!openScanner} size="large" color="#4b59f5" style={{position: 'absolute', top: 50}} />
         </View>
-      </View>
 
-      {openScanner && 
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={styles.scannerStyle}
-        />
-      }
+        {openScanner && 
+        <View style={styles.scannerContainer}>
+          <Camera
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+/>
+
+        </View>
+        }
+      </View>
     </View>
   );
 }
@@ -90,12 +97,20 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
 export default BarcodeScan;
 
 const styles = StyleSheet.create({
+  scannerContainer: {
+    overflow: 'hidden',
+    width: 360,
+    height: 460,
+  },
   scannerStyle: {
     flex: 1,
     position: 'absolute',
-    width: '100%',
-    top: 100,
+    marginLeft: 0,
+    marginRight: 0,
+    height: 300,
     bottom: 0,
+    left: 0,
+    right: 0,
     zIndex: 0
   },
 });

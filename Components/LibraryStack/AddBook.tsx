@@ -17,9 +17,9 @@ const AddBook: React.FC<Props> = ({navigation}) => {
   const dispatch = useReduxDispatch();
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <TopBar/>
-      <View style={[{height: screenHeight - 100}, styles.addBookContainer]}>
+      <View style={[{flex: 1}, styles.addBookContainer]}>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Scan new book"
