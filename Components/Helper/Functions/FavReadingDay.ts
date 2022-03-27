@@ -10,7 +10,7 @@ const FavReadingDay = () => {
   let fri = {day: 'Fri', num: 0};
   let sat = {day: 'Sat', num: 0};
   let weekdays = [sun, mon, tue, wed, thu, fri, sat];
-
+  
   books.forEach(book => {
     if(book.goalFinalized) {
       book.readingWeekdays.forEach((day, index) => {

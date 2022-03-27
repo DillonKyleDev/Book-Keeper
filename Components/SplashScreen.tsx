@@ -1,52 +1,102 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import MyText from './Helper/MyText';
-import { Feather } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet } from "react-native";
 
-const SplashScreen: React.FC = () => {
+export function WithSplashScreen({
+  children,
+  isAppReady,
+}: {
+  isAppReady: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <View style={styles.splashContainer}>
-      <View style={styles.iconContainer}>
-        {/* <MaterialCommunityIcons name="book-open-page-variant" size={50} color="white" /> */}
-        <MaterialCommunityIcons name="bookshelf" size={50} color="white" />
-      </View>
-      
-      <View style={styles.textContainer}>
-        <MyText text="Book" size={30} style={styles.textStyle} />
-        <MyText text="Keeper" size={30} style={[styles.textStyle, styles.italics]} />
-      </View>
-      
-    </View>
-  )
+    <>
+      {isAppReady && children}
+
+      <SplashScreen isAppReady={isAppReady} />
+    </>
+  );
 }
 
-export default SplashScreen
+const LOADING_IMAGE = "Loading image";
+const FADE_IN_IMAGE = "Fade in image";
+const WAIT_FOR_APP_TO_BE_READY = "Wait for app to be ready";
+const FADE_OUT = "Fade out";
+const HIDDEN = "Hidden";
 
-const styles = StyleSheet.create({
-  splashContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: '100%',
-    width: '100%',
+export const SplashScreen = ({ isAppReady }: { isAppReady: boolean }) => {
+  const containerOpacity = useRef(new Animated.Value(1)).current;
+  const imageOpacity = useRef(new Animated.Value(0)).current;
+
+  const [state, setState] = useState<
+    | typeof LOADING_IMAGE
+    | typeof FADE_IN_IMAGE
+    | typeof WAIT_FOR_APP_TO_BE_READY
+    | typeof FADE_OUT
+    | typeof HIDDEN
+  >(LOADING_IMAGE);
+
+  useEffect(() => {
+    if (state === FADE_IN_IMAGE) {
+      Animated.timing(imageOpacity, {
+        toValue: 1,
+        duration: 1000, // Fade in duration
+        useNativeDriver: true,
+      }).start(() => {
+        setState(WAIT_FOR_APP_TO_BE_READY);
+      });
+    }
+  }, [imageOpacity, state]);
+
+  useEffect(() => {
+    if (state === WAIT_FOR_APP_TO_BE_READY) {
+      if (isAppReady) {
+        setState(FADE_OUT);
+      }
+    }
+  }, [isAppReady, state]);
+
+  useEffect(() => {
+    if (state === FADE_OUT) {
+      Animated.timing(containerOpacity, {
+        toValue: 0,
+        duration: 500, // Fade out duration
+        delay: 200, // Minimum time the logo will stay visible
+        useNativeDriver: true,
+      }).start(() => {
+        setState(HIDDEN);
+      });
+    }
+  }, [containerOpacity, state]);
+
+  if (state === HIDDEN) return null;
+
+  return (
+    <Animated.View
+      collapsable={false}
+      style={[style.container, { opacity: containerOpacity }]}
+    >
+      <Animated.Image
+        source={require("../assets/BookKeeperLogo.png")}
+        fadeDuration={0}
+        onLoad={() => {
+          setState(FADE_IN_IMAGE);
+        }}
+        style={[style.image, { opacity: imageOpacity }]}
+        resizeMode="contain"
+      />
+    </Animated.View>
+  );
+};
+
+const style = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: '#4b59f5',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  iconContainer: {
-    position: 'relative',
-    bottom: 3,
-    right: -3,
+  image: {
+    width: '110%',
+    height: '110%',
   },
-  textContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  textStyle: {
-    color: 'white',
-    textDecorationLine: 'underline'
-  },
-  italics: {
-    fontStyle: 'italic',
-  }
-})
+});

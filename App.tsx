@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -30,6 +30,7 @@ import Settings from './Components/AchievementsStack/Settings';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { SplashScreen, WithSplashScreen } from './Components/SplashScreen';
 
 const LibraryStack = createNativeStackNavigator();
 const DailyStack = createNativeStackNavigator();
@@ -71,47 +72,56 @@ const AchievementsStackScreen = () => {
   return(
     <AchievementsStack.Navigator screenOptions={{headerShown: false}}>
       <AchievementsStack.Screen name="AchievementsTab" component={Achievements} />
-      <AchievementsStack.Screen name="SettingsTab" component={Settings} />
+      <AchievementsStack.Screen name="SettingsTab" component={SplashScreen} />
     </AchievementsStack.Navigator>
   )
 }
 
 export default function App() {
   const Tab = createMaterialTopTabNavigator();
+  const [isAppReady, setIsAppReady] = useState(false);
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      setIsAppReady(true);
+    }, 1000);
+    timer;
+  }, []);
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator tabBarPosition="bottom" initialRouteName="Daily">
-        <Tab.Screen options={{
-          tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
-          tabBarStyle:{width: '100%', height: 60},
-          tabBarActiveTintColor: '#4b59f5',
-          tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2 },
-          tabBarIcon: (props) => 
-          <MaterialCommunityIcons name="bookshelf" size={20} color={props.color} />,}}
-          name="Library"
-          component={LibraryStackScreen}
-        />
-        <Tab.Screen options={{
-          tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
-          tabBarStyle:{width: '100%', height:60}, 
-          tabBarActiveTintColor: '#4b59f5',
-          title: 'Daily',
-          tabBarIcon: (props) => <Ionicons name="calendar-sharp" size={18} color={props.color} />,
-          tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 3 }}} 
-          name="Daily" 
-          component={DailyStackScreen} 
-        />
-        <Tab.Screen options={{
-          tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
-          tabBarStyle:{width: '100%', height: 60},
-          tabBarActiveTintColor: '#4b59f5',
-          tabBarIcon: (props) => <FontAwesome5 name="flag-checkered" size={18} color={props.color} />,
-          tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2 }}} 
-          name="Achievements" 
-          component={AchievementsStackScreen} 
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <WithSplashScreen isAppReady={isAppReady} >
+      <NavigationContainer>
+        <Tab.Navigator tabBarPosition="bottom" initialRouteName="Daily">
+          <Tab.Screen options={{
+            tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
+            tabBarStyle:{width: '100%', height: 60},
+            tabBarActiveTintColor: '#4b59f5',
+            tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2 },
+            tabBarIcon: (props) => 
+            <MaterialCommunityIcons name="bookshelf" size={20} color={props.color} />,}}
+            name="Library"
+            component={LibraryStackScreen}
+          />
+          <Tab.Screen options={{
+            tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
+            tabBarStyle:{width: '100%', height:60}, 
+            tabBarActiveTintColor: '#4b59f5',
+            title: 'Daily',
+            tabBarIcon: (props) => <Ionicons name="calendar-sharp" size={18} color={props.color} />,
+            tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 3 }}} 
+            name="Daily" 
+            component={DailyStackScreen} 
+          />
+          <Tab.Screen options={{
+            tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
+            tabBarStyle:{width: '100%', height: 60},
+            tabBarActiveTintColor: '#4b59f5',
+            tabBarIcon: (props) => <FontAwesome5 name="flag-checkered" size={18} color={props.color} />,
+            tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2 }}} 
+            name="Achievements" 
+            component={AchievementsStackScreen} 
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </WithSplashScreen>
   );
 }
