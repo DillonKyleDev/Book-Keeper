@@ -5,7 +5,7 @@ import TopBar from '../Helper/TopBar';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
-import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
+import { resetDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import MyButton from '../Helper/MyButton';
 
 interface Props {
@@ -20,7 +20,7 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
 
   useEffect(() => {
     books.forEach(book => {
-      if(book.goalCompleted) {
+      if(!book.goalCompleted) {
         setHasNotReadBooks(true);
       }
     })
@@ -35,7 +35,7 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Use book from library"
             onPress={() => {
-              dispatch(resetLibrarySelected());
+              dispatch(resetDailySelected());
               navigation.push("AddFromLibraryTab");
             }}
             isActive={books.length > 0 && hasNotReadBooks}/>
@@ -43,14 +43,14 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Scan new book"
             onPress={() => {
-              dispatch(resetLibrarySelected());
+              dispatch(resetDailySelected());
               navigation.push("ScanBookTab");
             }}/>
           <MyButton 
             customStyle={{marginBottom: 20, width: 'auto'}}
             title="Enter book manually"
             onPress={() => {
-              dispatch(resetLibrarySelected());
+              dispatch(resetDailySelected());
               navigation.push("FindBookTab");
             }}/>
       </View>

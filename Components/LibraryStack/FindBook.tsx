@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { View, TextInput, ActivityIndicator, StyleSheet } from 'react-native';
-import { screenHeight } from './Functions/ScreenHeight';
-import BookList from './BookList';
-import SectionHeader from './SectionHeader';
-import TopBar from './TopBar';
-import MyText from './MyText';
-import MyButton from './MyButton';
-import { HandleFindBook } from './Functions/HandleFindBook';
+import { screenHeight } from '../Helper/Functions/ScreenHeight';
+import BookList from '../Helper/BookList';
+import SectionHeader from '../Helper/SectionHeader';
+import TopBar from '../Helper/TopBar';
+import MyText from '../Helper/MyText';
+import MyButton from '../Helper/MyButton';
+import { HandleFindBook } from '../Helper/Functions/HandleFindBook';
 //Redux
 import { Book, emptyBook, addBook } from '../../store/books/bookSlice';
 import { useReduxDispatch } from '../../store';
+import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice'
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -78,7 +79,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
       :
         <>
           <SectionHeader title="Search results"/>
-          <BookList filter='' books={searchResults} navigation={navigation} goTo="ShowSingleBookTab"/>
+          <BookList onPress={(book) => dispatch(setLibrarySelected(book))} filter='' books={searchResults} navigation={navigation} goTo="ShowSingleBookTab"/>
         </>
       }
       </>

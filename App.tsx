@@ -7,8 +7,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 //Library tab imports
 import Library from './Components/LibraryStack/Library';
 import AddBook from './Components/LibraryStack/AddBook';
-import BarcodeScan from './Components/Helper/BarcodeScan';
-import FindBook from './Components/Helper/FindBook';
+import BarcodeScan from './Components/LibraryStack/BarcodeScan';
+import FindBook from './Components/LibraryStack/FindBook';
 import ShowSingleBook from './Components/LibraryStack/ShowSingleBook';
 import BookList from './Components/Helper/BookList';
 import EditLibraryPages from './Components/LibraryStack/EditLibraryPages';
@@ -22,6 +22,9 @@ import PickReadingDays from './Components/DailyStack/PickReadingDays';
 import ShowSingleGoal from './Components/DailyStack/ShowSingleGoal';
 import PreviewGoal from './Components/DailyStack/PreviewGoal';
 import EditPages from './Components/DailyStack/EditPages';
+import DailyBarcodeScan from './Components/DailyStack/DailyBarcodeScan';
+import ShowSingleDailyBook from './Components/DailyStack/ShowSingleDailyBook';
+import FindBookDaily from './Components/DailyStack/FindBookDaily';
 
 //Achievements tab imports
 import Achievements from './Components/AchievementsStack/Achievements';
@@ -58,10 +61,10 @@ const DailyStackScreen = () => {
       <DailyStack.Screen name="AddGoalBookTab" component={AddGoalBook} />
       <DailyStack.Screen name="SetGoalTab" component={FinishBy} />
       <DailyStack.Screen name="AddFromLibraryTab" component={LibraryList} />
-      <DailyStack.Screen name="ScanBookTab" component={BarcodeScan} />
-      <DailyStack.Screen name="FindBookTab" component={FindBook} />
+      <DailyStack.Screen name="ScanBookTab" component={DailyBarcodeScan} />
+      <DailyStack.Screen name="FindBookTab" component={FindBookDaily} />
       <DailyStack.Screen name="FinishByTab" component={FinishBy} />
-      <DailyStack.Screen name="ShowSingleBookTab" component={ShowSingleBook} />
+      <DailyStack.Screen name="ShowDailyBookTab" component={ShowSingleDailyBook} />
       <DailyStack.Screen name="PickReadingDaysTab" component={PickReadingDays} />
       <DailyStack.Screen name="ShowSingleGoalTab" component={ShowSingleGoal} />
       <DailyStack.Screen name="PreviewGoalTab" component={PreviewGoal} />

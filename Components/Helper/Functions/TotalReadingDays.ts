@@ -3,6 +3,7 @@ import { Book } from "../../../store/books/bookSlice"
 const TotalReadingDays = (book:Book) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  today.setDate(today.getDate())
   let tomorrow =  new Date()
   tomorrow.setDate(today.getDate() + 1)
   let endDate:Date = new Date();

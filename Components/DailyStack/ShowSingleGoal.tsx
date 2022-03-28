@@ -1,5 +1,4 @@
 import React from 'react';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { View, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Foundation } from '@expo/vector-icons';
@@ -8,6 +7,7 @@ import MyText from '../Helper//MyText';
 import DateString from '../Helper/Functions/DateString';
 import ReadingDays from '../Helper/ReadingDays';
 import RemainingDays from '../Helper/Functions/RemainingDays';
+import CustomBookImage from '../Helper/CustomBookImage';
 //redux
 import { useReduxSelector } from '../../store';
 import NextReadingDay from '../Helper/Functions/NextReadingDay';
@@ -47,8 +47,8 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
             <Image style={styles.bookImage} source={{uri: dailySelected.imageUrl}}/>
           </View>
           :
-          <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
-            <Foundation style={styles.flexCenter} name="book-bookmark" size={150} color="#636363" />
+          <View style={{marginBottom: 10, marginTop: 10}}>
+            <CustomBookImage book={dailySelected} style={{height: 200, width: 125, marginLeft: 'auto', marginRight: 'auto'}} />
           </View>
           }
 

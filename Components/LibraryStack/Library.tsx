@@ -9,7 +9,7 @@ import SectionHeader from '../Helper/SectionHeader';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
-import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
+import { resetLibrarySelected, setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import MyText from '../Helper/MyText';
 
 interface Props {
@@ -74,7 +74,7 @@ const Library: React.FC<Props> = ({navigation}) => {
             </View>
           </View>
           }
-          <BookList books={books} filter={searchFor} navigation={navigation} includeFinished={true} goTo="ShowSingleBookTab"/>
+          <BookList onPress={(book) => dispatch(setLibrarySelected(book))} books={books} filter={searchFor} navigation={navigation} includeFinished={true} goTo="ShowSingleBookTab"/>
         </View>
     </View>
   )

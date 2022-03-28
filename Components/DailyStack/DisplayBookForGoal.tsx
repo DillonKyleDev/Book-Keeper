@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { Foundation } from '@expo/vector-icons';
+import CustomBookImage from '../Helper/CustomBookImage';
 //Redux
 import { Book } from '../../store/books/bookSlice';
 
@@ -19,7 +19,9 @@ const DisplayBookForGoal: React.FC<Props> = ({book}) => {
       </View>
       :
       <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
-        <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          <CustomBookImage book={book} style={{height: 80, width: 50}}/>
+        </View>
       </View>
       }
       <View style={styles.bookInfo}>

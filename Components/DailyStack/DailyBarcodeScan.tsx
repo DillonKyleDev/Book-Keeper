@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { screenWidth } from './Functions/ScreenHeight';
+import { screenWidth } from '../Helper/Functions/ScreenHeight';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { ISBN, FetchIsbn } from './Functions/FetchBooks';
-import TopBar from './TopBar';
-import MyButton from './MyButton';
-import MyText from './MyText';
-
+import { ISBN, FetchIsbn } from '../Helper/Functions/FetchBooks';
+import TopBar from '../Helper/TopBar';
+import MyButton from '../Helper/MyButton';
+import MyText from '../Helper/MyText';
 import { Camera } from 'expo-camera'
-
-
-
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
-import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
+import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { Book, bookNotFoundBook } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -23,16 +19,16 @@ interface Props {
   navigation: NativeStackNavigationProp<any>;
 }
 
-const BarcodeScan: React.FC<Props> = ({navigation}) => {
+const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [openScanner, setOpenScanner] = useState(true);
   const dispatch = useReduxDispatch();
-  const librarySelected = useReduxSelector(state => state.librarySelected);
+  const dailySelected = useReduxSelector(state => state.dailySelected);
   const bookNotFound: Book = bookNotFoundBook;
   
   useFocusEffect(() => {
-    if(librarySelected.title !== '') {
+    if(dailySelected.title !== '') {
       navigation.goBack();
     }
   });
@@ -51,11 +47,11 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
     const isbnData:ISBN = {path: "ISBN", isbn: data};
     const response = await FetchIsbn({isbnData: isbnData});
     if(response !== undefined && response[0] && response[0].title) {
-      dispatch(setLibrarySelected(response[0]));
-      navigation.push("ShowSingleBookTab");
+      dispatch(setDailySelected(response[0]));
+      navigation.push("ShowDailyBookTab");
     } else {
-      dispatch(setLibrarySelected(bookNotFound));
-      navigation.push("ShowSingleBookTab");
+      dispatch(setDailySelected(bookNotFound));
+      navigation.push("ShowDailyBookTab");
     }
   };
 
@@ -81,7 +77,7 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
         </View>
 
         {openScanner && 
-        <View style={styles.scannerContainer}>
+        <View style={[styles.scannerContainer, {width: screenWidth}]}>
           <Camera
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
@@ -94,12 +90,11 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   );
 }
 
-export default BarcodeScan;
+export default DailyBarcodeScan;
 
 const styles = StyleSheet.create({
   scannerContainer: {
     overflow: 'hidden',
-    width: 360,
     height: 460,
   },
   scannerStyle: {

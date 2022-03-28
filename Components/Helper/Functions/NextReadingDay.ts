@@ -4,6 +4,7 @@ import GoalStatus from './GoalStatus';
 
 const NextReadingDay = (book:Book, withWeekday:boolean) => {
   let today = new Date();
+  today.setDate(today.getDate())
   today.setHours(0,0,0,0);
   let dateString:string = 'Today';
 

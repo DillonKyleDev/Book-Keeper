@@ -20,7 +20,7 @@ const Current: React.FC<Props> = ({goal}) => {
   return (
     <View style={flexStyles.flexRowStart}>
      
-      <GoalImage url={goal.imageUrl} />
+      <GoalImage goal={goal} />
 
       <View style={flexStyles.flexColStart}>
         <View style={{position: 'absolute', right: -10, top: 5}}>{currentIcon}</View>

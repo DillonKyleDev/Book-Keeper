@@ -8,7 +8,7 @@ const GoalStatus = (book:Book) => {
   let isLate = false;
   let todaysGoal = false;
   //For testing late goal logic
-  today.setDate(today.getDate() + 2)
+  today.setDate(today.getDate())
   let completionDate:Date | null = null;
   if(book.completionDate !== null) {
     completionDate = new Date(book.completionDate);

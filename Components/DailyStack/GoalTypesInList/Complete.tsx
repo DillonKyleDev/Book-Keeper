@@ -18,7 +18,7 @@ const Complete: React.FC<Props> = ({goal}) => {
   return (
     <View style={flexStyles.flexRowEven}>
 
-      <GoalImage url={goal.imageUrl}/>
+      <GoalImage goal={goal}/>
 
       <View style={flexStyles.flexColCenter}>
 

@@ -6,7 +6,8 @@ import SectionHeader from '../Helper/SectionHeader';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 //Redux
-import { useReduxSelector } from '../../store';
+import { useReduxSelector, useReduxDispatch } from '../../store';
+import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice'
 
 interface Props {
   navigation: NativeStackNavigationProp<any>;
@@ -15,15 +16,16 @@ interface Props {
 const Library: React.FC<Props> = ({navigation}) => {
   //store
   const books = useReduxSelector(state => state.books);
+  const dispatch = useReduxDispatch();
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <TopBar/>
-        <View>
+        <View style={{flex: 1}}>
           <View>
             <SectionHeader title="Add from Library" />
           </View>
-          <BookList books={books} navigation={navigation} goTo="FinishByTab" filter='' includeFinished={false}/>
+          <BookList onPress={(book) => dispatch(setDailySelected(book))} books={books} navigation={navigation} goTo="FinishByTab" filter='' includeFinished={false}/>
         </View>
     </View>
   )

@@ -1,21 +1,22 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native';
-import { Foundation } from '@expo/vector-icons';
+import CustomBookImage from '../../Helper/CustomBookImage';
+import { Book } from '../../../store/books/bookSlice';
 
 interface Props {
-  url:string;
+  goal:Book;
 }
 
-const GoalImage: React.FC<Props> = ({url}) => {
+const GoalImage: React.FC<Props> = ({goal}) => {
   return (
     <View style={{display: 'flex'}}>
-      {url !== '' ? 
+      {goal && goal.imageUrl !== '' ? 
         <View style={[styles.flexCenter, styles.margin]}>
-          <Image style={styles.goalImage} source={{uri: url}}/>
+          <Image style={styles.goalImage} source={{uri: goal.imageUrl}}/>
         </View>
       :
         <View style={[styles.goalImage, styles.flexCenter, styles.margin]}>
-          <Foundation name="book-bookmark" size={125} color="#636363" />
+          <CustomBookImage book={goal} style={{height: 150, width: 100}} />
         </View>
       }
       </View>

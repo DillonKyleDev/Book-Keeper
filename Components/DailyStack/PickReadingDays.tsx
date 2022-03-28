@@ -81,7 +81,7 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
             </View>
           </View>
         </View>
-        <MyButton title="Preview Goal" isActive={minDaysSelected} onPress={previewGoal} customStyle={{marginTop: 0, marginBottom: 10}}/>
+        <MyButton title="Preview Goal" isActive={minDaysSelected} onPress={previewGoal} customStyle={{marginTop: 20, marginBottom: 10}}/>
       </View>
     </View>
   )

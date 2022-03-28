@@ -1,14 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
-import { screenHeight } from './Functions/ScreenHeight';
-import { Foundation } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import MyText from './MyText';
+import CustomBookImage from '../Helper/CustomBookImage';
 //Redux
-import { useReduxDispatch } from '../../store';
-import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
 import { Book } from '../../store/books/bookSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,18 +15,17 @@ interface Props {
   goTo: string;
   filter: string;
   includeFinished?: boolean;
+  onPress: (book:Book) => void;
 }
 
-const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFinished}) => {
+const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFinished, onPress}) => {
   let tempBooks = books;
   if(includeFinished !== undefined && includeFinished === false) {
-    tempBooks = books.filter(book => book.goalCompleted === false)
+    tempBooks = books.filter(book => book.goalCompleted === false && book.goalFinalized === false)
   }
-  //redux
-  const dispatch = useReduxDispatch();
 
   const handleBookPress = (book:Book) => {
-    dispatch(setLibrarySelected(book));
+    onPress(book);
     if(goTo !== "") {
       navigation.push(goTo)
     }
@@ -39,7 +34,7 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFini
   return (
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {tempBooks && tempBooks.length > 0 ? tempBooks.map((book, index) => {
+        {tempBooks.length > 0 ? tempBooks.map((book, index) => {
           if(book &&
             (book.title.toLowerCase().includes(filter.toLowerCase()) || 
             book.author.toLowerCase().includes(filter.toLowerCase()))) {
@@ -51,7 +46,7 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFini
               </View>
               :
               <View style={[styles.bookImage, styles.flexCenter, styles.margin]}>
-                <Foundation style={styles.flexCenter} name="book-bookmark" size={75} color="#636363" />
+                <CustomBookImage book={book} style={{height: 75, width: 50}} />
               </View>
             }
             <View style={styles.bookInfo}>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Linking, SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import MyButton from '../Helper/MyButton';
@@ -11,43 +10,46 @@ import CustomBookImage from '../Helper/CustomBookImage';
 import flexStyles from '../Helper/Functions/FlexStyles';
 //redux
 import { addBook, removeBook } from '../../store/books/bookSlice';
-import { resetLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
-import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 import { useReduxDispatch, useReduxSelector } from '../../store';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
 
 interface Props {
   bookNotFound: boolean;
   navigation: NativeStackNavigationProp<any, any>;
 }
 
-const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
+const ShowSingleDailyBook: React.FC<Props> = ({bookNotFound, navigation}) => {
   const [ stars, setStars ] = useState<any>([]);
-  const [ bookSaved, setBookSaved ] = useState(false);
+  const [ bookSaved, setBookSaved ] = useState({saved: false, done: false});
   const [ ratingUnavailable, setRatingUnavailable ] = useState(false);
   const [ showWarning, setShowWarning ] = useState(false);
   //redux persist
   const dispatch = useReduxDispatch()
   const books = useReduxSelector(state => state.books);
-  const librarySelected = useReduxSelector(state => state.librarySelected);
+  const dailySelected = useReduxSelector(state => state.dailySelected);
 
   //Check if book is already in My Books section
   useEffect(() => {
-    if(books && librarySelected && librarySelected.title) {
+    if(books && dailySelected && dailySelected.title) {
       books.forEach(myBook => {
-        if(myBook.title === librarySelected.title) {
-          setBookSaved(true);
+        if(myBook.title === dailySelected.title) {
+          setDailySelected(myBook)
+          setBookSaved({
+            saved: true,
+            done: myBook.goalCompleted
+          });
         }
       })
     }
-  }, [ books, librarySelected ]);
+  }, [ books, dailySelected ]);
 
   useEffect(() => {
     let tempStars = [];
-    if(librarySelected.rating) {
+    if(dailySelected.rating) {
       for(let i = 1; i < 6; i++) {
-        if(librarySelected && librarySelected.rating && librarySelected.rating >= i) {
+        if(dailySelected && dailySelected.rating && dailySelected.rating >= i) {
           tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="#ffcc00" />)
         } else {
           tempStars.push(<Ionicons key={`${i} + start`} name="star" size={16} color="grey" />)
@@ -57,18 +59,11 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
     } else {
       setRatingUnavailable(true);
     }
-  }, [ librarySelected ]);
-
-  const handleSetReadingGoal = () => {
-    dispatch(setDailySelected(librarySelected));
-    dispatch(resetLibrarySelected());
-    navigation.pop(4);
-    navigation.navigate("SetGoalTab");
-  }
+  }, [ dailySelected ]);
 
   const addBookToBooks = () => {
     dispatch(addBook({
-      ...librarySelected,
+      ...dailySelected,
       pagesRead: 0,
       finishOn: null,
       readingWeekdays: [],
@@ -76,14 +71,21 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
       readingDates: [],
       completionDate: null,
       goalCompleted: false,
+      customBook: false,
     }))
-    setBookSaved(true);
+    setBookSaved({
+      ...bookSaved,
+      saved: true
+    });
   };
 
   const removeBookFromBooks = () => {
     setShowWarning(false);
-    dispatch(removeBook(librarySelected))
-    setBookSaved(false);
+    dispatch(removeBook(dailySelected))
+    setBookSaved({
+      ...bookSaved,
+      saved: false
+    });
     navigation.pop(2);
   };
 
@@ -91,56 +93,59 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
       <View style={{flex: 1, backgroundColor: 'white'}}>
-        {librarySelected.customBook === false ?
+        {dailySelected.customBook === false ?
         <ScrollView>
-          {librarySelected && librarySelected.title && !bookNotFound && librarySelected.title !== "Book Not Found"? 
+          {dailySelected && dailySelected.title && !bookNotFound && dailySelected.title !== "Book Not Found"? 
           <>
             <View style={styles.bookCard}>
-              {bookSaved && <Entypo  style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />}
-              {librarySelected.imageUrl !== ''  ? 
-                <Image style={styles.bookImage} source={{uri: librarySelected.imageUrl}}/>
+              {bookSaved.saved && <Entypo  style={styles.bookmarkIcon} name="bookmark" size={60} color="#4b59f5" />}
+              {dailySelected.imageUrl !== ''  ? 
+                <Image style={styles.bookImage} source={{uri: dailySelected.imageUrl}}/>
               :
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                  <CustomBookImage book={librarySelected} style={{height: 200, width: 125}} />
+                  <CustomBookImage book={dailySelected} style={{height: 200, width: 125}} />
                 </View>
               }
               
-              {!librarySelected.goalCompleted ?
+              {!dailySelected.goalCompleted ?
               <>
-              {bookSaved ?
-                <MyButton title={`${librarySelected.goalFinalized ? "Edit Reading Goal" : "Set Reading Goal"}`} customStyle={{width: 'auto', height: 'auto'}} onPress={() => handleSetReadingGoal()}/>
+              {bookSaved.saved && bookSaved.done !== true ?
+                <MyButton title={`${dailySelected.goalFinalized ? "Edit Reading Goal" : "Set Reading Goal"}`} customStyle={{width: 'auto', height: 'auto'}} onPress={() => {navigation.pop(4); navigation.push("SetGoalTab")}}/>
               :
-                <MyButton title='Add To Library' customStyle={{width: 'auto', height: 'auto'}} onPress={addBookToBooks}/>
-              }</>
+              <>
+                {bookSaved.done !== true &&
+                  <MyButton title='Add To Library' customStyle={{width: 'auto', height: 'auto'}} onPress={addBookToBooks}/>
+                }
+              </>
+              }
+              </>
               :
               <View style={{marginBottom: 40}}></View>}
        
               <View style={styles.bookInfo}>
                 <Text style={styles.ratingText}><Text style={styles.sectionText}>Approx. Rating: </Text>{!ratingUnavailable ? stars : " No rating."}</Text>
-                <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
-                {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
-                {librarySelected.genre !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {librarySelected.genre}</Text>}
+                <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {dailySelected.title}</Text>
+                {dailySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {dailySelected.author && dailySelected.author}</Text>}
+                {dailySelected.genre !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {dailySelected.genre}</Text>}
 
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
-                  <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-                  {bookSaved  && !librarySelected.goalCompleted &&  <>
-                  <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
-                  <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
+                  <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {dailySelected.pages}</Text>
                 </View>
               
-                {librarySelected.description !== '' && <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {librarySelected.description}</Text>}
+                {dailySelected.description !== '' && <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {dailySelected.description}</Text>}
               </View>
-              {librarySelected.imageUrl !== '' && 
+              {dailySelected.imageUrl !== '' && 
               <View style={styles.linkContainer}>
                 <Text onPress={() =>
-                  Linking.openURL(`${librarySelected.link}`)} style={styles.linkText}>See on Google Books
+                  Linking.openURL(`${dailySelected.link}`)} style={styles.linkText}>
+                    See on Google Books
                 </Text>
               </View>}
             </View>
           </>
           :
           <>
-            { bookNotFound || librarySelected.title === "Book Not Found" ?
+            { bookNotFound || dailySelected.title === "Book Not Found" ?
               <View style={styles.warningContainer}>
                 <Text style={[{fontSize: 20, fontFamily: 'serif',}, styles.centerText]}>Whoops!</Text>
                 <Text style={styles.centerText}>
@@ -155,7 +160,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
               </>}
           </>}
 
-          {bookSaved && 
+          {bookSaved.saved && 
           <View style={styles.removeContainer}>
             {showWarning ?
             <>
@@ -177,26 +182,26 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
 
           <View style={[flexStyles.flexRowCenter, {marginTop: 10}]}>
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <CustomBookImage book={librarySelected} style={{height: 200, width: 125}} />
+              <CustomBookImage book={dailySelected} style={{height: 200, width: 125}} />
             </View>
           </View>
           
-          {!librarySelected.goalCompleted && <MyButton title={`${librarySelected.goalFinalized ? "Edit Reading Goal" : "Set Reading Goal"}`} customStyle={{width: 'auto', height: 'auto'}} onPress={() => handleSetReadingGoal()}/>}
+          {!dailySelected.goalCompleted && <MyButton title={`${dailySelected.goalFinalized ? "Edit Reading Goal" : "Set Reading Goal"}`} customStyle={{width: 'auto', height: 'auto'}} onPress={() => navigation.push("SetGoalTab")}/>}
     
           <View style={styles.bookInfo}>
-            <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
-            {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
+            <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {dailySelected.title}</Text>
+            {dailySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {dailySelected.author && dailySelected.author}</Text>}
 
             <View style={[flexStyles.flexRowCenter, {marginRight: 'auto'}]}>
-              <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-              {bookSaved  && !librarySelected.goalCompleted &&  <>
+              <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {dailySelected.pages}</Text>
+              {bookSaved.saved  && !dailySelected.goalCompleted &&  <>
               <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
               <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
             </View>
         
           </View>
          
-          {bookSaved && 
+          {bookSaved.saved && 
           <View style={styles.removeContainer}>
             {showWarning ?
             <>
@@ -218,7 +223,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
   )
 }
 
-export default ShowSingleGoal
+export default ShowSingleDailyBook
 
 const styles = StyleSheet.create({
   bookCard: {

@@ -5,7 +5,7 @@ const flexStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
-  flexRowBetween: {
+  flexColBetween: {
     display: "flex", 
     flexDirection: 'column', 
     justifyContent: 'space-between',

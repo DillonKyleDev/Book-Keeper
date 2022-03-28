@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native';
 import MyText from '../Helper/MyText';
+import CustomBookImage from '../Helper/CustomBookImage';
 //Redux
 import { Book } from '../../store/books/bookSlice';
 
@@ -13,15 +14,12 @@ const DisplayBooksRead: React.FC<Props> = ({books}) => {
     <View style={styles.cardContainer}>
       <MyText style={{color: "#4b59f5", textAlign: 'center'}} text="Books Read" size={25}/>
       <View style={styles.thumbnailContainer}>
-        {books.length > 0 ? books.map((book, index) => (
+        {books.length > 0 ? books.map((book:Book, index) => (
           <View key={book.title + index}>
             {book.imageUrl !== '' ?
             <Image style={styles.bookImage} source={{uri: book.imageUrl !== undefined ? book.imageUrl : ''}}/>
             :
-            <View style={[styles.bookImage, {backgroundColor: '#6c77f0'}]}>
-              <MyText text={`${book.title}`} size={10} style={{ textAlign:'center', marginTop: 5, fontStyle: 'italic', color: 'white'}}/>
-              <MyText text={`${book.author}`} size={8} style={{ textAlign:'center', marginTop: 5, color: 'white'}}/>
-            </View>}
+            <CustomBookImage book={book} style={styles.bookImage}/>}
           </View>
         )):
         <>
