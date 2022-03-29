@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "readingtracker",
-    "slug": "readingtracker",
+    "name": "BookKeeper",
+    "slug": "BookKeeper",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.dillonkyledev.readingtracker"
+      "package": "com.BookKeeper",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
