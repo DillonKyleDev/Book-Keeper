@@ -1,4 +1,6 @@
-import { Book } from "../../../store/books/bookSlice"
+import { Book, Statuses } from "../../../store/books/bookSlice"
+import DateString from "./DateString";
+import GoalStatus from "./GoalStatus";
 
 const TotalReadingDays = (book:Book) => {
   const today = new Date();
@@ -7,6 +9,8 @@ const TotalReadingDays = (book:Book) => {
   let tomorrow =  new Date()
   tomorrow.setDate(today.getDate() + 1)
   let endDate:Date = new Date();
+  let dueTodayCheck = false;
+
   if(typeof book.finishOn === 'string') {
     endDate = new Date(book.finishOn);
   } else if(typeof book.finishOn !== 'string' && book.finishOn !== null) {
@@ -24,9 +28,15 @@ const TotalReadingDays = (book:Book) => {
     let currentDate = today;
     for(let i = 0; i < daysBetween; i++) {
       if(book.readingWeekdays[currentDate.getDay()]) {
+        if(DateString((new Date()), false) === DateString(currentDate, false)) {
+          dueTodayCheck = true;
+        }
         totalReadingDays++;
       }
       currentDate.setDate(currentDate.getDate() + 1)
+    }
+    if(GoalStatus(book) === Statuses.late && dueTodayCheck === false) {
+      totalReadingDays++;
     }
     return totalReadingDays
   } else return 0;

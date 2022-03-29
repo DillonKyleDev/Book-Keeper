@@ -21,9 +21,9 @@ interface Props {
 const Late: React.FC<Props> = ({goal}) => {
   const fontSize: number = 12;
   const maxLetters: number = 20;
-  const [ daysRead, setDaysRead ] = useState(DaysDue(goal))
-  const [ totalPages, setTotalPages ] = useState(PagesPerDay(goal) * daysRead)
-  const [ readingDays, setReadingDays ] = useState(ReadingDays(goal))
+  const daysRead  = DaysDue(goal);
+  const totalPages = PagesPerDay(goal);
+  const readingDays = ReadingDays(goal)
   //redux selected
   const dispatch = useReduxDispatch();
 

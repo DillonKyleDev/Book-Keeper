@@ -15,6 +15,7 @@ const DaysDue = (book:Book) => {
       daysDue++;
     }
   })
+
   return daysDue
 }
 

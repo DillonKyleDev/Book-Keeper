@@ -20,7 +20,7 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
 
   useEffect(() => {
     books.forEach(book => {
-      if(!book.goalCompleted) {
+      if(book.goalFinalized === false) {
         setHasNotReadBooks(true);
       }
     })
@@ -38,7 +38,7 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
               dispatch(resetDailySelected());
               navigation.push("AddFromLibraryTab");
             }}
-            isActive={books.length > 0 && !hasNotReadBooks}/>
+            isActive={books.length > 0 && hasNotReadBooks}/>
           <MyButton 
             customStyle={{marginBottom: 20}}
             title="Scan new book"
