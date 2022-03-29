@@ -21,14 +21,14 @@ const AddBook: React.FC<Props> = ({navigation}) => {
       <TopBar/>
       <View style={[{flex: 1}, styles.addBookContainer]}>
           <MyButton 
-            customStyle={{marginBottom: 20, width: 'auto'}}
+            customStyle={{marginBottom: 20}}
             title="Scan new book"
             onPress={() => {
               dispatch(resetLibrarySelected());
               navigation.push("ScanBookTab")
             }}/>
           <MyButton 
-            customStyle={{marginBottom: 20, width: 'auto'}}
+            customStyle={{marginBottom: 20}}
             title="Enter new book manually"
             onPress={() => {
               dispatch(resetLibrarySelected());

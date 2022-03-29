@@ -44,7 +44,7 @@ const PreviewGoal: React.FC<Props> = ({navigation}) => {
         </View>
 
         <View style={styles.selectedDays}>
-          <MyText style={[{textAlign: 'center', paddingBottom: 5}, styles.titleStyles]} text="Selected reading days:" size={12} />
+          <MyText style={[{textAlign: 'center', paddingBottom: 5}, styles.titleStyles]} text="Reading days selected:" size={12} />
           <View style={styles.weekdayContainer}>
             <View style={styles.weekdayByTwo}>
               <ReadingDayButton weekday='Sunday' dateIsActive={dailySelected.readingWeekdays[0]} buttonStyle={{width: 'auto', height: 40}} titleStyle={{fontSize: 12}} />

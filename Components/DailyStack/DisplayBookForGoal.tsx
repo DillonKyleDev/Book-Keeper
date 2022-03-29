@@ -25,9 +25,11 @@ const DisplayBookForGoal: React.FC<Props> = ({book}) => {
       </View>
       }
       <View style={styles.bookInfo}>
-        <Text style={styles.sectionText}><Text style={styles.sectionText}>Title:</Text>  "{book.title}"</Text>
-        <Text style={styles.sectionText}><Text style={styles.sectionText}>Author:</Text>  {book.author && book.author}</Text> 
-        <Text style={styles.sectionText}><Text style={styles.sectionText}>Genre:</Text>  {book.genre}</Text>
+        <Text style={[styles.sectionText, {fontStyle: 'italic'}]}><Text style={[styles.sectionText, {fontStyle: 'normal'}]}>Title:</Text>  {book.title}</Text>
+        {book.author !== '' &&
+        <Text style={styles.sectionText}><Text style={styles.sectionText}>Author:</Text>  {book.author && book.author}</Text>}
+        {book.genre !== '' &&
+        <Text style={styles.sectionText}><Text style={styles.sectionText}>Genre:</Text>  {book.genre}</Text>}
         <Text style={styles.sectionText}><Text style={styles.sectionText}>Pages:</Text>  {book.pages}</Text>
       </View>
     </View>
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     marginLeft: 10, 
     marginRight: 0, 
     display: 'flex', 
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'column',
     alignContent: 'center',
     overflow: 'hidden',

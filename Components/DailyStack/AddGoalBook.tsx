@@ -32,22 +32,22 @@ const AddGoalBook: React.FC<Props> = ({navigation}) => {
       <TopBar />
       <View style={[{flex: 1}, styles.flexContainer]}>
           <MyButton 
-            customStyle={{marginBottom: 20, width: 'auto'}}
+            customStyle={{marginBottom: 20}}
             title="Use book from library"
             onPress={() => {
               dispatch(resetDailySelected());
               navigation.push("AddFromLibraryTab");
             }}
-            isActive={books.length > 0 && hasNotReadBooks}/>
+            isActive={books.length > 0 && !hasNotReadBooks}/>
           <MyButton 
-            customStyle={{marginBottom: 20, width: 'auto'}}
+            customStyle={{marginBottom: 20}}
             title="Scan new book"
             onPress={() => {
               dispatch(resetDailySelected());
               navigation.push("ScanBookTab");
             }}/>
           <MyButton 
-            customStyle={{marginBottom: 20, width: 'auto'}}
+            customStyle={{marginBottom: 20}}
             title="Enter book manually"
             onPress={() => {
               dispatch(resetDailySelected());

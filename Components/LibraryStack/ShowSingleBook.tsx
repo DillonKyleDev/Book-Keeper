@@ -187,7 +187,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
             <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
             {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
 
-            <View style={[flexStyles.flexRowCenter, {marginRight: 'auto'}]}>
+            <View style={[flexStyles.flexRowCenter, {marginRight: 'auto', alignItems: 'center'}]}>
               <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
               {bookSaved  && !librarySelected.goalCompleted &&  <>
               <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
@@ -331,6 +331,8 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     marginLeft: 5,
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
   buttonText: {
     color: 'white', 
