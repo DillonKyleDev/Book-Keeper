@@ -40,7 +40,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
           :
           <MyButton title='Reset Achievements' onPress={() => setShowWarning(true)} customStyle={{marginBottom: 0, marginTop: 0, width: 'auto', height: 'auto'}}/>}
         <Text style={{color: 'blue', textDecorationLine: 'underline', fontSize: 20, marginLeft: 'auto', marginRight: 'auto', marginTop: 40}} onPress={() =>
-          Linking.openURL("https://www.privacypolicies.com/live/0929da3a-3353-4024-8985-f24d43f2ab39")}>
+          Linking.openURL("https://www.privacypolicies.com/live/0929da3a-3353-4024-8985-f24d43f2ab39")} accessibilityLabel="Privacy policy link">
             Privacy Policy
         </Text>
 
