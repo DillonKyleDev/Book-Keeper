@@ -61,6 +61,7 @@ const FindBookDaily: React.FC<Props> = ({navigation}) => {
               onChangeText={setTitle}
               value={title}
               placeholder="title"
+              placeholderTextColor='#303030'
             />
             <MyButton isActive={title !== '' && title.replace(/\s+/g, '') !== ''} title="Enter Author" onPress={() => setShowAuthor(true)} />
           </>
@@ -70,7 +71,7 @@ const FindBookDaily: React.FC<Props> = ({navigation}) => {
               <ActivityIndicator animating={isLoading} size="large" color="#4b59f5" style={{position: 'absolute', bottom: 15}}/>
             </View>
             <MyText text='Enter author name' size={22} style={styles.searchText}/>
-            <TextInput style={styles.inputs} onChangeText={setAuthor} value={author} placeholder={placeHolder} />
+            <TextInput style={styles.inputs} onChangeText={setAuthor} value={author} placeholder={placeHolder} placeholderTextColor='#303030'/>
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <MyButton isActive={title.replace(/\s+/g, '') !== ''} title="Search for Book" customStyle={{marginBottom: 15, paddingLeft: 30, paddingRight: 30}} onPress={() => HandleFindBook({author, title, setIsLoading, setPlaceHolder, setSearchResults})}/>
               <MyText text='Or...' size={16} style={{marginTop: 0, marginBottom: 10, marginLeft: 'auto', marginRight: 'auto'}}/>
@@ -87,13 +88,14 @@ const FindBookDaily: React.FC<Props> = ({navigation}) => {
       }
       </>
       :
-      <View style={[{height: screenHeight - 100, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
+      <View style={[{flex: 1, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
         <MyText text='Enter book page count' size={22} style={styles.searchText}/>
         <TextInput
           style={styles.inputs}
           onChangeText={setPageCount}
           value={pageCount.toString()}
           placeholder="page count"
+          placeholderTextColor='#303030'
           keyboardType='numeric'
         />
         <MyButton isActive={pageCount !== '' && pageCount.replace(/[^0-9 ]/g, "") !== ''} title="Create Book" onPress={() => handleCreateBook()} />

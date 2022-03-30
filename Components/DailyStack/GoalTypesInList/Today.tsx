@@ -45,13 +45,13 @@ const Today: React.FC<Props> = ({goal}) => {
   }
 
   return (
-    <View style={flexStyles.flexRowStart}>
+    <View style={flexStyles.flexRowBetween}>
 
       <GoalImage goal={goal} />
+      <View style={{position: 'absolute', right: 5, top: 5}}>{todayIcon}</View>
 
-      <View style={flexStyles.flexColStart}>
-        <View style={{position: 'absolute', right: -10, top: 5}}>{todayIcon}</View>
-        
+      <View style={[flexStyles.flexColStart, {marginLeft: 'auto', marginRight: 'auto'}]}>
+
         <View style={[styles.goalInfo, flexStyles.flexColCenter]}>
 
           <View style={[flexStyles.flexRowReg, {paddingTop: 5}]}>
@@ -83,9 +83,8 @@ export default Today
 
 const styles = StyleSheet.create({
   goalInfo: {
-    marginLeft: 10,
     padding: 10,
-    paddingLeft: 0,
+    marginTop: 5,
   },
   sectionText: {
     color: '#636363',

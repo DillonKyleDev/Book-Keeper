@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Linking, SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import MyButton from '../Helper/MyButton';
@@ -63,6 +62,7 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
     dispatch(setDailySelected(librarySelected));
     dispatch(resetLibrarySelected());
     navigation.pop(4);
+    navigation.navigate("DailyTab");
     navigation.navigate("SetGoalTab");
   }
 

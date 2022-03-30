@@ -24,6 +24,10 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   const dailySelected = useReduxSelector(state => state.dailySelected);
   const today = new Date();
   today.setHours(0,0,0,0);
+  if(dailySelected.readingDates.length === 0) {
+    console.log("in")
+    navigation.pop(2);
+  }
   const todaysDate = DateString(today, true).slice(2,-2);
   const startedOn = DateString(dailySelected.readingDates[0].date, true).slice(2,-2);
   const completedOn = DateString(dailySelected.completionDate, true).slice(2,-2);

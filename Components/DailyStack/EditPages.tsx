@@ -50,6 +50,7 @@ const EditPages: React.FC<Props> = ({navigation}) => {
               value={pagesRead}
               placeholder="0"
               keyboardType='number-pad'
+              placeholderTextColor='#303030'
             />
         <MyButton isActive={pagesRead !== '' && parseInt(pagesRead) <= dailySelected.pages} title="Submit" onPress={() => handleSubmitPages()} customStyle={{marginTop: 0, marginBottom: 10}} />
       </View>

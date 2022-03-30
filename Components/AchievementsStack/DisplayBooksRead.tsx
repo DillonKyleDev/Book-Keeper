@@ -23,10 +23,10 @@ const DisplayBooksRead: React.FC<Props> = ({books}) => {
           </View>
         )):
         <>
-          <View style={[styles.bookImage, {backgroundColor: '#787878'}]} />
-          <View style={[styles.bookImage, {backgroundColor: '#a6a6a6'}]} />
-          <View style={[styles.bookImage, {backgroundColor: '#cfcfcf'}]} />
-          <View style={[styles.bookImage, {backgroundColor: '#e3e3e3'}]} />
+          <View style={[styles.bookImage, {borderColor: '#787878'}]} />
+          <View style={[styles.bookImage, {borderColor: '#a6a6a6'}]} />
+          <View style={[styles.bookImage, {borderColor: '#cfcfcf'}]} />
+          <View style={[styles.bookImage, {borderColor: '#e3e3e3'}]} />
         </>}
       </View>
     </View>
@@ -64,5 +64,6 @@ const styles = StyleSheet.create({
     marginTop: '2%',
     marginLeft: '1%',
     marginRight: '1%',
+    borderWidth: 1,
   },
 })

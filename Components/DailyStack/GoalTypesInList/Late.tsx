@@ -45,12 +45,12 @@ const Late: React.FC<Props> = ({goal}) => {
   }
 
   return (
-    <View style={flexStyles.flexRowStart}>
+    <View style={flexStyles.flexRowBetween}>
       
       <GoalImage goal={goal} />
+      <View style={{position: 'absolute', right: 5, top: 5}}>{lateIcon}</View>
 
-      <View style={flexStyles.flexColCenter}>
-        <View style={{position: 'absolute', right: -10, top: 5}}>{lateIcon}</View>
+      <View style={[flexStyles.flexColCenter, {marginLeft: 'auto', marginRight: 'auto'}]}>
         
         <View style={[flexStyles.flexColCenter, styles.goalInfo]}>
           <View style={[flexStyles.flexRowReg, {paddingTop: 5}]}>
@@ -84,9 +84,8 @@ export default Late
 
 const styles = StyleSheet.create({
   goalInfo: {
-    marginLeft: 10,
     padding: 10,
-    paddingLeft: 0,
+    marginTop: 5,
   },
   sectionText: {
     color: '#636363',

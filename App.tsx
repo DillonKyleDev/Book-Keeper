@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -117,11 +116,11 @@ export default function App() {
           />
           <Tab.Screen options={{
             tabBarIndicatorStyle:{backgroundColor: '#4b59f5'},
-            tabBarStyle:{width: '100%', height: 60},
+            tabBarStyle:{width: '100%', height: 60, paddingLeft: 0, paddingRight: 0 },
             tabBarActiveTintColor: '#4b59f5',
             tabBarIcon: (props) => <FontAwesome5 name="flag-checkered" size={18} color={props.color} />,
-            tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2 }}} 
-            name="Achievements" 
+            tabBarLabelStyle: { textTransform: 'capitalize', fontFamily: 'serif', position: 'relative', bottom: 8, right: 2, paddingLeft: 0, paddingRight: 0 }}} 
+            name="Achv." 
             component={AchievementsStackScreen} 
           />
         </Tab.Navigator>

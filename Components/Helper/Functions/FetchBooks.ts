@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Book, emptyBook } from '../../../store/books/bookSlice';
+import { Book } from '../../../store/books/bookSlice';
 
 export type ISBN = {
   path: string;
@@ -49,7 +49,7 @@ const mapData = (data: []) => {
 
 export const FetchIsbn = async ({isbnData}: {isbnData: ISBN}) => {
   if(isbnData !== undefined) {
-    return await axios.post(`https://book-keeper-server.herokuapp.com/${isbnData.path}`, {
+    return await axios.post(`HTTPS://book-keeper-server.herokuapp.com/${isbnData.path}`, {
       "isbn": `${isbnData.isbn}`
     })
     .then(response => {
@@ -66,7 +66,7 @@ export const FetchIsbn = async ({isbnData}: {isbnData: ISBN}) => {
 
 export const FetchAuthor = async ({authorData}: {authorData: Author}) => {
   if(authorData !== undefined) {
-    return await axios.post(`https://book-keeper-server.herokuapp.com/${authorData.path}`, {
+    return await axios.post(`HTTPS://book-keeper-server.herokuapp.com/${authorData.path}`, {
       "author": `${authorData.author}`
     })
     .then(response => {
@@ -83,7 +83,7 @@ export const FetchAuthor = async ({authorData}: {authorData: Author}) => {
 
 export const FetchTitle = async ({titleData}: {titleData: Title}) => {
   if(titleData !== undefined) {
-    return await axios.post(`https://book-keeper-server.herokuapp.com/${titleData.path}`, {
+    return await axios.post(`HTTPS://book-keeper-server.herokuapp.com/${titleData.path}`, {
       "title": `${titleData.title}`
     })
     .then(response => {
@@ -100,7 +100,7 @@ export const FetchTitle = async ({titleData}: {titleData: Title}) => {
 
 export const FetchTitleAuthor = async ({titleAuthorData}: {titleAuthorData: TitleAuthor}) => {
   if(titleAuthorData !== undefined) {
-    return await axios.post(`https://book-keeper-server.herokuapp.com/${titleAuthorData.path}`, {
+    return await axios.post(`HTTPS://book-keeper-server.herokuapp.com/${titleAuthorData.path}`, {
       "title": `${titleAuthorData.title}`,
       "author": `${titleAuthorData.author}`
     })

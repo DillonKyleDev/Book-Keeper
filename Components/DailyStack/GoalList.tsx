@@ -1,6 +1,5 @@
 import React, { ReactFragment } from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import { Feather } from '@expo/vector-icons';
 import MyText from '../Helper/MyText';
 import ProgressBar from './ProgressBar';
@@ -36,7 +35,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {sectionNavigator}
         {goals.map((book, index) => (
-          <View key={`${index}`}>
+          <View key={`${index}`} style={{flex: 1}}>
           {book.title !== '' && 
             <Pressable onPress={() => handlePress(book)} style={[styles.bookCard]}>
               <SingleGoalInList goal={book}/>
@@ -47,7 +46,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
 
         {goals.length === 0 && 
         <View>
-          <MyText text="No Goals To See.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
+          <MyText text="No Goals To See.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#303030'}}/>
           {hasLateGoals ?
           <MyText text="Check Late section." size={20} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#e82323'}}/>
           :
@@ -79,6 +78,7 @@ const styles = StyleSheet.create({
   },
   bookCard: {
     backgroundColor: 'white',
+    flex: 1,
     height: 200,
     borderRadius: 4,
     margin: '4%',

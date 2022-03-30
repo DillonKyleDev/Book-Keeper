@@ -44,6 +44,9 @@ const Library: React.FC<Props> = ({navigation}) => {
         zIndex: 4,
         position: 'relative',
       }} 
+      placeholder="Find book"
+      placeholderTextColor='#303030'
+      accessibilityLabel='Search Library for book'
       value={searchFor}
       onChangeText={setSearchFor}/>
     </View>
@@ -68,13 +71,14 @@ const Library: React.FC<Props> = ({navigation}) => {
           <SectionHeader title="Library" button={plusButton} />
           {books.length === 0 &&
           <View>
-            <MyText text="No Books Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'grey'}}/>
+            <MyText text="No Books Here.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#303030'}}/>
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
               <MyText text="Tap the plus to add some!" size={20} style={{paddingTop: 10}}/>
             </View>
           </View>
           }
-          <BookList onPress={(book) => dispatch(setLibrarySelected(book))} books={books} filter={searchFor} navigation={navigation} includeFinished={true} goTo="ShowSingleBookTab"/>
+          {books.length > 0 &&
+          <BookList onPress={(book) => dispatch(setLibrarySelected(book))} books={books} filter={searchFor} navigation={navigation} includeFinished={true} goTo="ShowSingleBookTab"/>}
         </View>
     </View>
   )

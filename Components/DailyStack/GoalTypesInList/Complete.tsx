@@ -16,14 +16,13 @@ const Complete: React.FC<Props> = ({goal}) => {
   const maxLetters: number = 20;
 
   return (
-    <View style={flexStyles.flexRowEven}>
+    <View style={flexStyles.flexRowBetween}>
 
       <GoalImage goal={goal}/>
+      <View style={{position: 'absolute', right: 5, top: 5}}>{completedIcon}</View>
 
-      <View style={flexStyles.flexColCenter}>
+      <View style={[flexStyles.flexColBetween, {marginLeft: 'auto', marginRight: 'auto'}]}>
 
-        <View style={{position: 'absolute', right: -10, top: 5}}>{completedIcon}</View>
-        
         <View style={[styles.goalInfo]}>
           <View style={{display: 'flex', flexDirection: 'row', paddingTop: 5}}>
             <MyText text="Title:  " size={fontSize} style={[styles.sectionText]} />
@@ -50,13 +49,8 @@ export default Complete
 
 const styles = StyleSheet.create({
   goalInfo: {
-    marginLeft: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    alignContent: 'center',
-    justifyContent: 'center',
     padding: 10,
-    paddingLeft: 0,
+    marginTop: 25,
   },
   sectionText: {
     color: '#636363',
