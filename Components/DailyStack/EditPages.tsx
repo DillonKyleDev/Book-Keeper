@@ -51,6 +51,7 @@ const EditPages: React.FC<Props> = ({navigation}) => {
               placeholder="0"
               keyboardType='number-pad'
               placeholderTextColor='#303030'
+              accessibilityLabel='Change number of pages you have read'
             />
         <MyButton isActive={pagesRead !== '' && parseInt(pagesRead) <= dailySelected.pages} title="Submit" onPress={() => handleSubmitPages()} customStyle={{marginTop: 0, marginBottom: 10}} />
       </View>

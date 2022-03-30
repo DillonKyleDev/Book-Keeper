@@ -38,6 +38,7 @@ const EditLibraryPages: React.FC<Props> = ({navigation}) => {
               placeholder="0"
               placeholderTextColor='#303030'
               keyboardType='number-pad'
+              accessibilityLabel='Change book page count'
             />
         <MyButton isActive={pagesCount !== '' && parseInt(pagesCount) > librarySelected.pagesRead} title="Submit" onPress={() => handleSubmitDate()} customStyle={{marginTop: 0, marginBottom: 10}} />
       </View>

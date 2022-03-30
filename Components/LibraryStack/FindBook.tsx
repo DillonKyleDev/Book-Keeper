@@ -59,6 +59,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
               value={title}
               placeholder="title"
               placeholderTextColor='#303030'
+              accessibilityLabel='Enter book title'
             />
             <MyButton isActive={title !== '' && title.replace(/\s+/g, '') !== ''} title="Enter Author" onPress={() => setShowAuthor(true)} />
           </>
@@ -94,6 +95,7 @@ const FindBook: React.FC<Props> = ({navigation}) => {
           placeholder="page count"
           placeholderTextColor='#303030'
           keyboardType='numeric'
+          accessibilityLabel='Enter book page count'
         />
         <MyButton isActive={pageCount !== '' && pageCount.replace(/[^0-9 ]/g, "") !== ''} title="Create Book" onPress={() => handleCreateBook()} />
       </View>}
