@@ -123,6 +123,9 @@ I've worked on a project in the past that used Redux but this was the first proj
 ## React Native / Expo
 I've been wanting to build an Android app for a while now and I know React Native is a popular choice for not only mobile apps but also desktop apps, so I'm really happy I got to try it out and learn the ins and outs of it.  The navigation system was a little daunting at first because of the nested Tab navigators within the Navigator, but once I had spent a bit of time with it, it became more than natural.  I'm excited to work with React Native in the future, but I'll have to figure out how to get Android Studio working because I did not enjoy the experience of developing directly on my personal Android phone through the Expo Go app. My back and neck have not forgiven me for constantly looking down at my phone during development.
 
+**Update**
+I did end up getting Android Studio working. It was way easier than I originally thought. It's a great tool that I've been using for updating Book Keeper! (and taking screenshots).
+
 ## Overall
 Overall, I really enjoyed this experience and I'm so excited to release my first Android app on the Google Play store! I can't wait for people to use this and enjoy it and I hope it really helps some people do more reading! I know I can't wait to use it!
 
