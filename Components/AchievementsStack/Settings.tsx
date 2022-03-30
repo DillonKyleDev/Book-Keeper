@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
+import { View, StyleSheet, Linking, Text } from 'react-native';
 import SectionHeader from '../Helper/SectionHeader';
 import TopBar from '../Helper/TopBar';
 import MyButton from '../Helper/MyButton';
@@ -40,6 +39,10 @@ const Settings: React.FC<Props> = ({navigation}) => {
           </>
           :
           <MyButton title='Reset Achievements' onPress={() => setShowWarning(true)} customStyle={{marginBottom: 0, marginTop: 0, width: 'auto', height: 'auto'}}/>}
+        <Text style={{color: 'blue', textDecorationLine: 'underline', fontSize: 20, marginLeft: 'auto', marginRight: 'auto', marginTop: 40}} onPress={() =>
+          Linking.openURL("https://www.privacypolicies.com/live/0929da3a-3353-4024-8985-f24d43f2ab39")}>
+            Privacy Policy
+        </Text>
 
       </View>
     </View>
