@@ -33,7 +33,7 @@ import Settings from './Components/AchievementsStack/Settings';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SplashScreen, WithSplashScreen } from './Components/SplashScreen';
+import { WithSplashScreen } from './Components/SplashScreen';
 
 const LibraryStack = createNativeStackNavigator();
 const DailyStack = createNativeStackNavigator();

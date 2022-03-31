@@ -15,6 +15,7 @@
   "submit": {
     "production": {
       "android": {
+        "usesCleartextTraffic": "false",
         "serviceAccountKeyPath": "../../keys/646491093708-e16d770bf086.json"
       }
     }

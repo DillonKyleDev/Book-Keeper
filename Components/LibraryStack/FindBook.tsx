@@ -14,8 +14,6 @@ import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlic
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-
-
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
 }
