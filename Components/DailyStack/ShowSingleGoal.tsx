@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, ReactFragment } from 'react';
 import { View, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import TopBar from '../Helper/TopBar';
@@ -24,19 +24,33 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   const dailySelected = useReduxSelector(state => state.dailySelected);
   const today = new Date();
   today.setHours(0,0,0,0);
-  if(dailySelected.readingDates.length === 0) {
-    console.log("in")
-    navigation.pop(2);
+  if(dailySelected.goalFinalized === false) {
+    navigation.pop(1);
   }
-  const todaysDate = DateString(today, true).slice(2,-2);
-  const startedOn = DateString(dailySelected.readingDates[0].date, true).slice(2,-2);
-  const completedOn = DateString(dailySelected.completionDate, true).slice(2,-2);
-  const activeReadingDays = dailySelected.readingDates.length;
-  const finishOn = DateString(dailySelected.finishOn, true).slice(2, -2);
-  const pagesPerDay = Math.ceil(dailySelected.pages / dailySelected.readingDates.length);
-  const readingDaysLeft = TotalReadingDays(dailySelected);
-  const readingWeekDaysMap = ReadingDays(dailySelected);
-  const nextReadingDay = NextReadingDay(dailySelected, true);
+
+  let todaysDate:string = ''
+  let startedOn:string = '';
+  let completedOn:string = '';
+  let activeReadingDays:number = 1;
+  let finishOn:string = '';
+  let pagesPerDay:number = 1;
+  let readingDaysLeft:number = 1;
+  let readingWeekDaysMap:ReactFragment = <></>;
+  let nextReadingDay:string = '';
+
+  if(dailySelected.goalFinalized === true && dailySelected.readingDates !== [] && dailySelected.readingDates[0] !== undefined && dailySelected.readingDates[0].date !== undefined) {
+    todaysDate = DateString(today, true).slice(2,-2);
+    startedOn = DateString(dailySelected.readingDates[0].date, true).slice(2,-2);
+    completedOn = DateString(dailySelected.completionDate, true).slice(2,-2);
+    activeReadingDays = dailySelected.readingDates.length;
+    finishOn = DateString(dailySelected.finishOn, true).slice(2, -2);
+    pagesPerDay = Math.ceil(dailySelected.pages / dailySelected.readingDates.length);
+    readingDaysLeft = TotalReadingDays(dailySelected);
+    readingWeekDaysMap = ReadingDays(dailySelected);
+    nextReadingDay = NextReadingDay(dailySelected, true);
+  }
+  
+
   let statusBar:number = 0;
   if(StatusBar.currentHeight !== undefined) {
     statusBar = StatusBar.currentHeight;
