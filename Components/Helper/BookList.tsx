@@ -34,7 +34,7 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFini
   return (
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {tempBooks.length > 0 ? tempBooks.map((book, index) => {
+        {tempBooks !== undefined && tempBooks.length > 0 && tempBooks[0].title !== '' ? tempBooks.map((book, index) => {
           if(book &&
             (book.title.toLowerCase().includes(filter.toLowerCase()) || 
             book.author.toLowerCase().includes(filter.toLowerCase()))) {
@@ -72,15 +72,22 @@ const BookList: React.FC<Props> = ({books, navigation, goTo, filter, includeFini
             </View>
           </Pressable>
         )}}):
-        
-        <View>
-          {!includeFinished &&
-          <>
-          <MyText text="No books here you haven't read yet.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#303030'}}/>
-          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <MyText text="Add new books to your library!" size={20} style={{paddingTop: 10}}/>
-          </View></>}
-        </View>
+        <>
+        {tempBooks !== undefined ?
+          <View>
+            {!includeFinished && <>
+            <MyText text="No books here you haven't read yet.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#303030'}}/>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <MyText text="Add new books to your library!" size={20} style={{paddingTop: 10}}/>
+            </View></>}
+          </View> :
+          <View>
+            <MyText text="We couldn't find that book.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#303030'}}/>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <MyText text="Check your spelling or create a custom book!" size={20} style={{paddingTop: 10, textAlign:'center'}}/>
+            </View>
+          </View>}
+        </>
         }
       </ScrollView>
     </View>

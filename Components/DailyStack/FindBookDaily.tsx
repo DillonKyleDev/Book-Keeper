@@ -51,7 +51,7 @@ const FindBookDaily: React.FC<Props> = ({navigation}) => {
       <TopBar />
       {!creatingNewBook ?
       <>
-      {searchResults[0].title === '' ?
+      {searchResults !== undefined && searchResults.length > 0 && searchResults[0].title === '' ?
         <View style={[{flex: 1, backgroundColor: '#f3f3f3'}, styles.flexContainer]}>
           { !showAuthor ? 
           <>
