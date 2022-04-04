@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import MyText from './MyText';
 import { Octicons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
 
 interface Props {
   button?: React.ReactFragment;
@@ -32,6 +33,7 @@ const TopBar: React.FC<Props> = ({button}) => {
         }
         </View>
       </View>
+      <StatusBar style="light" backgroundColor='#4b59f5' />
     </View>
   )
 }
