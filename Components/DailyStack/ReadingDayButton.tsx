@@ -33,8 +33,8 @@ export default ReadingDayButton
 const styles = StyleSheet.create({
   weekdayButton: {
     margin: 3,
-    width: 110,
-    height: 80,
+    minWidth: 110,
+    height: 85,
   },
   titleStyles: {
     color: '#5e5e5e',

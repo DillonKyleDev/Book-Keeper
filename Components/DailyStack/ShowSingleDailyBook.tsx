@@ -128,8 +128,11 @@ const ShowSingleDailyBook: React.FC<Props> = ({bookNotFound, navigation}) => {
                 {dailySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {dailySelected.author && dailySelected.author}</Text>}
                 {dailySelected.genre !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {dailySelected.genre}</Text>}
 
-                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
+                <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: 'auto'}}>
                   <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {dailySelected.pages}</Text>
+                  {bookSaved.saved && dailySelected.goalFinalized === false &&  <View style={flexStyles.flexRowCenter}>
+                    <MyText style={{color: '#636363',}} text="*Page counts are often innacurate*" size={14}/>
+                    <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></View>}
                 </View>
               
                 {dailySelected.description !== '' && <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {dailySelected.description}</Text>}
@@ -192,11 +195,11 @@ const ShowSingleDailyBook: React.FC<Props> = ({bookNotFound, navigation}) => {
             <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {dailySelected.title}</Text>
             {dailySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {dailySelected.author && dailySelected.author}</Text>}
 
-            <View style={[flexStyles.flexRowCenter, {marginRight: 'auto'}]}>
+            <View style={[flexStyles.flexColCenter, {marginRight: 'auto'}]}>
               <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {dailySelected.pages}</Text>
-              {bookSaved.saved  && !dailySelected.goalCompleted &&  <>
-              <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
-              <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
+              {bookSaved.saved && dailySelected.goalFinalized === false &&  <View style={flexStyles.flexRowCenter}>
+              <MyText style={{color: '#636363',}} text="*Page counts are often innacurate*" size={14}/>
+              <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></View>}
             </View>
         
           </View>

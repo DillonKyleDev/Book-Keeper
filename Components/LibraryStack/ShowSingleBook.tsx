@@ -121,11 +121,11 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
                 {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
                 {librarySelected.genre !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Genre:</Text>  {librarySelected.genre}</Text>}
 
-                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 'auto'}}>
+                <View style={{display: 'flex', flexDirection: 'column', marginRight: 'auto'}}>
                   <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-                  {bookSaved  && !librarySelected.goalCompleted &&  <>
-                  <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
-                  <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
+                  {bookSaved  && !librarySelected.goalCompleted &&  <View style={flexStyles.flexRowCenter}>
+                  <MyText style={{color: '#636363',}} text="*Page counts are often innacurate*" size={14}/>
+                  <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></View>}
                 </View>
               
                 {librarySelected.description !== '' && <Text style={{fontFamily: 'serif', marginTop: 15}}><Text style={styles.sectionText}>Description:</Text>  {librarySelected.description}</Text>}
@@ -187,11 +187,11 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
             <Text style={[styles.contentText, styles.titleText]}><Text style={styles.sectionText}>Title:</Text>  {librarySelected.title}</Text>
             {librarySelected.author !== '' && <Text style={styles.contentText}><Text style={styles.sectionText}>Author:</Text>  {librarySelected.author && librarySelected.author}</Text>}
 
-            <View style={[flexStyles.flexRowCenter, {marginRight: 'auto', alignItems: 'center'}]}>
+            <View style={[flexStyles.flexColCenter, {marginRight: 'auto', alignItems: 'center'}]}>
               <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-              {bookSaved  && !librarySelected.goalCompleted &&  <>
-              <MyText style={{color: '#636363',}} text="     ...Not right?" size={12}/>
-              <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></>}
+              {bookSaved && librarySelected.goalFinalized === false &&  <View style={flexStyles.flexRowCenter}>
+              <MyText style={{color: '#636363',}} text="*Page counts are often innacurate*" size={14}/>
+              <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></View>}
             </View>
         
           </View>

@@ -64,7 +64,7 @@ const PickReadingDays: React.FC<Props> = ({navigation}) => {
         </View>
 
         <View style={{paddingTop: 10, borderTopColor: '#f2f2f2', borderTopWidth: 1, width: "90%", marginLeft: 'auto', marginRight: 'auto'}}>
-          <MyText style={{textAlign: 'center'}} text="Pick reading days:" size={16} />
+          <MyText style={{textAlign: 'center'}} text="Pick weekdays you'll read on for this goal:" size={16} />
           <View style={styles.weekdayContainer}>
             <View style={styles.weekdayByTwo}>
               <ReadingDayButton weekday='Sunday' dateIsActive={sunday} setFunction={setSunday} />

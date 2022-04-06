@@ -57,7 +57,7 @@ const Achievements: React.FC<Props> = ({navigation}) => {
 
             <View style={styles.cardsContainer}>
               <AchievementCard text="Days read" data={daysRead} dataColor="#ffa617"/>
-              <AchievementCard text='Favorite reading day' data={`${favReadingDay}`} dataColor='#6c77f0'/>
+              <AchievementCard text='Most used reading day' data={`${favReadingDay}`} dataColor='#6c77f0'/>
             </View>
 
             <View style={styles.cardsContainer}>
@@ -72,7 +72,7 @@ const Achievements: React.FC<Props> = ({navigation}) => {
             </View>
 
             <View style={styles.cardsContainer}>
-              <AchievementCard text='Favorite genre' data={`${favGenre}`} dataColor="#b400eb" dataSize={favGenre === '?' ? 40 : 25}/>
+              <AchievementCard text='Most read genre' data={`${favGenre}`} dataColor="#b400eb" dataSize={favGenre === '?' ? 40 : 25}/>
               <AchievementCard text='Fastest read book' data={`${fastestGoal.book !== '' ? fastestGoal.book : '?'}`} dataColor="#fcc603" dataStyle={{fontStyle: 'italic'}} dataSize={fastestGoal.book !== '' ? 16 : 40}/>
             </View>
 

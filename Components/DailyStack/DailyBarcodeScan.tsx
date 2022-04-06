@@ -8,6 +8,7 @@ import TopBar from '../Helper/TopBar';
 import MyButton from '../Helper/MyButton';
 import MyText from '../Helper/MyText';
 import { Camera } from 'expo-camera'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
 import { setDailySelected } from '../../store/dailySelectedBook/selectedSlice';
@@ -69,7 +70,7 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
     <View style={{flex: 1}}>
       <TopBar />
       <View style={[{flex: 1, paddingTop: 20}]}>
-        <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
+        <MyText text='Center barcode within camera view.' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
         <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
         <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
@@ -81,8 +82,10 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
           <Camera
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
-/>
-
+          />
+          <View style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <MaterialCommunityIcons style={{marginLeft: 'auto', marginRight: 'auto', zIndex: 10}} name="scan-helper" size={300} color="white" />
+          </View>
         </View>
         }
       </View>

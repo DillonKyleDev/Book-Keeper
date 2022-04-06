@@ -2,13 +2,13 @@
   "expo": {
     "name": "BookKeeper",
     "slug": "BookKeeper",
-    "version": "1.0.5",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#4b59f5"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,10 +22,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#4b59f5"
       },
       "package": "com.BookKeeper",
-      "versionCode": 6
+      "versionCode": 9
     },
     "web": {
       "favicon": "./assets/favicon.png"

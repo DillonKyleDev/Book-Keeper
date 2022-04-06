@@ -69,7 +69,7 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
     <View style={{flex: 1}}>
       <TopBar />
       <View style={[{flex: 1, paddingTop: 20}]}>
-        <MyText text='Begin scanning,' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
+        <MyText text='Center barcode within camera view.' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
         <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
         <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
