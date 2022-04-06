@@ -56,7 +56,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <TopBar />
-      <ScrollView contentContainerStyle={styles.bookCard}>
+      <ScrollView contentContainerStyle={[styles.bookCard, {display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center'}]}>
         <View style={styles.bookCard}>
 
           {dailySelected.imageUrl !== '' ? 

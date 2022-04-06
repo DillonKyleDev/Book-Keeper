@@ -69,7 +69,7 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <TopBar />
-      <View style={[{flex: 1, paddingTop: 20}]}>
+      <View style={[{flex: 1, paddingTop: 20, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}]}>
         <MyText text='Center barcode within camera view.' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
         <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
@@ -83,11 +83,12 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
           />
-          <View style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-            <MaterialCommunityIcons style={{marginLeft: 'auto', marginRight: 'auto', zIndex: 10}} name="scan-helper" size={300} color="white" />
-          </View>
-        </View>
-        }
+        </View>}
+
+        {openScanner && 
+        <View style={{flex: 1, height: 460, position: 'absolute', width: screenWidth, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <MaterialCommunityIcons name="scan-helper" size={260} color="white" />
+        </View>}
       </View>
     </View>
   );
@@ -99,16 +100,6 @@ const styles = StyleSheet.create({
   scannerContainer: {
     overflow: 'hidden',
     height: 460,
-  },
-  scannerStyle: {
-    flex: 1,
-    position: 'absolute',
-    marginLeft: 0,
-    marginRight: 0,
-    height: 300,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 0
-  },
+    flex: 1
+  }
 });

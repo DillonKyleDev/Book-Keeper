@@ -123,8 +123,8 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
 
                 <View style={{display: 'flex', flexDirection: 'column', marginRight: 'auto'}}>
                   <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-                  {bookSaved  && !librarySelected.goalCompleted &&  <View style={flexStyles.flexRowCenter}>
-                  <MyText style={{color: '#636363',}} text="*Page counts are often innacurate*" size={14}/>
+                  {bookSaved  && !librarySelected.goalCompleted &&  <View style={flexStyles.flexColCenter}>
+                  <MyText style={{color: '#636363',}} text="Page counts are often innacurate. If this is wrong, you can change it:" size={14}/>
                   <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></View>}
                 </View>
               
@@ -189,8 +189,8 @@ const ShowSingleGoal: React.FC<Props> = ({bookNotFound, navigation}) => {
 
             <View style={[flexStyles.flexColCenter, {marginRight: 'auto', alignItems: 'center'}]}>
               <Text style={styles.contentText}><Text style={styles.sectionText}>Pages:</Text>  {librarySelected.pages}</Text>
-              {bookSaved && librarySelected.goalFinalized === false &&  <View style={flexStyles.flexRowCenter}>
-              <MyText style={{color: '#636363',}} text="*Page counts are often innacurate*" size={14}/>
+              {bookSaved && librarySelected.goalFinalized === false &&  <View style={flexStyles.flexColCenter}>
+              <MyText style={{color: '#636363',}} text="Page counts are often innacurate. If this is wrong, you can change it:" size={14}/>
               <Button buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditLibraryPagesTab")} title="Edit page count" /></View>}
             </View>
         
@@ -328,10 +328,12 @@ const styles = StyleSheet.create({
   editButton: {
     backgroundColor: '#4b59f5', 
     padding: 2, 
+    width: 'auto',
+    marginLeft: 0,
+    marginRight: 'auto',
     paddingLeft: 5,
     paddingRight: 5,
-    marginLeft: 5,
-    marginTop: 'auto',
+    marginTop: 5,
     marginBottom: 'auto',
   },
   buttonText: {

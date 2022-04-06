@@ -76,7 +76,7 @@ export const SplashScreen = ({ isAppReady }: { isAppReady: boolean }) => {
       style={[style.container, { opacity: containerOpacity }]}
     >
       <Animated.Image
-        source={require("../assets/BookKeeperLogo.png")}
+        source={require("../assets/splash.png")}
         fadeDuration={0}
         onLoad={() => {
           setState(FADE_IN_IMAGE);

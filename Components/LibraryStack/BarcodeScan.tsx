@@ -7,7 +7,8 @@ import { ISBN, FetchIsbn } from '../Helper/Functions/FetchBooks';
 import TopBar from '../Helper/TopBar';
 import MyButton from '../Helper/MyButton';
 import MyText from '../Helper/MyText';
-import { Camera } from 'expo-camera'
+import { Camera } from 'expo-camera';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 //redux
 import { useReduxDispatch, useReduxSelector } from '../../store';
 import { setLibrarySelected } from '../../store/librarySelectedBook/selectedSlice';
@@ -68,7 +69,7 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <TopBar />
-      <View style={[{flex: 1, paddingTop: 20}]}>
+      <View style={[{flex: 1, paddingTop: 20, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}]}>
         <MyText text='Center barcode within camera view.' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
         <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
         <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
@@ -81,10 +82,13 @@ const BarcodeScan: React.FC<Props> = ({navigation}) => {
           <Camera
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
-/>
+          />
+        </View>}
 
-        </View>
-        }
+        {openScanner && 
+        <View style={{flex: 1, height: 460, position: 'absolute', width: screenWidth, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <MaterialCommunityIcons name="scan-helper" size={260} color="white" />
+        </View>}
       </View>
     </View>
   );
@@ -96,16 +100,6 @@ const styles = StyleSheet.create({
   scannerContainer: {
     overflow: 'hidden',
     height: 460,
-  },
-  scannerStyle: {
-    flex: 1,
-    position: 'absolute',
-    marginLeft: 0,
-    marginRight: 0,
-    height: 300,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 0
-  },
+    flex: 1
+  }
 });
