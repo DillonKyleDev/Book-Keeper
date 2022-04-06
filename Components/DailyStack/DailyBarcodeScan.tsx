@@ -87,7 +87,7 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
 
         {openScanner && 
         <View style={{flex: 1, height: 460, position: 'absolute', width: screenWidth, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <MaterialCommunityIcons name="scan-helper" size={260} color="white" />
+          <MaterialCommunityIcons name="scan-helper" size={screenWidth-100} color="white" />
         </View>}
       </View>
     </View>
