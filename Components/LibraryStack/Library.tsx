@@ -30,7 +30,7 @@ const Library: React.FC<Props> = ({navigation}) => {
         zIndex: 5,
         left: 110,
         top: 5,
-        height: 40
+        height: 40,
       }}>
       <AntDesign name="search1" size={24} color="black" />
       </View>

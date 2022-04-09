@@ -16,6 +16,8 @@ interface Props {
 const Current: React.FC<Props> = ({goal}) => {
   const fontSize: number = 12;
   const maxLetters: number = 20;
+  const readingDays = ReadingDays(goal);
+  const nextReadingDay = NextReadingDay(goal, false);
 
   return (
     <View style={flexStyles.flexRowBetween}>
@@ -34,12 +36,13 @@ const Current: React.FC<Props> = ({goal}) => {
           <View style={{marginTop: 5, flexGrow: 1}}>
             <View style={{marginBottom: -10}}>
               <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
-              {ReadingDays(goal)}
+              {readingDays}
             </View>
 
-            <View style={[flexStyles.flexColCenter, flexStyles.autoMargin, {marginTop: 10}]}>
+            <View style={[flexStyles.flexColCenter, flexStyles.autoMargin]}>
+              <MyText text="Tap to customize" size={20} style={[flexStyles.autoMargin, {color: "#4b59f5", marginBottom: 3, marginTop: -6}]}/> 
               <MyText text="Next reading day:" size={fontSize} style={[styles.sectionText, {marginLeft: 'auto', marginRight: 'auto'}]} />
-              <MyText text={`${NextReadingDay(goal, false)}`} size={16} style={{color: "#4b59f5"}}/>
+              <MyText text={nextReadingDay} size={14} style={[styles.sectionText, flexStyles.autoMargin, {color: "black"}]}/>
             </View>
           </View>
 

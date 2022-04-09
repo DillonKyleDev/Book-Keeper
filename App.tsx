@@ -24,6 +24,7 @@ import EditPages from './Components/DailyStack/EditPages';
 import DailyBarcodeScan from './Components/DailyStack/DailyBarcodeScan';
 import ShowSingleDailyBook from './Components/DailyStack/ShowSingleDailyBook';
 import FindBookDaily from './Components/DailyStack/FindBookDaily';
+import ReadMorePages from './Components/DailyStack/ReadMorePages';
 
 //Achievements tab imports
 import Achievements from './Components/AchievementsStack/Achievements';
@@ -68,6 +69,7 @@ const DailyStackScreen = () => {
       <DailyStack.Screen name="ShowSingleGoalTab" component={ShowSingleGoal} />
       <DailyStack.Screen name="PreviewGoalTab" component={PreviewGoal} />
       <DailyStack.Screen name="EditPagesTab" component={EditPages} />
+       <DailyStack.Screen name="ReadMorePagesTab" component={ReadMorePages} />
     </DailyStack.Navigator>
   )
 }
@@ -91,7 +93,7 @@ export default function App() {
   }, []);
 
   return (
-    <WithSplashScreen isAppReady={isAppReady} >
+    // <WithSplashScreen isAppReady={isAppReady} >
       <NavigationContainer>
         <Tab.Navigator tabBarPosition="bottom" initialRouteName="Daily">
           <Tab.Screen options={{
@@ -125,6 +127,6 @@ export default function App() {
           />
         </Tab.Navigator>
       </NavigationContainer>
-    </WithSplashScreen>
+    // </WithSplashScreen>
   );
 }

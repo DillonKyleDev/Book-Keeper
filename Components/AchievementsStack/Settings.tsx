@@ -25,7 +25,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
       <SectionHeader title="Settings / Information"/>
       <View style={{flex: 1}}>
         <View style={{margin: '8%'}}>
-          <MyText text='This app was made for fun and for my own personal reading journey.  I hope it helps you too!' size={14} />
+          <MyText text='This app was made for fun and for my own personal reading journey.  I hope it helps you too!' size={14} style={{textAlign: 'center'}}/>
         </View>
         {showWarning ?
           <>

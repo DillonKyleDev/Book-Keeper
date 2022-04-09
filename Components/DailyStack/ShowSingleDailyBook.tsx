@@ -338,7 +338,9 @@ const styles = StyleSheet.create({
     padding: 2, 
     paddingLeft: 5,
     paddingRight: 5,
-    marginLeft: 5,
+    marginLeft: 0,
+    marginTop: 5,
+    marginRight: 'auto',
   },
   buttonText: {
     color: 'white', 

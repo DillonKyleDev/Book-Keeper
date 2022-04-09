@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "BookKeeper",
+    "name": "Book Keeper",
     "slug": "BookKeeper",
-    "version": "1.0.9",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,7 +25,7 @@
         "backgroundColor": "#4b59f5"
       },
       "package": "com.BookKeeper",
-      "versionCode": 10
+      "versionCode": 19
     },
     "web": {
       "favicon": "./assets/favicon.png"

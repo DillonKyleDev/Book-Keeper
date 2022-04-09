@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import MyText from './MyText';
 import { Octicons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+const bookIcon = require('../../assets/Topbaricon.png')
 import { StatusBar } from 'expo-status-bar';
 
 interface Props {
@@ -15,15 +16,16 @@ const TopBar: React.FC<Props> = ({button}) => {
     <View>
       <View style={styles.navBody} />
       <View style={styles.navBar}>
-        <View style={styles.titleContainer}>
-          <View style={styles.icon}>
+        <View style={{flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 'auto', marginRight: 'auto'}}>
+          {/* <View style={styles.icon}>
             <Ionicons name="md-book" size={24} color="white" />
           </View>
           <View style={[styles.icon, {top: 35, left: 29}]}>
             <Octicons name="pencil" size={18} color="#ffcc00" />
-          </View>
-          <MyText text="       Book" size={20} style={styles.NavTitle} />
-          <MyText text="Keeper" size={20} style={[styles.NavTitle, styles.italics]} />
+          </View> */}
+          <Image style={{width: 140, height: 30, position: 'relative', top: 37, left: 10}} source={bookIcon}/>
+          {/* <MyText text="     Book" size={20} style={styles.NavTitle} />
+          <MyText text="Keeper" size={20} style={[styles.NavTitle, styles.italics]} /> */}
         </View>
         <View style={styles.buttonContainer}>
           {button &&
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
   NavTitle: {
     color: 'white',
     position: 'relative',
-    top: 38,
+    top: 40,
   },
   italics: {
     fontStyle: 'italic',

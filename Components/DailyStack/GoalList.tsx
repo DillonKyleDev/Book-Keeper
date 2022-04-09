@@ -38,7 +38,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
           <View key={`${index}`} style={{flex: 1}}>
           {book.title !== '' && 
             <Pressable onPress={() => handlePress(book)} style={[styles.bookCard]}>
-              <SingleGoalInList goal={book}/>
+              <SingleGoalInList goal={book} navigation={navigation}/>
               <ProgressBar book={book} withPercent={false}/>
             </Pressable>}
           </View>
@@ -48,7 +48,7 @@ const GoalList: React.FC<Props> = ({goals, navigation, sectionNavigator, hasLate
         <View>
           <MyText text="No Goals To See.." size={16} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#303030'}}/>
           {hasLateGoals ?
-          <MyText text="Check Late section." size={20} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: '#e82323'}}/>
+          <MyText text="Check Behind section." size={20} style={{marginLeft: 'auto', marginRight: 'auto', paddingTop: 10, color: 'orange'}}/>
           :
           <>
           {books.length !== 0 && hasGoals ?

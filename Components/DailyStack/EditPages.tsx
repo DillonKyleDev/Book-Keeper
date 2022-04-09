@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
+import Checkbox from 'expo-checkbox';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { screenHeight } from '../Helper/Functions/ScreenHeight';
 import TopBar from '../Helper/TopBar';
 import MyText from '../Helper/MyText';
 import MyButton from '../Helper/MyButton';
 //Redux
 import { useReduxSelector, useReduxDispatch } from '../../store';
 import { updatePages } from '../../store/books/bookSlice';
-import { updateAchievementsPages, addBookRead } from '../../store/Achievements/achievementsSlice';
+import { updateAchievementsPages, addBookRead, updateTodaysReading } from '../../store/Achievements/achievementsSlice';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -17,15 +17,19 @@ interface Props {
 }
 
 const EditPages: React.FC<Props> = ({navigation}) => {
-  const [ pagesRead, setPagesRead ] = useState<string>('');
+  const [ isChecked, setChecked ] = useState<boolean>(true);
   //redux
   const dailySelected = useReduxSelector(state => state.dailySelected);
   const dispatch = useReduxDispatch();
+  const [ pagesRead, setPagesRead ] = useState<string>(`${dailySelected.pagesRead}`);
 
   const handleSubmitPages = () => {
     let today = new Date();
     today.setHours(0,0,0,0);
     let pageChange = parseInt(pagesRead.replace(/[^0-9 ]/g, "")) - dailySelected.pagesRead;
+    if(isChecked) {
+      dispatch(updateTodaysReading(pageChange))
+    }
     dispatch(updateAchievementsPages(pageChange));
     if(parseInt(pagesRead.replace(/[^0-9 ]/g, "")) >= dailySelected.pages) {
       dispatch(addBookRead({
@@ -43,17 +47,27 @@ const EditPages: React.FC<Props> = ({navigation}) => {
     <View style={{backgroundColor: 'white', flex: 1}}>
       <TopBar />
       <View style={[{flex: 1}, styles.flexContainer]}>
-        <MyText style={{textAlign: 'center', paddingTop: 10}} text="Edit Pages Read" size={26} />
-           <TextInput
-              style={styles.inputs}
-              onChangeText={e => setPagesRead(e)}
-              value={pagesRead}
-              placeholder="0"
-              keyboardType='number-pad'
-              placeholderTextColor='#303030'
-              accessibilityLabel='Change number of pages you have read'
+        <MyText style={{textAlign: 'center', paddingTop: 10}} text="What page are you on?" size={26} />
+          <View style={{display: 'flex', flexDirection: 'row', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center', marginTop: 15}}>
+            <Checkbox
+              style={{}}
+              value={isChecked}
+              onValueChange={setChecked}
+              color={isChecked ? '#4630EB' : undefined}
             />
-        <MyButton isActive={pagesRead !== '' && parseInt(pagesRead) <= dailySelected.pages} title="Submit" onPress={() => handleSubmitPages()} customStyle={{marginTop: 0, marginBottom: 10}} />
+          <MyText style={{textAlign: 'center', color: 'grey'}} text="  Did you read these pages today?" size={16} />
+          </View>
+          <TextInput
+            style={styles.inputs}
+            onChangeText={e => setPagesRead(e)}
+            value={pagesRead}
+            placeholder={`${dailySelected.pagesRead}`}
+            keyboardType='number-pad'
+            placeholderTextColor='#303030'
+            accessibilityLabel='Change number of pages you have read'
+          />
+
+        <MyButton isActive={pagesRead !== '' && parseInt(pagesRead) <= dailySelected.pages && parseInt(pagesRead) >= dailySelected.pagesRead} title="Submit" onPress={() => handleSubmitPages()} customStyle={{marginTop: 0, marginBottom: 10}} />
       </View>
     </View>
   )
@@ -70,8 +84,10 @@ const styles = StyleSheet.create({
   inputs: {
     height: 50,
     borderRadius: 5,
-    paddingLeft: 50,
-    paddingRight: 50,
+    textAlign: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+    elevation: 5,
     backgroundColor: 'white',
     margin: 20,
     marginLeft: 'auto',

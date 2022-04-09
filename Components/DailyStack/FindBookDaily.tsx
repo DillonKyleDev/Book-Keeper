@@ -56,6 +56,7 @@ const FindBookDaily: React.FC<Props> = ({navigation}) => {
           { !showAuthor ? 
           <>
             <MyText text='Enter book title' size={22} style={styles.searchText}/>
+            <MyText text='Double check your spelling, it counts!' size={16} style={[styles.searchText, {paddingTop: 10}]}/>
             <TextInput
               style={styles.inputs}
               onChangeText={setTitle}
@@ -72,6 +73,7 @@ const FindBookDaily: React.FC<Props> = ({navigation}) => {
               <ActivityIndicator animating={isLoading} size="large" color="#4b59f5" style={{position: 'absolute', bottom: 15}}/>
             </View>
             <MyText text='Enter author name' size={22} style={styles.searchText}/>
+            <MyText text='Double check your spelling, it counts!' size={16} style={[styles.searchText, {paddingTop: 10}]}/>
             <TextInput style={styles.inputs} onChangeText={setAuthor} value={author} placeholder={placeHolder} placeholderTextColor='#303030'/>
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <MyButton isActive={title.replace(/\s+/g, '') !== ''} title="Search for Book" customStyle={{marginBottom: 15, paddingLeft: 30, paddingRight: 30}} onPress={() => HandleFindBook({author, title, setIsLoading, setPlaceHolder, setSearchResults})}/>
@@ -127,9 +129,11 @@ const styles = StyleSheet.create({
   inputs: {
     height: 50,
     borderRadius: 5,
-    paddingLeft: 10,
     backgroundColor: 'white',
     margin: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    elevation: 5,
     marginLeft: '10%',
     marginRight: '10%',
     fontSize: 16,

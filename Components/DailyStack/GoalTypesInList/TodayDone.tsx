@@ -33,14 +33,14 @@ const TodayDone: React.FC<Props> = ({goal}) => {
 
           <View style={{marginTop: 5, flexGrow: 1}}>
             <View style={{marginBottom: -10}}>
-              <MyText text="Reading Days:" size={fontSize} style={[styles.sectionText, {marginBottom: 5}]} />
               {ReadingDays(goal)}
             </View>
             <View style={[flexStyles.flexRowCenter, flexStyles.autoMargin]}>
               <View style={[flexStyles.flexColCenter, flexStyles.autoMargin, {marginTop: -5}]}>
                 <MyText text='All Caught Up!' size={16} style={[flexStyles.autoMargin, {color: "green", marginBottom: 5}]}/>
+                <MyText text="Tap to customize" size={20} style={[flexStyles.autoMargin, {color: "#4b59f5", marginBottom: 3, marginTop: -4}]}/> 
                 <MyText text="Next reading day:" size={fontSize} style={[styles.sectionText, flexStyles.autoMargin]} />
-                <MyText text={`${NextReadingDay(goal, false)}`} size={16} style={[flexStyles.autoMargin, {color: "#4b59f5"}]}/>                    
+                <MyText text={`${NextReadingDay(goal, false)}`} size={14} style={[flexStyles.autoMargin, {color: "black"}]}/> 
               </View>
             </View>
           </View>

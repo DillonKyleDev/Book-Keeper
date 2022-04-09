@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MyText from '../../Helper/MyText';
 import ReadingDays from '../../Helper/ReadingDays';
@@ -10,38 +10,44 @@ import flexStyles from '../../Helper/Functions/FlexStyles';
 //Redux
 import { useReduxDispatch } from '../../../store';
 import { Book, updateDatesRead } from '../../../store/books/bookSlice';
+import { setDailySelected } from '../../../store/dailySelectedBook/selectedSlice';
 import { addBookRead, updateAchievementsPages, addDayRead, updateTodaysReading } from '../../../store/Achievements/achievementsSlice';
 import GoalImage from './GoalImage';
 //Navigation
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Props {
   goal: Book;
+  navigation: NativeStackNavigationProp<any, any>;
 }
 
-const Late: React.FC<Props> = ({goal}) => {
+const Late: React.FC<Props> = ({goal, navigation}) => {
   const fontSize: number = 12;
   const maxLetters: number = 20;
   const daysRead  = DaysDue(goal);
   const totalPages = PagesPerDay(goal);
   const readingDays = ReadingDays(goal)
+  const todaysGoal = goal.pagesRead + totalPages;
   //redux selected
   const dispatch = useReduxDispatch();
 
   const handleCompletedReading = (goal:Book) => {
-    let today = new Date();
-    today.setHours(0,0,0,0);
-    dispatch(updateTodaysReading(totalPages));
-    dispatch(addDayRead());
-    dispatch(updateAchievementsPages(totalPages));
-    if(totalPages + goal.pagesRead >= goal.pages) {
-      dispatch(addBookRead({
-        ...goal,
-        goalCompleted: true,
-        pagesRead: goal.pages,
-        completionDate: today,
-      }));
-    }
-    dispatch(updateDatesRead({book: goal, daysRead, totalPages}));
+    navigation.push("ReadMorePagesTab");
+    dispatch(setDailySelected(goal));
+    // let today = new Date();
+    // today.setHours(0,0,0,0);
+    // dispatch(updateTodaysReading(totalPages));
+    // dispatch(addDayRead());
+    // dispatch(updateAchievementsPages(totalPages));
+    // if(totalPages + goal.pagesRead >= goal.pages) {
+    //   dispatch(addBookRead({
+    //     ...goal,
+    //     goalCompleted: true,
+    //     pagesRead: goal.pages,
+    //     completionDate: today,
+    //   }));
+    // }
+    // dispatch(updateDatesRead({book: goal, daysRead, totalPages}));
   }
 
   return (
@@ -64,13 +70,13 @@ const Late: React.FC<Props> = ({goal}) => {
               {readingDays}
             </View>
               
-            <View style={[flexStyles.flexRowEnd, flexStyles.autoMargin, {marginBottom: 7}]}>
-              <MyText text="Reading Due:  " size={12} style={styles.sectionText}/>
-              <MyText text={`${totalPages} pages`} size={16} style={{color: 'green'}}/>
+            <View style={[flexStyles.flexRowEnd, flexStyles.autoMargin, {marginTop: -5, marginBottom: 7}]}>
+              <MyText text="Page Goal:  " size={12} style={styles.sectionText}/>
+              <MyText text={`page ${todaysGoal <= goal.pages ? todaysGoal : goal.pages}`} size={16} style={{color: 'green'}}/>
             </View>
 
             <View style={[flexStyles.flexColCenter, flexStyles.autoMargin]}>
-              <MyButton title='Mark Complete' onPress={() => handleCompletedReading(goal)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: 'orange'}} titleStyle={{fontSize: 8}}/>
+              <MyButton title='Add Reading' onPress={() => handleCompletedReading(goal)} customStyle={{width: 'auto', height: 'auto', marginTop: 0, marginLeft: 0, marginRight: 'auto', marginBottom: 0, padding: 6, paddingLeft: 18, paddingRight: 18, backgroundColor: 'orange'}} titleStyle={{fontSize: 8}}/>
             </View>
           </View>
 

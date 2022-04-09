@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { screenWidth } from '../Helper/Functions/ScreenHeight';
+import { screenWidth, screenHeight } from '../Helper/Functions/ScreenHeight';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -69,10 +69,9 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <TopBar />
-      <View style={[{flex: 1, paddingTop: 20, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}]}>
-        <MyText text='Center barcode within camera view.' size={22} style={{textAlign: 'center', paddingBottom: 5}}/>
-        <MyText text='Or...' size={16} style={{textAlign: 'center', paddingBottom: 10}}/>
-        <MyButton title="Enter new book manually" onPress={() => navigation.push("FindBookTab")}/>
+      <View style={[{flex: 1, paddingTop: 20, display: 'flex', flexDirection: 'column', justifyContent: 'center'}]}>
+        {openScanner && 
+        <MyText text='Center barcode within camera view.' size={18} style={{textAlign: 'center', paddingBottom: 20}}/>}
         <View style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
           <ActivityIndicator animating={!openScanner} size="large" color="#4b59f5" style={{position: 'absolute', top: 50}} />
         </View>
@@ -83,11 +82,9 @@ const DailyBarcodeScan: React.FC<Props> = ({navigation}) => {
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
           />
-        </View>}
-
-        {openScanner && 
-        <View style={{flex: 1, height: 460, position: 'absolute', width: screenWidth, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <MaterialCommunityIcons name="scan-helper" size={screenWidth-100} color="white" />
+          <View style={{flex: 1, height: '100%', position: 'absolute', width: screenWidth, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <MaterialCommunityIcons name="scan-helper" size={screenWidth/4*3} color="white" />
+          </View>
         </View>}
       </View>
     </View>
@@ -99,7 +96,7 @@ export default DailyBarcodeScan;
 const styles = StyleSheet.create({
   scannerContainer: {
     overflow: 'hidden',
-    height: 460,
+    height: screenHeight/2,
     flex: 1
   }
 });

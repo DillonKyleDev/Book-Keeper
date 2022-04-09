@@ -35,7 +35,7 @@ const EditLibraryPages: React.FC<Props> = ({navigation}) => {
               style={styles.inputs}
               onChangeText={e => setPageCount(e)}
               value={pagesCount}
-              placeholder="0"
+              placeholder={`${librarySelected.pages}`}
               placeholderTextColor='#303030'
               keyboardType='number-pad'
               accessibilityLabel='Change book page count'
@@ -57,8 +57,10 @@ const styles = StyleSheet.create({
   inputs: {
     height: 50,
     borderRadius: 5,
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: 15,
+    paddingRight: 15,
+    elevation: 5,
+    textAlign: 'center',
     backgroundColor: 'white',
     margin: 20,
     marginLeft: 'auto',

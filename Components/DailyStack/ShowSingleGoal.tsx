@@ -1,4 +1,4 @@
-import React, { useEffect, ReactFragment } from 'react';
+import React, { ReactFragment } from 'react';
 import { View, StyleSheet, Image, ScrollView, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import TopBar from '../Helper/TopBar';
@@ -14,6 +14,9 @@ import MyButton from '../Helper/MyButton';
 //Navigation
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import TotalReadingDays from '../Helper/Functions/TotalReadingDays';
+import GoalStatus from '../Helper/Functions/GoalStatus';
+import { Statuses } from '../../store/books/bookSlice';
+import flexStyles from '../Helper/Functions/FlexStyles';
 
 interface Props {
   navigation: NativeStackNavigationProp<any, any>;
@@ -34,6 +37,7 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
   let readingDaysLeft:number = 1;
   let readingWeekDaysMap:ReactFragment = <></>;
   let nextReadingDay:string = '';
+  const goalStatus = GoalStatus(dailySelected);
 
   if(dailySelected.goalFinalized === true && dailySelected.readingDates !== [] && dailySelected.readingDates[0] !== undefined && dailySelected.readingDates[0].date !== undefined) {
     todaysDate = DateString(today, true).slice(2,-2);
@@ -46,7 +50,6 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
     readingWeekDaysMap = ReadingDays(dailySelected);
     nextReadingDay = NextReadingDay(dailySelected, true);
   }
-  
 
   let statusBar:number = 0;
   if(StatusBar.currentHeight !== undefined) {
@@ -106,13 +109,16 @@ const ShowSingleGoal: React.FC<Props> = ({navigation}) => {
               </View>
             </>}
 
-            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
+            <View style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: 5}}>
               <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: 10}}>
                 <MyText text="Pages read:  " size={14} style={styles.sectionText}/>
                 <MyText text={`${dailySelected.goalCompleted ? dailySelected.pages : dailySelected.pagesRead} / ${dailySelected.pages}`} size={16} style={{color: 'green'}}/>
               </View>
-              {!dailySelected.goalCompleted &&
-              <Button title="Edit pages" buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditPagesTab")}/>
+              {!dailySelected.goalCompleted && goalStatus !== Statuses.todayPending && goalStatus !== Statuses.late &&
+              <View style={[flexStyles.flexRowStart, {marginTop: 2, alignItems: 'center'}]}>
+                <MyText text="Have you read more?  " size={14} style={{color: "#4b59f5"}}/>
+                <Button title="Update pages read" buttonStyle={styles.editButton} titleStyle={styles.buttonText} onPress={() => navigation.navigate("EditPagesTab")}/>
+              </View>
               }
             </View>
             {!dailySelected.goalCompleted &&

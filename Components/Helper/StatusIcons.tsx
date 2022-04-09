@@ -30,8 +30,8 @@ export const todayCompleteIcon =
   </View>
 export const lateIcon =
   <View style={styles.statusIcon}>
-    <MyText text='Behind ' size={8} style={{color: "#e82323"}}/>
-    <MaterialCommunityIcons name="calendar-clock" size={18} color="#e82323" />
+    <MyText text='Behind ' size={8} style={{color: "orange"}}/>
+    <MaterialCommunityIcons name="calendar-clock" size={18} color="orange" />
   </View>
 export const completedIcon =
   <View style={styles.statusIcon}>

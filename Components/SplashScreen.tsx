@@ -25,7 +25,7 @@ const HIDDEN = "Hidden";
 
 export const SplashScreen = ({ isAppReady }: { isAppReady: boolean }) => {
   const containerOpacity = useRef(new Animated.Value(1)).current;
-  const imageOpacity = useRef(new Animated.Value(0)).current;
+  const imageOpacity = useRef(new Animated.Value(1)).current;
 
   const [state, setState] = useState<
     | typeof LOADING_IMAGE
@@ -34,18 +34,6 @@ export const SplashScreen = ({ isAppReady }: { isAppReady: boolean }) => {
     | typeof FADE_OUT
     | typeof HIDDEN
   >(LOADING_IMAGE);
-
-  useEffect(() => {
-    if (state === FADE_IN_IMAGE) {
-      Animated.timing(imageOpacity, {
-        toValue: 1,
-        duration: 1000, // Fade in duration
-        useNativeDriver: true,
-      }).start(() => {
-        setState(WAIT_FOR_APP_TO_BE_READY);
-      });
-    }
-  }, [imageOpacity, state]);
 
   useEffect(() => {
     if (state === WAIT_FOR_APP_TO_BE_READY) {
@@ -60,7 +48,7 @@ export const SplashScreen = ({ isAppReady }: { isAppReady: boolean }) => {
       Animated.timing(containerOpacity, {
         toValue: 0,
         duration: 500, // Fade out duration
-        delay: 200, // Minimum time the logo will stay visible
+        delay: 1, // Minimum time the logo will stay visible
         useNativeDriver: true,
       }).start(() => {
         setState(HIDDEN);
@@ -77,9 +65,9 @@ export const SplashScreen = ({ isAppReady }: { isAppReady: boolean }) => {
     >
       <Animated.Image
         source={require("../assets/splash.png")}
-        fadeDuration={0}
+        fadeDuration={1000}
         onLoad={() => {
-          setState(FADE_IN_IMAGE);
+          setState(WAIT_FOR_APP_TO_BE_READY);
         }}
         style={[style.image, { opacity: imageOpacity }]}
         resizeMode="contain"
